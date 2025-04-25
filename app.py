@@ -7,28 +7,20 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 import pandas.io.sql as pdsql
-from config import pg_user, pg_password, db_name, pg_host  # Corrected import
+from config import pg_user, pg_password, db_name
 from flask import Flask, jsonify, render_template, abort, redirect
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, MetaData
-
-from flask import Flask, jsonify, render_template
-import pandas as pd
-import json
-from sqlalchemy import create_engine
-
 
 #################################################
 # Database Setup
 ##################################################
-
-# Construct the DATABASE_URL
-DATABASE_URL = f"postgresql://{pg_user}:{pg_password}@{pg_host}/{db_name}"
+DATABASE_URL = "postgres://avnadmin:AVNS_hw9GhQqItYsGLW206lz@mydatabase-ermiasgelaye-d9b4.e.aivencloud.com:26131/defaultdb?sslmode=require"
 DATABASE_URL = DATABASE_URL.replace(
     'postgres://',
     'postgresql://',
     1
 )
+
 
 engine = create_engine(DATABASE_URL)
 meta = sqlalchemy.MetaData()
@@ -77,23 +69,17 @@ def searchbyyear():
 @app.route('/searchyearandcondition')
 def searchyearandcondition():
     sqlStatement = """
-    SELECT year, SUM ("Cancer") AS Cancer, SUM ("cardiovascular") AS Cardiovascular, SUM ("stroke") AS Stroke,
-           SUM ("depression") AS Depression, SUM ("rehab") AS Rehab, SUM ("vaccine") AS Vaccine,
-           SUM ("diarrhea") AS Diarrhea, SUM("obesity") AS Obesity, SUM ("diabetes") AS Diabetes    
+    SELECT year, SUM ("Cancer") AS Cancer,SUM ("cardiovascular") As Cardiovascular,SUM ("stroke") As Stroke,SUM ("depression") As Depression,SUM ("rehab") AS Rehab,SUM ("vaccine") AS Vaccine, SUM ("diarrhea") AS Diarrhea, SUM("obesity") AS Obesity, SUM ("diabetes") AS Diabetes    
     FROM search_condition 
     GROUP BY year
     ORDER BY year;
+
     """
-    try:
-        with engine.connect() as connection:
-            result = connection.execute(sqlStatement)
-            df = pd.DataFrame(result.fetchall(), columns=result.keys())
-            df.set_index('year', inplace=True)
-            json_result = df.to_json(orient='table')
-            parsed_result = json.loads(json_result)
-            return jsonify(parsed_result)
-    except Exception as e:
-        return jsonify({"error": str(e)})
+    df = pdsql.read_sql(sqlStatement, engine)
+    df.set_index('year', inplace=True)
+    df = df.to_json(orient='table')
+    result = json.loads(df)
+    return jsonify(result)
 
 @app.route('/searchbycity')
 def searchbycity():
