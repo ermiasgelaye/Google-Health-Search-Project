@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: my-app
-    buildCommand: |
-      pip install --upgrade pip setuptools wheel
-      pip install --only-binary=numpy numpy==1.26.4
-      pip install -r requirements.txt
-    startCommand: python app.py
-
