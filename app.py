@@ -28,8 +28,6 @@ DATABASE_URL = DATABASE_URL.replace(
     'postgresql://',
     1
 )
-
-
 engine = create_engine(DATABASE_URL)
 meta = sqlalchemy.MetaData()
 meta.reflect(bind=engine)
