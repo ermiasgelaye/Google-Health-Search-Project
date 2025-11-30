@@ -8,6 +8,7 @@ idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
+pandas==1.1.2
 
 # psycopg2-binary has prebuilt wheels; avoids compiling against libpq
 psycopg2-binary==2.9.9
