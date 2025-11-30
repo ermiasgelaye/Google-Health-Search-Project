@@ -11,23 +11,32 @@ from config import pg_user, pg_password, db_name
 from flask import Flask, jsonify, render_template, abort, redirect
 from flask_sqlalchemy import SQLAlchemy
 
-import os
-from dotenv import load_dotenv
+#################################################
+# Database Setup
+##################################################
 
+import os
+from sqlalchemy import create_engine
+
+from dotenv import load_dotenv
 load_dotenv()
 
-pg_user = os.getenv("PG_USER")
-pg_password = os.getenv("PG_PASSWORD")
-pg_host = os.getenv("PG_HOST")
-pg_port = os.getenv("PG_PORT", "5432")
-db_name = os.getenv("DB_NAME")
+# If you use python-dotenv locally:
+# from dotenv import load_dotenv
+# load_dotenv()  # loads variables from .env into environment
 
-DATABASE_URL = f"postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{db_name}?sslmode=require"
-DATABASE_URL = DATABASE_URL.replace(
-    'postgres://',
-    'postgresql://',
-    1
-)
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL environment variable not set")
+
+# Fix old-style postgres:// URLs if needed
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(DATABASE_URL)
+
+
 engine = create_engine(DATABASE_URL)
 meta = sqlalchemy.MetaData()
 meta.reflect(bind=engine)
