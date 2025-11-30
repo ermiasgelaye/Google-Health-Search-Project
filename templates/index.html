@@ -1,153 +1,173 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
-    <meta charset="UTF 8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Eagle Dashboard | Google Health Search Trends</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous"
+    >
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../static/css/style.css">
+
+    <!-- Plotly -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <title>Eagle Dashboard</title>
+
     <style>
+        /* Keep this only if you actually use #expimg somewhere */
         #expimg {
             margin: 30px;
         }
     </style>
-
 </head>
 
 <body>
 
     <!-- -------------BEGIN NAV BAR --------------------- -->
-    <nav style="font-weight: bold;" class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" id="badge" href="/Home">Eagle Dashboard </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <!-- SIDE NAV BAR WHEN BROWSER IS NOT IN FULL SCREEN -->
-        <span class="navbar-toggler-icon"></span>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" style="font-weight: bold;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            API Links
-        </a>
-            <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
-                <a class="dropdown-item" href="/searchyearandcondition" target="_blank">Total Search by Year and
-                            Conditions</a>
-                <a class="dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
-                <a class="dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
-                <a class="dropdown-item" href="/bystateandyear" target="_blank">Total Search by Year and States</a>
-                <a class="dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
-                <a class="dropdown-item" href="/allsearchrecord" target="_blank"> All Search Record List </a>
-                <a class="dropdown-item" href="/location" target="_blank">location</a>
-                <a class="dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
-                <a class="dropdown-item" href="/mostsserached" target="_blank">Top Ten Searched States by Conditions</a>
-                <a class="dropdown-item" href="/totalcondition" target="_blank">Sum of All Search Conditions</a>
-                <a class="dropdown-item" href="/totaldeathcase" target="_blank">The Sum Total of the leading causes of Death</a>
-            </div>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" style="font-weight: bold;" aria-haspopup="true" aria-expanded="false">
-    Dashboards
-    </a>
-            <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/Home">Home</a>
-                <a class="dropdown-item" href="../static/dashbords/main.html">Main Dashboard</a>
-                <a class="dropdown-item" href="../static/dashbords/comparison.html">Comparison</a>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold">
+        <a class="navbar-brand" id="badge" href="/Home">Eagle Dashboard</a>
 
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" style="font-weight: bold;" href="../static/dashbords/about.html">About Us</a>
-        </li>
-    </button>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav navbar-right ml-auto">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
 
+                <!-- API Links Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" style="font-weight: bold;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                API Links
-            </a>
-                    <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="apiLinksDropdown"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        API Links
+                    </a>
+                    <div class="dropdown-menu navbar-li-a" aria-labelledby="apiLinksDropdown">
                         <a class="dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
-                        <a class="dropdown-item" href="/searchyearandcondition" target="_blank">Total Search by Year and
-                                Conditions</a>
+                        <a class="dropdown-item" href="/searchyearandcondition" target="_blank">
+                            Total Search by Year and Conditions
+                        </a>
                         <a class="dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
                         <a class="dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
-                        <a class="dropdown-item" href="/bystateandyear" target="_blank">Total Search by Year and States</a>
+                        <a class="dropdown-item" href="/bystateandyear" target="_blank">
+                            Total Search by Year and States
+                        </a>
                         <a class="dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
-                        <a class="dropdown-item" href="/allsearchrecord" target="_blank"> All Search Record List </a>
-                        <a class="dropdown-item" href="/location" target="_blank">location</a>
+                        <a class="dropdown-item" href="/allsearchrecord" target="_blank">All Search Record List</a>
+                        <a class="dropdown-item" href="/location" target="_blank">Location</a>
                         <a class="dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
-                        <a class="dropdown-item" href="/mostsserached" target="_blank">Top Ten Searched States by Conditions</a>
-                        <a class="dropdown-item" href="/totalcondition" target="_blank">Sum of All Search Conditions</a>
-                        <a class="dropdown-item" href="/totaldeathcase" target="_blank">The Sum Total of the leading causes of Death</a>
+                        <a class="dropdown-item" href="/mostsserached" target="_blank">
+                            Top Ten Searched States by Conditions
+                        </a>
+                        <a class="dropdown-item" href="/totalcondition" target="_blank">
+                            Sum of All Search Conditions
+                        </a>
+                        <a class="dropdown-item" href="/totaldeathcase" target="_blank">
+                            Sum Total of the Leading Causes of Death
+                        </a>
                     </div>
                 </li>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav navbar-right ml-auto">
+                <!-- Dashboards Dropdown -->
+                <li class="nav-item dropdown">
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="dashboardsDropdown"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        Dashboards
+                    </a>
+                    <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
+                        <a class="dropdown-item" href="/Home">Home</a>
+                        <a class="dropdown-item" href="../static/dashbords/main.html">Main Dashboard</a>
+                        <a class="dropdown-item" href="../static/dashbords/comparison.html">Comparison</a>
+                    </div>
+                </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" style="font-weight: bold;" aria-haspopup="true" aria-expanded="false">
-                Dashboards
-                </a>
-                            <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/Home">Home</a>
-                                <a class="dropdown-item" href="../static/dashbords/main.html">Main Dashboard</a>
-                                <a class="dropdown-item" href="../static/dashbords/comparison.html">Comparison</a>
-                            </div>
-
-                        </li>
-                        <!-- <li class="nav-item">
-                <a class="nav-link" href="../care.html">Pet Care <span class="sr-only">(current)</span></a>
-            </li> -->
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-weight: bold;" href="../static/dashbords/about.html">About Us</a>
-                        </li>
-
-
-                    </ul>
-
-                </div>
+                <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link" href="../static/dashbords/about.html">About Us</a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <!-- -------------END NAV BAR --------------------- -->
 
-
     <!-- -------------BEGIN LANDING CONTAINER --------------------- -->
-    <div class="container main-container">
+    <main class="container main-container my-5">
         <section class="row">
             <div class="col-md-12 main-content" id="main-column">
                 <article>
-                    <h1 style="font-weight: bold;" class="display-4 main-header"> Welcome to Team Eagle Dashboard !!<br>
-
-                        <br>Google Health Search Trends</h1>
+                    <h1 class="display-4 main-header font-weight-bold text-center text-md-left">
+                        Welcome to Team Eagle Dashboard!!
+                        <br><br>
+                        Google Health Search Trends
+                    </h1>
                     <hr class="my-4">
                 </article>
             </div>
-            <section class="row">
-                <div class="image round col-md-12">
-                    <img class="main-image-wrap img-fluid " src="../static/img/main.gif">
-                    <h3 style="font-weight: bold;" class=" text-center align-middle" id="index-text-box">
-                        <br>
-                        <br> An Interactive Dashboard to Explore the Google Search Trends of People for Common Health Issues in the United States
-
-
-                    </h3>
-                </div>
-            </section>
-
         </section>
-    </div>
+
+        <section class="row">
+            <div class="col-md-12 text-center">
+                <img
+                    class="main-image-wrap img-fluid"
+                    src="../static/img/main.gif"
+                    alt="Animated visualization for Google Health Search Trends"
+                >
+                <h3
+                    class="mt-4 font-weight-bold text-center align-middle"
+                    id="index-text-box"
+                >
+                    An Interactive Dashboard to Explore the Google Search Trends of People
+                    for Common Health Issues in the United States
+                </h3>
+            </div>
+        </section>
+    </main>
     <!-- -------------END LANDING BLOCK --------------------- -->
 
-
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
+    <!-- Scripts -->
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"
+    ></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"
+    ></script>
+    <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"
+    ></script>
 
 </body>
-
 </html>

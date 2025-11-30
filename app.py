@@ -7,24 +7,17 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 import pandas.io.sql as pdsql
-from config import pg_user, pg_password, db_name
 from flask import Flask, jsonify, render_template, abort, redirect
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 
 #################################################
 # Database Setup
 ##################################################
 
-import os
-from sqlalchemy import create_engine
-
-from dotenv import load_dotenv
 load_dotenv()
 
-# If you use python-dotenv locally:
-# from dotenv import load_dotenv
-# load_dotenv()  # loads variables from .env into environment
-
+# Get DATABASE_URL from environment
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if not DATABASE_URL:
@@ -36,13 +29,11 @@ if DATABASE_URL.startswith("postgres://"):
 
 engine = create_engine(DATABASE_URL)
 
-
-engine = create_engine(DATABASE_URL)
+# Check database connection and tables
 meta = sqlalchemy.MetaData()
 meta.reflect(bind=engine)
 table_names = meta.tables.keys()
-print(table_names)  # or use the list of table_names as needed
-
+print("Available tables:", table_names)
 
 #################################################
 # Flask Setup
@@ -50,7 +41,8 @@ print(table_names)  # or use the list of table_names as needed
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', '') or "sqlite:///db.sqlite"
+# Use the same DATABASE_URL for Flask-SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -229,4 +221,4 @@ def totaldeathcase():
     return jsonify(result)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
