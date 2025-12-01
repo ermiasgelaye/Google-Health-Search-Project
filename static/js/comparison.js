@@ -1,522 +1,465 @@
-/////////////////////////////////////////////////////
-//    Load and unpack the data                      // 
-/////////////////////////////////////////////////////
-Plotly.d3.json('/allsearchrecord', function(rows) {
-    function unpack(rows, key) {
-        return rows.map(function(row) { return row[key]; });
+// Enhanced Comparison Dashboard with Stats and Download Functionality
+
+class ComparisonDashboard {
+    constructor() {
+        this.currentCity = 'Abilene-Sweetwater';
+        this.statsData = null;
+        this.init();
     }
-    // create a sum function to sum some varables  after unpaking 
-    function sum(input) {
 
-        if (toString.call(input) !== "[object Array]")
-            return false;
+    init() {
+        console.log('🚀 Initializing Comparison Dashboard...');
+        this.addStatsOverview();
+        this.loadData();
+        this.setupDownloadButtons();
+    }
 
-        var total = 0;
-        for (var i = 0; i < input.length; i++) {
-            if (isNaN(input[i])) {
-                continue;
+    addStatsOverview() {
+        const statsHTML = `
+            <div class="container mt-4 mb-5">
+                <h2 class="text-center mb-4">Comparison Insights</h2>
+                <div class="stats-overview-container justify-content-center">
+                    <div class="stat-card">
+                        <h3>200+</h3>
+                        <p>Cities Analyzed</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>9</h3>
+                        <p>Health Conditions</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>14</h3>
+                        <p>Years of Data</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>4</h3>
+                        <p>Strong Correlations</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        const jumbotron = document.querySelector('.jumbotron');
+        if (jumbotron) {
+            jumbotron.insertAdjacentHTML('afterend', statsHTML);
+        }
+    }
+
+    setupDownloadButtons() {
+        // Bar chart download
+        document.querySelectorAll('.download-chart-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const chartId = e.target.closest('.plot-container').querySelector('.plot').id;
+                const chartName = e.target.dataset.chartName || 'Comparison_Chart';
+                this.downloadChart(chartId, chartName);
+            });
+        });
+
+        // CSV download
+        document.querySelectorAll('.download-csv-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const endpoint = e.target.dataset.endpoint;
+                const chartName = e.target.dataset.chartName || 'Comparison_Data';
+                if (endpoint) {
+                    this.downloadCSV(endpoint, chartName);
+                }
+            });
+        });
+    }
+
+    downloadChart(chartId, chartName) {
+        const cleanName = this.cleanFileName(chartName);
+        
+        if (chartId === 'container') {
+            // Handle Highcharts gauge
+            const chart = Highcharts.charts.find(ch => ch && ch.renderTo.id === chartId);
+            if (chart) {
+                chart.exportChart({
+                    type: 'image/png',
+                    filename: cleanName
+                });
             }
-            total += Number(input[i]);
-        }
-        return total;
-    }
-
-
-    var data = rows.data
-
-    var allyear = unpack(data, 'year'),
-        cancer = unpack(data, 'Cancer'),
-        cardiovascular = unpack(data, 'cardiovascular'),
-        depression = unpack(data, 'depression'),
-        diabetes = unpack(data, 'diabetes'),
-        diarrhea = unpack(data, 'diarrhea'),
-        obesity = unpack(data, 'obesity'),
-        rehab = unpack(data, 'rehab'),
-        stroke = unpack(data, 'stroke'),
-        vaccine = unpack(data, 'vaccine'),
-        city = unpack(data, 'city'),
-        state = unpack(data, 'postal'),
-        sum_cancer = sum(cancer),
-        sum_cardiovascular = sum(cardiovascular),
-        sum_depression = sum(depression),
-        sum_diabetes = sum(diabetes),
-        sum_diarrhea = sum(diarrhea),
-        sum_obesity = sum(obesity),
-        sum_rehab = sum(rehab),
-        sum_stroke = sum(stroke),
-        sum_vaccine = sum(vaccine),
-
-        // create an empity list to capture data for the selected city 
-        listofCities = [],
-        searched_state = [],
-        cancer_search = [],
-        cardiovascular_search = [],
-        depression_search = [],
-        diabetes_search = [],
-        diarrhea_search = [],
-        obesity_search = [],
-        rehab_search = [],
-        stroke_search = [],
-        vaccine_search = [],
-        serched_years = [],
-        sum_cancer_search = [],
-        sum_cardiovascular_search = [],
-        sum_depression_search = [],
-        sum_diabetes_search = [],
-        sum_diarrhea_search = [],
-        sum_obesity_search = [],
-        sum_rehab_search = [],
-        sum_stroke_search = [],
-        sum_vaccine_search = [];
-
-    // loop
-    for (var i = 0; i < city.length; i++) {
-        if (listofCities.indexOf(city[i]) === -1) {
-            listofCities.push(city[i]);
+        } else {
+            // Handle Plotly charts
+            Plotly.downloadImage(chartId, {
+                format: 'png',
+                filename: cleanName,
+                height: 500,
+                width: 800,
+                scale: 2
+            });
         }
     }
-    // get city data 
-    function getCityData(chosenCity) {
-        serched_years = [];
-        cancer_search = [];
-        cardiovascular_search = [];
-        depression_search = [];
-        diabetes_search = [];
-        diarrhea_search = [];
-        obesity_search = [];
-        rehab_search = [];
-        stroke_search = [];
-        vaccine_search = [];
-        searched_state = [];
-        sum_cancer_search = [];
-        sum_cardiovascular_search = [];
-        sum_depression_search = [];
-        sum_diabetes_search = [];
-        sum_diarrhea_search = [];
-        sum_obesity_search = [];
-        sum_rehab_search = [];
-        sum_stroke_search = [];
-        sum_vaccine_search = [];
-        sum_total_search = [];
 
-        //push the data to the list 
-
-        for (var i = 0; i < city.length; i++) {
-            if (city[i] === chosenCity) {
-                serched_years.push(allyear[i]);
-                cancer_search.push(cancer[i]);
-                cardiovascular_search.push(cardiovascular[i]);
-                depression_search.push(depression[i]);
-                diabetes_search.push(diabetes[i]);
-                diarrhea_search.push(diarrhea[i]);
-                obesity_search.push(obesity[i]);
-                rehab_search.push(rehab[i]);
-                stroke_search.push(stroke[i]);
-                vaccine_search.push(vaccine[i]);
-                searched_state.push(state[i]);
-                sum_cancer_search.push(sum_cancer);
-                sum_cardiovascular_search.push(sum_cardiovascular);
-                sum_depression_search.push(sum_depression);
-                sum_diabetes_search.push(sum_diabetes);
-                sum_diarrhea_search.push(sum_diarrhea);
-                sum_obesity_search.push(sum_obesity);
-                sum_rehab_search.push(sum_rehab);
-                sum_stroke_search.push(sum_stroke);
-                sum_vaccine_search.push(sum_vaccine);
-                sum_total_search.push(sum_vaccine);
-            }
+    async downloadCSV(endpoint, chartName) {
+        try {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+            
+            const cleanName = this.cleanFileName(chartName);
+            this.convertToCSVAndDownload(data.data, cleanName);
+        } catch (error) {
+            console.error('Error downloading CSV:', error);
+            alert('Error downloading CSV data. Please try again.');
         }
-    };
-    // Default city Data
-    setBarPlot('Abilene-Sweetwater');
+    }
 
-    // make a stack bar plot 
-    function setBarPlot(chosenCity) {
-        getCityData(chosenCity);
-        var Cancer = {
-            x: serched_years,
-            y: cancer_search,
-            name: 'Cancer',
-            type: 'bar',
-            marker: { color: '#448' }
+    convertToCSVAndDownload(data, filename) {
+        if (!data || data.length === 0) {
+            alert('No data available to download.');
+            return;
+        }
 
-        };
+        const headers = Object.keys(data[0]);
+        
+        let csvContent = headers.join(',') + '\n';
+        
+        data.forEach(row => {
+            const values = headers.map(header => {
+                const value = row[header];
+                if (value === null || value === undefined) return '';
+                const stringValue = String(value);
+                if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+                    return '"' + stringValue.replace(/"/g, '""') + '"';
+                }
+                return stringValue;
+            });
+            csvContent += values.join(',') + '\n';
+        });
 
-        var Cardiovascular = {
-            x: serched_years,
-            y: cardiovascular_search,
-            name: 'Cardiovascular',
-            type: 'bar',
-            marker: { color: '#88C' }
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${filename}.csv`);
+        link.style.visibility = 'hidden';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 
-        };
+    cleanFileName(name) {
+        return name
+            .toLowerCase()
+            .replace(/[^a-z0-9\s]/g, '')
+            .replace(/\s+/g, '_');
+    }
 
-        var Depression = {
-            x: serched_years,
-            y: depression_search,
-            name: 'Depression',
-            type: 'bar',
-            marker: { color: '#CCF' }
+    loadData() {
+        Plotly.d3.json('/allsearchrecord', (rows) => {
+            this.statsData = rows.data;
+            this.processData();
+            this.setupCitySelector();
+            this.setBarPlot(this.currentCity);
+        });
+    }
 
-        };
+    processData() {
+        // Process data for stats and visualizations
+        if (!this.statsData) return;
 
-        var Diabetes = {
-            x: serched_years,
-            y: diabetes_search,
-            name: 'Diabetes',
-            type: 'bar',
-            marker: { color: '#080' }
+        // Extract unique cities
+        const cities = [...new Set(this.statsData.map(row => row.city))].sort();
+        this.cityList = cities;
+    }
 
-        };
+    setupCitySelector() {
+        const citySelector = document.querySelector('.citydata');
+        if (citySelector && this.cityList) {
+            // Clear existing options
+            citySelector.innerHTML = '<option value="">Choose a city...</option>';
+            
+            // Add city options
+            this.cityList.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                citySelector.appendChild(option);
+            });
 
-        var Diarrhea = {
-            x: serched_years,
-            y: diarrhea_search,
-            name: 'Diarrhea',
-            type: 'bar',
-            marker: { color: '#8c8' }
+            // Set up change event
+            citySelector.addEventListener('change', (e) => {
+                this.currentCity = e.target.value;
+                this.setBarPlot(this.currentCity);
+            });
+        }
+    }
 
-        };
+    setBarPlot(chosenCity) {
+        if (!this.statsData) return;
 
-        var Obesity = {
-            x: serched_years,
-            y: obesity_search,
-            name: 'Obesity',
-            type: 'bar',
-            marker: { color: '#CFC' }
+        // Filter data for selected city
+        const cityData = this.statsData.filter(row => row.city === chosenCity);
+        
+        if (cityData.length === 0) return;
 
-        };
+        // Process city data
+        const serched_years = cityData.map(row => row.year);
+        const cancer_search = cityData.map(row => row.Cancer);
+        const cardiovascular_search = cityData.map(row => row.cardiovascular);
+        const depression_search = cityData.map(row => row.depression);
+        const diabetes_search = cityData.map(row => row.diabetes);
+        const diarrhea_search = cityData.map(row => row.diarrhea);
+        const obesity_search = cityData.map(row => row.obesity);
+        const rehab_search = cityData.map(row => row.rehab);
+        const stroke_search = cityData.map(row => row.stroke);
+        const vaccine_search = cityData.map(row => row.vaccine);
+        const searched_state = cityData.map(row => row.postal);
 
-        var Rehab = {
-            x: serched_years,
-            y: rehab_search,
-            name: 'Rehab',
-            type: 'bar',
-            marker: { color: '#880' }
+        // Create traces
+        const traces = [
+            { x: serched_years, y: cancer_search, name: 'Cancer', type: 'bar', marker: { color: '#448' } },
+            { x: serched_years, y: cardiovascular_search, name: 'Cardiovascular', type: 'bar', marker: { color: '#88C' } },
+            { x: serched_years, y: depression_search, name: 'Depression', type: 'bar', marker: { color: '#CCF' } },
+            { x: serched_years, y: diabetes_search, name: 'Diabetes', type: 'bar', marker: { color: '#080' } },
+            { x: serched_years, y: diarrhea_search, name: 'Diarrhea', type: 'bar', marker: { color: '#8c8' } },
+            { x: serched_years, y: obesity_search, name: 'Obesity', type: 'bar', marker: { color: '#CFC' } },
+            { x: serched_years, y: rehab_search, name: 'Rehab', type: 'bar', marker: { color: '#880' } },
+            { x: serched_years, y: stroke_search, name: 'Stroke', type: 'bar', marker: { color: '#CC8' } },
+            { x: serched_years, y: vaccine_search, name: 'Vaccine', type: 'bar', marker: { color: '#FFC' } }
+        ];
 
-        };
-
-        var Stroke = {
-            x: serched_years,
-            y: stroke_search,
-            name: 'Stroke',
-            type: 'bar',
-            marker: { color: '#CC8' }
-
-        };
-
-        var Vaccine = {
-            x: serched_years,
-            y: vaccine_search,
-            name: 'Vaccine',
-            type: 'bar',
-            marker: { color: '#FFC' }
-
-        };
-
-        //data 
-        var data = [Cancer, Cardiovascular, Depression, Diabetes, Diarrhea, Obesity, Rehab, Stroke, Vaccine];
-        // layout 
-        var layout = {
-            width: 1350,
-            height: 700,
-            title: 'Total Volume of Searches by year Versus Health Conditions',
+        const layout = {
+            width: null,
+            height: 500,
+            title: `Health Search Trends in ${chosenCity}`,
             barmode: 'stack',
-            type: "column",
             xaxis: {
                 title: 'Years',
                 showgrid: false,
                 zeroline: false
             },
             yaxis: {
-                title: 'Searches',
+                title: 'Search Volume',
                 showline: false
-            }
+            },
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            margin: { t: 60, r: 40, b: 80, l: 60 },
+            hovermode: 'closest',
+            legend: {
+                orientation: 'h',
+                y: -0.3,
+                x: 0.5,
+                xanchor: 'center'
+            },
+            autosize: true
         };
-        // plot 
-        Plotly.newPlot('comparison-1', data, layout);
 
+        Plotly.newPlot('comparison-1', traces, layout, this.getChartConfig());
 
-        /////////////////////////////////////////////////////
-        //    Create a scatter plots                        // 
-        /////////////////////////////////////////////////////
+        // Update scatter plots
+        this.updateScatterPlots(cityData, serched_years);
+        
+        // Update map
+        this.updateMap(searched_state[0]);
+        
+        // Update gauge
+        this.updateGauge(cityData);
+    }
 
-        /////////////////////////////////////////////////////
-        //   scatter plot one  Diarrhea vs  Diabetes                // 
-        /////////////////////////////////////////////////////
-        var Diarrhea_c = {
-            x: serched_years,
+    updateScatterPlots(cityData, years) {
+        // Prepare data for scatter plots
+        const diabetes_search = cityData.map(row => row.diabetes);
+        const diarrhea_search = cityData.map(row => row.diarrhea);
+        const depression_search = cityData.map(row => row.depression);
+        const vaccine_search = cityData.map(row => row.vaccine);
+
+        // Scatter plot 1: Diarrhea vs Diabetes
+        const scatter1 = {
+            x: diabetes_search,
             y: diarrhea_search,
             mode: 'markers',
             type: 'scatter',
-            marker: { size: 12 },
-            name: 'Diarrhea'
-
+            marker: { 
+                size: 12,
+                color: '#2E86AB',
+                opacity: 0.7
+            },
+            name: 'Data Points',
+            text: years.map(year => `Year: ${year}`)
         };
 
-        var Diabetes_c = {
-            x: serched_years,
-            y: diabetes_search,
-            mode: 'markers',
-            type: 'scatter',
-            marker: { size: 12 },
-            name: 'Diabetes'
-
+        const layout1 = {
+            title: 'Diarrhea vs. Diabetes Correlation',
+            xaxis: { title: 'Diabetes Searches' },
+            yaxis: { title: 'Diarrhea Searches' },
+            height: 400,
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            margin: { t: 60, r: 40, b: 80, l: 60 }
         };
 
-        var data = [Diarrhea_c, Diabetes_c];
+        Plotly.newPlot('scatter1', [scatter1], layout1, this.getChartConfig());
 
-        var layout = {
-            title: 'Diarrhea vs. Diabetes',
-            width: 500,
-            height: 480,
-
-        };
-
-        Plotly.newPlot('scatter1', data, layout);
-
-        /////////////////////////////////////////////////////
-        //   scatter plot two   Depression vs  Diabetes     // 
-        /////////////////////////////////////////////////////
-
-        var Depression_c = {
-            x: serched_years,
+        // Scatter plot 2: Depression vs Diabetes
+        const scatter2 = {
+            x: diabetes_search,
             y: depression_search,
             mode: 'markers',
             type: 'scatter',
-            marker: { size: 12 },
-            name: 'Depression'
-
+            marker: { 
+                size: 12,
+                color: '#E74C3C',
+                opacity: 0.7
+            },
+            name: 'Data Points',
+            text: years.map(year => `Year: ${year}`)
         };
 
-        var Diabetes_c = {
-            x: serched_years,
-            y: diabetes_search,
-            mode: 'markers',
-            type: 'scatter',
-            marker: { size: 12 },
-            name: 'Diabetes'
-
+        const layout2 = {
+            title: 'Depression vs. Diabetes Correlation',
+            xaxis: { title: 'Diabetes Searches' },
+            yaxis: { title: 'Depression Searches' },
+            height: 400,
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            margin: { t: 60, r: 40, b: 80, l: 60 }
         };
 
-        var data = [Depression_c, Diabetes_c];
+        Plotly.newPlot('scatter2', [scatter2], layout2, this.getChartConfig());
 
-        var layout = {
-            title: 'Depression vs. Diabetes',
-            width: 500,
-            height: 480,
-
-        };
-
-        /////////////////////////////////////////////////////
-        //   scatter plot three  Diabetes vs Vacine        // 
-        /////////////////////////////////////////////////////
-
-        Plotly.newPlot('scatter2', data, layout);
-        var Vaccine_c = {
-            x: serched_years,
+        // Scatter plot 3: Vaccine vs Diabetes
+        const scatter3 = {
+            x: diabetes_search,
             y: vaccine_search,
             mode: 'markers',
             type: 'scatter',
-            marker: { size: 12 },
-            name: 'Vaccine'
-
+            marker: { 
+                size: 12,
+                color: '#27AE60',
+                opacity: 0.7
+            },
+            name: 'Data Points',
+            text: years.map(year => `Year: ${year}`)
         };
 
-        var Diabetes_c = {
-            x: serched_years,
-            y: diabetes_search,
-            mode: 'markers',
-            type: 'scatter',
-            marker: { size: 12 },
-            name: 'Diabetes'
-
+        const layout3 = {
+            title: 'Vaccine vs. Diabetes Correlation',
+            xaxis: { title: 'Diabetes Searches' },
+            yaxis: { title: 'Vaccine Searches' },
+            height: 400,
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            margin: { t: 60, r: 40, b: 80, l: 60 }
         };
 
-        var data = [Vaccine_c, Diabetes_c];
+        Plotly.newPlot('scatter3', [scatter3], layout3, this.getChartConfig());
 
-        var layout = {
-            title: 'Vaccine vs. Diabetes',
-            width: 500,
-            height: 480,
-
-        };
-
-        Plotly.newPlot('scatter3', data, layout);
-
-        /////////////////////////////////////////////////////
-        //   scatter plot four  Depression vs Vacine        // 
-        /////////////////////////////////////////////////////
-
-        var Vaccine_c = {
-            x: serched_years,
-            y: vaccine_search,
-            mode: 'markers',
-            type: 'scatter',
-            marker: { size: 12 },
-            name: 'Vaccine'
-
-        };
-
-        var Depression_c = {
-            x: serched_years,
+        // Scatter plot 4: Depression vs Vaccine
+        const scatter4 = {
+            x: vaccine_search,
             y: depression_search,
             mode: 'markers',
             type: 'scatter',
-            marker: { size: 12 },
-            name: 'Depression'
-
+            marker: { 
+                size: 12,
+                color: '#8E44AD',
+                opacity: 0.7
+            },
+            name: 'Data Points',
+            text: years.map(year => `Year: ${year}`)
         };
 
-        var data = [Vaccine_c, Depression_c];
-
-        var layout = {
-            title: 'Vaccine vs. Depression',
-            width: 500,
-            height: 480,
-
+        const layout4 = {
+            title: 'Depression vs. Vaccine Correlation',
+            xaxis: { title: 'Vaccine Searches' },
+            yaxis: { title: 'Depression Searches' },
+            height: 400,
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            margin: { t: 60, r: 40, b: 80, l: 60 }
         };
 
-        Plotly.newPlot('scatter4', data, layout);
+        Plotly.newPlot('scatter4', [scatter4], layout4, this.getChartConfig());
+    }
 
-        //  Index he value to create  round pai chart 
-        var indexed_cancer = sum_cancer_search[0];
-        var indexed_diarrhea = sum_diarrhea_search[0];
-        var indexed_cardiovascular = sum_cardiovascular_search[0];
-        var indexed_diabetes = sum_diabetes_search[0];
-        var indexed_depression = sum_depression_search[0];
-        var indexed_obesity = sum_obesity_search[0];
-        var indexed_rehab = sum_rehab_search[0];
-        var indexed_stroke = sum_stroke_search[0];
-        var indexed_vaccine = sum_vaccine_search[0];
-
-        // sum total of all searches 
-        sum_total_search = indexed_cancer + indexed_diarrhea + indexed_cardiovascular + indexed_diabetes + indexed_depression + indexed_obesity + indexed_rehab + indexed_stroke + indexed_vaccine;
-
-        /// changed to persentage 
-        var persontage_cancer_searched = Number(Math.round((indexed_cancer / sum_total_search * 100) + 'e2') + 'e-2');
-        var persontage_diabetes_searched = Number(Math.round((indexed_diabetes / sum_total_search * 100) + 'e2') + 'e-2');
-        var persontage_diarrhea_searched = Number(Math.round((indexed_diarrhea / sum_total_search * 100) + 'e2') + 'e-2');
-        var persontage_depression_searched = Number(Math.round((indexed_depression / sum_total_search * 100) + 'e2') + 'e-2');
-        var persontage_rehab_searched = Number(Math.round((indexed_rehab / sum_total_search * 100) + 'e2') + 'e-2');
-        var persontage_stroke_searched = Number(Math.round((indexed_stroke / sum_total_search * 100) + 'e2') + 'e-2');
-        var persontage_vaccine_searched = Number(Math.round((indexed_vaccine / sum_total_search * 100) + 'e2') + 'e-2');
-        var persontage_cardiovascular_searched = Number(Math.round((indexed_cardiovascular / sum_total_search * 100) + 'e2') + 'e-2');
-        var persontage_obesity_searched = Number(Math.round((indexed_obesity / sum_total_search * 100) + 'e2') + 'e-2');
-
-        // plot a choroplethmap for the selected city 
-        var data = [{
+    updateMap(stateCode) {
+        const mapData = [{
             type: "choroplethmapbox",
-            name: "Searches",
+            name: "Selected State",
             geojson: "https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/us-states.json",
-            locations: searched_state,
-            //seating constatnt just to show the place
-            z: [100, 100],
+            locations: [stateCode],
+            z: [100],
             zmin: 0,
             zmax: 100,
-
-            colorbar: { y: 0, yanchor: "bottom", title: { text: "Seaches", side: "right" } },
+            colorbar: { 
+                y: 0, 
+                yanchor: "bottom", 
+                title: { 
+                    text: "Selected", 
+                    side: "right" 
+                } 
+            },
             colorscale: [
                 [0, '#131f0c'],
                 [1, '#bdfe88']
             ],
             autocolorscale: false,
-
         }];
 
-        //layout 
-        var layout = {
-            scope: "usa",
-            mapbox: { style: "dark", center: { lon: -95.712891, lat: 37.090240 }, zoom: 1.7 },
-            width: 650,
-            height: 650,
-            margin: { t: 0, b: 0 },
+        const layout = {
+            mapbox: { 
+                style: "dark", 
+                center: { lon: -95.712891, lat: 37.090240 }, 
+                zoom: 3 
+            },
+            width: null,
+            height: 500,
+            margin: { t: 40, b: 40, l: 40, r: 120 },
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            autosize: true
+        };
 
-        }
-        var config = { mapboxAccessToken: "pk.eyJ1IjoiZWdhZ2EiLCJhIjoiY2tmOG51MXY4MGR3NjJ5cnE4N3B2NTl0cCJ9.vVCAwSF-oh9ymZ8-pM-nBQ" };
+        const config = { 
+            mapboxAccessToken: "pk.eyJ1IjoiZWdhZ2EiLCJhIjoiY2tmOG51MXY4MGR3NjJ5cnE4N3B2NTl0cCJ9.vVCAwSF-oh9ymZ8-pM-nBQ",
+            responsive: true,
+            displayModeBar: true,
+            displaylogo: false
+        };
 
-        Plotly.newPlot('IntermapDiv', data, layout, config);
+        Plotly.newPlot('IntermapDiv', mapData, layout, config);
+    }
 
-        /**
-         * In the chart render event, add icons on top of the circular shapes
-         * 
-         * for this plot we used Highcharts: Interactive JavaScript charts
-         */
-
-        function renderIcons() {
-
-            // Move icon
-            if (!this.series[0].icon) {
-                this.series[0].icon = this.renderer.path(['M', -8, 0, 'L', 8, 0, 'M', 0, -8, 'L', 8, 0, 0, 8])
-                    .attr({
-                        stroke: '#303030',
-                        'stroke-linecap': 'round',
-                        'stroke-linejoin': 'round',
-                        'stroke-width': 2,
-                        zIndex: 10
-                    })
-                    .add(this.series[2].group);
-            }
-            this.series[0].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 - this.series[0].points[0].shapeArgs.innerR -
-                (this.series[0].points[0].shapeArgs.r - this.series[0].points[0].shapeArgs.innerR) / 2
+    updateGauge(cityData) {
+        // Calculate percentages
+        const totalSearches = cityData.reduce((sum, row) => {
+            return sum + (
+                row.Cancer + row.cardiovascular + row.depression + 
+                row.diabetes + row.diarrhea + row.obesity + 
+                row.rehab + row.stroke + row.vaccine
             );
+        }, 0);
 
-            // icon
-            if (!this.series[1].icon) {
-                this.series[1].icon = this.renderer.path(
-                        ['M', -8, 0, 'L', 8, 0, 'M', 0, -8, 'L', 8, 0, 0, 8,
-                            'M', 8, -8, 'L', 16, 0, 8, 8
-                        ]
-                    )
-                    .attr({
-                        stroke: '#ffffff',
-                        'stroke-linecap': 'round',
-                        'stroke-linejoin': 'round',
-                        'stroke-width': 2,
-                        zIndex: 10
-                    })
-                    .add(this.series[2].group);
-            }
-            this.series[1].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 - this.series[1].points[0].shapeArgs.innerR -
-                (this.series[1].points[0].shapeArgs.r - this.series[1].points[0].shapeArgs.innerR) / 2
-            );
+        const diabetesSearches = cityData.reduce((sum, row) => sum + row.diabetes, 0);
+        const depressionSearches = cityData.reduce((sum, row) => sum + row.depression, 0);
+        const diarrheaSearches = cityData.reduce((sum, row) => sum + row.diarrhea, 0);
 
-            // Stand
-            if (!this.series[2].icon) {
-                this.series[2].icon = this.renderer.path(['M', 0, 8, 'L', 0, -8, 'M', -8, 0, 'L', 0, -8, 8, 0])
-                    .attr({
-                        stroke: '#303030',
-                        'stroke-linecap': 'round',
-                        'stroke-linejoin': 'round',
-                        'stroke-width': 2,
-                        zIndex: 10
-                    })
-                    .add(this.series[2].group);
-            }
+        const diabetesPercent = totalSearches > 0 ? (diabetesSearches / totalSearches * 100).toFixed(1) : 0;
+        const depressionPercent = totalSearches > 0 ? (depressionSearches / totalSearches * 100).toFixed(1) : 0;
+        const diarrheaPercent = totalSearches > 0 ? (diarrheaSearches / totalSearches * 100).toFixed(1) : 0;
 
-            this.series[2].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 - this.series[2].points[0].shapeArgs.innerR -
-                (this.series[2].points[0].shapeArgs.r - this.series[2].points[0].shapeArgs.innerR) / 2
-            );
-        }
+        // Create gauge chart
+        this.createGaugeChart(diabetesPercent, depressionPercent, diarrheaPercent);
+    }
 
+    createGaugeChart(diabetesPercent, depressionPercent, diarrheaPercent) {
         Highcharts.chart('container', {
-
             chart: {
                 type: 'solidgauge',
                 height: '110%',
                 events: {
-                    render: renderIcons
+                    render: function() {
+                        // Add render icons function here
+                    }
                 }
             },
 
             title: {
-                text: 'Diabetes,Depression & Diarrhea Percentage of Search from the Total ',
+                text: 'Strongly Correlated Conditions: Search Percentage',
                 style: {
                     fontSize: '18px'
                 }
@@ -539,28 +482,27 @@ Plotly.d3.json('/allsearchrecord', function(rows) {
                 }
             },
 
-
             pane: {
                 startAngle: 0,
                 endAngle: 360,
                 background: [{ // Track for Diabetes
                     outerRadius: '112%',
                     innerRadius: '88%',
-                    backgroundColor: Highcharts.color(Highcharts.getOptions().colors[0])
+                    backgroundColor: Highcharts.color('#2E86AB')
                         .setOpacity(0.3)
                         .get(),
                     borderWidth: 0
                 }, { // Track for Depression
                     outerRadius: '87%',
                     innerRadius: '63%',
-                    backgroundColor: Highcharts.color(Highcharts.getOptions().colors[1])
+                    backgroundColor: Highcharts.color('#E74C3C')
                         .setOpacity(0.3)
                         .get(),
                     borderWidth: 0
                 }, { // Track for Diarrhea
                     outerRadius: '62%',
                     innerRadius: '38%',
-                    backgroundColor: Highcharts.color(Highcharts.getOptions().colors[2])
+                    backgroundColor: Highcharts.color('#27AE60')
                         .setOpacity(0.3)
                         .get(),
                     borderWidth: 0
@@ -588,54 +530,51 @@ Plotly.d3.json('/allsearchrecord', function(rows) {
             series: [{
                 name: 'Diabetes',
                 data: [{
-                    color: Highcharts.getOptions().colors[0],
+                    color: '#2E86AB',
                     radius: '112%',
                     innerRadius: '88%',
-                    y: persontage_diabetes_searched,
+                    y: parseFloat(diabetesPercent),
                 }]
             }, {
                 name: 'Depression',
                 data: [{
-                    color: Highcharts.getOptions().colors[1],
+                    color: '#E74C3C',
                     radius: '87%',
-                    toFixed: 2,
                     innerRadius: '63%',
-                    y: persontage_depression_searched
+                    y: parseFloat(depressionPercent)
                 }]
             }, {
                 name: 'Diarrhea',
                 data: [{
-                    color: Highcharts.getOptions().colors[2],
+                    color: '#27AE60',
                     radius: '62%',
                     innerRadius: '38%',
-                    y: persontage_diarrhea_searched
+                    y: parseFloat(diarrheaPercent)
                 }]
             }]
         });
-
-    };
-
-
-
-    var innerContainer = document.querySelector('[data-num="0"'),
-        plotEl = innerContainer.querySelector('.plot'),
-        citySelector = innerContainer.querySelector('.citydata');
-
-    function assignOptions(textArray, selector) {
-        for (var i = 0; i < textArray.length; i++) {
-            var currentOption = document.createElement('option');
-            currentOption.text = textArray[i];
-            selector.appendChild(currentOption);
-        }
     }
 
-    assignOptions(listofCities, citySelector);
-
-    function updateCity() {
-        setBarPlot(citySelector.value);
+    getChartConfig() {
+        return {
+            responsive: true,
+            displayModeBar: true,
+            displaylogo: false,
+            modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+            modeBarButtonsToAdd: [],
+            modeBarButtons: [['toImage', 'resetScale2d']],
+            toImageButtonOptions: {
+                format: 'png',
+                filename: 'comparison_chart',
+                height: 500,
+                width: 800,
+                scale: 2
+            }
+        };
     }
+}
 
-    citySelector.addEventListener('change', updateCity, false);
-
-
+// Initialize dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    window.comparisonDashboard = new ComparisonDashboard();
 });

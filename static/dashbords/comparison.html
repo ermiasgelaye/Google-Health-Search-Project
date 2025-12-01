@@ -109,17 +109,19 @@
     <!-- Dashboard Header -->
     <div class="row">
         <div class="col-md-12 jumbotron text-center dashboard-jumbotron">
-            <h1 id="head">Google Health Search Trends</h1>
+            <h1 id="head">City Comparison Dashboard</h1>
             <hr>
-            <p>Interactive charts to explore and compare search trends for common health issues across different cities</p>
+            <p>Compare health search trends across different US cities and explore condition correlations</p>
         </div>
     </div>
+
+    <!-- Stats will be added here by JavaScript -->
 
     <div class="container">
         <!-- City Selection and Bar Charts Section -->
         <section class="posts">
             <article class="post">
-                <div class="plot-container">
+                <div class="chart-frame">
                     <div class="showcase__section" id="bar">
                         <div class="spacer --small"></div>
                         <div id="barplots">
@@ -138,18 +140,58 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row mt-4">
-                                    <div class="col-md-12">
-                                        <div class="plot" id="IntermapDiv"></div>
+                                <!-- Download Buttons -->
+                                <div class="chart-download-container mt-4">
+                                    <div class="download-buttons-wrapper">
+                                        <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="City_Health_Trends">
+                                            <i class="fas fa-download"></i> Download Chart
+                                        </button>
+                                        <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="City_Comparison_Data">
+                                            <i class="fas fa-file-csv"></i> Download CSV
+                                        </button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
 
-                                <div class="row mt-4">
-                                    <div class="col-md-12">
-                                        <figure class="highcharts-figure">
-                                            <div id="container"></div>
-                                        </figure>
-                                    </div>
+        <!-- Map and Gauge Section -->
+        <section class="posts">
+            <article class="post">
+                <div class="chart-frame">
+                    <h3>Geographic Context and Condition Analysis</h3>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="plot" id="IntermapDiv" style="height: 400px;"></div>
+                            
+                            <!-- Download Buttons for Map -->
+                            <div class="chart-download-container mt-3">
+                                <div class="download-buttons-wrapper">
+                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="City_Location_Map">
+                                        <i class="fas fa-download"></i> Download Map
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <figure class="highcharts-figure">
+                                <div id="container"></div>
+                            </figure>
+                            
+                            <!-- Download Buttons for Gauge -->
+                            <div class="chart-download-container mt-3">
+                                <div class="download-buttons-wrapper">
+                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Condition_Percentage_Gauge">
+                                        <i class="fas fa-download"></i> Download Gauge
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="City_Condition_Data">
+                                        <i class="fas fa-file-csv"></i> Download CSV
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -161,31 +203,74 @@
         <!-- Scatter Plots Section -->
         <section class="posts">
             <article class="post">
-                <div class="plot-container">
-                    <h3 style="text-align:center; font-size: 25px; margin-bottom: 30px;">Scatter Plots for Strongly Correlated Health Conditions</h3>
+                <div class="chart-frame">
+                    <h3>Strongly Correlated Health Conditions Analysis</h3>
+                    <p class="mb-4">Explore relationships between conditions with high correlation coefficients</p>
 
                     <div class="row">
                         <div class="col-md-6 mb-4">
-                            <div class="plot-container" style="height: 500px;">
-                                <div class="plot" id="scatter1"></div>
+                            <div class="plot" id="scatter1" style="height: 400px;"></div>
+                            
+                            <!-- Download Buttons for Scatter 1 -->
+                            <div class="chart-download-container mt-3">
+                                <div class="download-buttons-wrapper">
+                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Diarrhea_Diabetes_Correlation">
+                                        <i class="fas fa-download"></i> Download Chart
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="Correlation_Data">
+                                        <i class="fas fa-file-csv"></i> Download CSV
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-6 mb-4">
-                            <div class="plot-container" style="height: 500px;">
-                                <div class="plot" id="scatter2"></div>
+                            <div class="plot" id="scatter2" style="height: 400px;"></div>
+                            
+                            <!-- Download Buttons for Scatter 2 -->
+                            <div class="chart-download-container mt-3">
+                                <div class="download-buttons-wrapper">
+                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Depression_Diabetes_Correlation">
+                                        <i class="fas fa-download"></i> Download Chart
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="Correlation_Data">
+                                        <i class="fas fa-file-csv"></i> Download CSV
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-4">
-                            <div class="plot-container" style="height: 500px;">
-                                <div class="plot" id="scatter3"></div>
+                            <div class="plot" id="scatter3" style="height: 400px;"></div>
+                            
+                            <!-- Download Buttons for Scatter 3 -->
+                            <div class="chart-download-container mt-3">
+                                <div class="download-buttons-wrapper">
+                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Vaccine_Diabetes_Correlation">
+                                        <i class="fas fa-download"></i> Download Chart
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="Correlation_Data">
+                                        <i class="fas fa-file-csv"></i> Download CSV
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-6 mb-4">
-                            <div class="plot-container" style="height: 500px;">
-                                <div class="plot" id="scatter4"></div>
+                            <div class="plot" id="scatter4" style="height: 400px;"></div>
+                            
+                            <!-- Download Buttons for Scatter 4 -->
+                            <div class="chart-download-container mt-3">
+                                <div class="download-buttons-wrapper">
+                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Depression_Vaccine_Correlation">
+                                        <i class="fas fa-download"></i> Download Chart
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="Correlation_Data">
+                                        <i class="fas fa-file-csv"></i> Download CSV
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
