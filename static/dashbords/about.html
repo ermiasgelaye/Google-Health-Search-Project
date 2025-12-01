@@ -1,219 +1,230 @@
 <!DOCTYPE html>
-
-<!-- create a root component that will contain all of the doc -->
-
 <html lang="en">
 
 <head>
-    <meta charset="UTF 8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="About Us - Team Eagle Dashboard">
+
+    <title>About Us | Eagle Dashboard</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <title>.</title>
-    <style>
-        #expimg {
-            margin: 30px;
-        }
-    </style>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body id="backup-plan">
-
-    <!-- data-target="#navbarSupportedContent -->
-    <!-- aria-controls="navbarSupportedContent" -->
-    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav navbar-right ml-auto">
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Plots
-                </a> -->
-    <!-- -------------BEGIN NAV BAR --------------------- -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a style="font-weight: bold;" class="navbar-brand" id="badge" href="/">Eagle Dashboard</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <!-- ALTERNATE NAV BAR WHEN BROWSER IS NOT IN FULL SCREEN -->
-        <span class="navbar-toggler-icon"></span>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" style="font-weight: bold;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            API Links
+<body>
+    <!-- Enhanced Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar">
+        <a class="navbar-brand enhanced-navbar-brand" href="/Home">
+            <i class="fas fa-chart-line"></i>Eagle Dashboard
         </a>
-            <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
-                <a class="dropdown-item" href="/searchyearandcondition" target="_blank">Total Search by Year and
-                            Conditions</a>
-                <a class="dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
-                <a class="dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
-                <a class="dropdown-item" href="/bystateandyear" target="_blank">Total Search by Year and States</a>
-                <a class="dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
-                <a class="dropdown-item" href="/allsearchrecord" target="_blank"> All Search Record List </a>
-                <a class="dropdown-item" href="/location" target="_blank">location</a>
-                <a class="dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
-                <a class="dropdown-item" href="/mostsserached" target="_blank">Top Ten Searched States by Conditions</a>
-                <a class="dropdown-item" href="/totalcondition" target="_blank">Sum of All Search Conditions</a>
-                <a class="dropdown-item" href="/totaldeathcase" target="_blank">The Sum Total of the leading causes of Death</a>
-            </div>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" style="font-weight: bold;" aria-haspopup="true" aria-expanded="false">
-    Dashboards
-    </a>
-            <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/Home">Home</a>
-                <a class="dropdown-item" href="main.html">Main Dashboard</a>
-                <a class="dropdown-item" href="comparison.html">Comparison</a>
-            </div>
 
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" style="font-weight: bold;" href="about.html">About Us</a>
-        </li>
-    </button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav navbar-right ml-auto">
-
+            <ul class="navbar-nav ml-auto">
+                <!-- API Links Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" style="font-weight: bold;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                API Links
-            </a>
+                    <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-code mr-1"></i>API Links
+                    </a>
                     <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
-                        <a class="dropdown-item" href="/searchyearandcondition" target="_blank">Total Search by Year and
-                                Conditions</a>
-                        <a class="dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
-                        <a class="dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
-                        <a class="dropdown-item" href="/bystateandyear" target="_blank">Total Search by Year and States</a>
-                        <a class="dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
-                        <a class="dropdown-item" href="/allsearchrecord" target="_blank"> All Search Record List </a>
-                        <a class="dropdown-item" href="/location" target="_blank">location</a>
-                        <a class="dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
-                        <a class="dropdown-item" href="/mostsserached" target="_blank">Top Ten Searched States by Conditions</a>
-                        <a class="dropdown-item" href="/totaldeathcase" target="_blank">The Sum Total of the leading causes of Death per 100,000 people</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition" target="_blank">Total Search by Year and Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" target="_blank">Total Search by Year and States</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" target="_blank">All Search Record List</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/location" target="_blank">Location</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" target="_blank">Top Ten Searched States by Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" target="_blank">Sum of All Search Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" target="_blank">Sum Total of the Leading Causes of Death</a>
                     </div>
                 </li>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav navbar-right ml-auto">
+                <!-- Dashboards Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-tachometer-alt mr-1"></i>Dashboards
+                    </a>
+                    <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item enhanced-dropdown-item" href="/Home">Home</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="main.html">Main Dashboard</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="comparison.html">Comparison</a>
+                    </div>
+                </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" style="font-weight: bold;" aria-haspopup="true" aria-expanded="false">
-                Dashboards
-                </a>
-                            <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/Home">Home</a>
-                                <a class="dropdown-item" href="main.html">Main Dashboard</a>
-                                <a class="dropdown-item" href="comparison.html">Comparison</a>
-                            </div>
-
-                        </li>
-                        <!-- <li class="nav-item">
-                <a class="nav-link" href="../care.html">Pet Care <span class="sr-only">(current)</span></a>
-            </li> -->
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-weight: bold;" href="about.html">About Us</a>
-                        </li>
-
-
-                    </ul>
-
-                </div>
+                <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link enhanced-nav-link active" href="about.html">
+                        <i class="fas fa-users mr-1"></i>About Us
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <!-- -------------END NAV BAR --------------------- -->
 
-    <!-- ------------- MAIN CONTAINER --------------------- -->
+    <!-- Team Section Header -->
+    <div class="row">
+        <div class="col-md-12 jumbotron text-center dashboard-jumbotron">
+            <h1>Meet Our Team</h1>
+            <hr>
+            <p>Dedicated professionals working together to bring you insights from Google Health Search Trends</p>
+        </div>
+    </div>
 
-    <section class="wrapper style1 special">
-        <div class="inner">
-            <header>
-                <h2>Meet the Team</h2>
-                <!-- <p>Semper suscipit posuere apede</p> -->
-            </header>
-            <div class="flex flex-4">
-                <div class="box person">
-                    <div class="image round">
-                        <img src="../img/ermias.jpg" alt="Person 1" />
+    <!-- Team Members Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Team Member 1 -->
+                <div class="col-md-10 mb-4">
+                    <div class="team-member-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center">
+                                <img class="team-member-image" src="../img/ermias.jpg" alt="Ermias Gaga">
+                            </div>
+                            <div class="col-md-9">
+                                <h3 class="team-member-name">Ermias Gaga</h3>
+                                <div class="social-links mb-3">
+                                    <a href="https://www.linkedin.com/in/egaga/" target="_blank" class="mr-3">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                    </a>
+                                    <a href="https://github.com/ermiasgelaye" target="_blank">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    </a>
+                                </div>
+                                <p style="color: #2c3e50; line-height: 1.6;">
+                                    A data-driven researcher and emerging data scientist with expertise spanning analytics, cognitive science, and psychology. I leverage quantitative methods, modeling, and behavioural insight to understand complex systems, drive evidence-based solutions, and contribute to impactful, cross-functional projects.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Ermias Gaga</h3>
-                    <a href="https://www.linkedin.com/in/egaga/">
-                        <img class="social-icon" src="../img/linkedin-blk.png">
-                    </a>
-                    <a href="https://github.com/ermiasgelaye">
-                        <img class="social-icon" src="../img/github.png">
-                    </a>
-                    <p style="color: rgb(255, 255, 255);"> A certified data analyst, and possess Master of Cognitive Science and a Bachelor of Arts Degree in Psychology. I am passionate about data, and working with the team to solve various research problems.</p>
+                </div>
 
-                </div>
-                <div class="box person">
-                    <div class="image round">
-                        <img src="../img/amanda.jpg" alt="Person 2" />
+                <!-- Team Member 2 -->
+                <div class="col-md-10 mb-4">
+                    <div class="team-member-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center">
+                                <img class="team-member-image" src="../img/amanda.jpg" alt="Amanda Qianyue Ma">
+                            </div>
+                            <div class="col-md-9">
+                                <h3 class="team-member-name">Amanda Qianyue Ma</h3>
+                                <div class="social-links mb-3">
+                                    <a href="https://www.linkedin.com/in/amanda-qianyue-ma-77b5b9105/" target="_blank" class="mr-3">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                    </a>
+                                    <a href="https://github.com/QianyueMa" target="_blank">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    </a>
+                                </div>
+                                <p style="color: #2c3e50; line-height: 1.6;">
+                                    Looking for an analytic position, given my academic background in Economics, Psychology, Philosophy from University of Toronto as well as my technical analytics skills.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Amanda Qianyue Ma</h3>
-                    <a href="https://www.linkedin.com/in/amanda-qianyue-ma-77b5b9105/">
-                        <img class="social-icon" src="../img/linkedin-blk.png">
-                    </a>
-                    <a href="https://github.com/QianyueMa">
-                        <img class="social-icon" src="../img/github.png">
-                    </a>
-                    <p style="color: rgb(255, 255, 255);"> Looking for an analytic position, given my academic background in Economics, Psychology, Philosophy from University of Toronto as well as my technical analytics skills.</p>
                 </div>
-                <div class="box person">
-                    <div class="image round">
-                        <img src="../img/amos.jpg" alt="Person 3" />
+
+                <!-- Team Member 3 -->
+                <div class="col-md-10 mb-4">
+                    <div class="team-member-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center">
+                                <img class="team-member-image" src="../img/amos.jpg" alt="Amos Johnson">
+                            </div>
+                            <div class="col-md-9">
+                                <h3 class="team-member-name">Amos Johnson</h3>
+                                <div class="social-links mb-3">
+                                    <a href="https://www.linkedin.com/in/amos-johnson-data-journalism/" target="_blank" class="mr-3">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                    </a>
+                                    <a href="https://github.com/AmosJAMcLovin" target="_blank">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    </a>
+                                </div>
+                                <p style="color: #2c3e50; line-height: 1.6;">
+                                    Journalism graduate currently pursuing the work of data analytics. Work experience includes 4+ years in the service industry, editing, fact-checking, website design, collecting survey data and writing.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Amos Johnson</h3>
-                    <a href="https://www.linkedin.com/in/amos-johnson-data-journalism/">
-                        <img class="social-icon" src="../img/linkedin-blk.png">
-                    </a>
-                    <a href="https://github.com/AmosJAMcLovin">
-                        <img class="social-icon" src="../img/github.png">
-                    </a>
-                    <p style="color: rgb(255, 255, 255);"> Journalism graduate currently pursuing the work of data analytics. Work experience includes 4+ years in the service industry, editing, fact-checking, website design, collecting survey data and writing. </p>
                 </div>
-                <div class="box person">
-                    <div class="image round">
-                        <img src="../img/damola.jpg" alt="Person 4" />
+
+                <!-- Team Member 4 -->
+                <div class="col-md-10 mb-4">
+                    <div class="team-member-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center">
+                                <img class="team-member-image" src="../img/damola.jpg" alt="Adedamola Atekoja">
+                            </div>
+                            <div class="col-md-9">
+                                <h3 class="team-member-name">Adedamola Atekoja ('Damola)</h3>
+                                <div class="social-links mb-3">
+                                    <a href="https://www.linkedin.com/in/adedamola-atekoja-aca-115463103/" target="_blank" class="mr-3">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                    </a>
+                                    <a href="https://github.com/Damola-A" target="_blank">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    </a>
+                                </div>
+                                <p style="color: #2c3e50; line-height: 1.6;">
+                                    A chartered accountant with about 3 years consulting experience working at two of the Big four professional services firms. I am skilled in Excel, VBA, Python, SQL Databases, HTML, CSS, D3, Javascript, Tableau, Financial Reporting, Financial Analysis and Project Management.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Adedamola Atekoja (‘Damola)</h3>
-                    <a href="https://www.linkedin.com/in/adedamola-atekoja-aca-115463103/">
-                        <img class="social-icon" src="../img/linkedin-blk.png">
-                    </a>
-                    <a href="https://github.com/Damola-A">
-                        <img class="social-icon" src="../img/github.png">
-                    </a>
-                    <p style="color: rgb(255, 255, 255);"> A chartered accountant with about 3 years consulting experience working at two of the Big four professional services firms. I am skilled in Excel, VBA, Python, SQL Databases, HTML, CSS, D3, Javascript, Tableau, Financial Reporting,
-                        Financial Analysis and Project Management.</p>
                 </div>
-                <div class=" box person ">
-                    <div class="image round ">
-                        <img src="../img/maria.jpg " alt="Person 5 " />
+
+                <!-- Team Member 5 -->
+                <div class="col-md-10 mb-4">
+                    <div class="team-member-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center">
+                                <img class="team-member-image" src="../img/maria.jpg" alt="Maria Lorena">
+                            </div>
+                            <div class="col-md-9">
+                                <h3 class="team-member-name">Maria Lorena</h3>
+                                <div class="social-links mb-3">
+                                    <a href="https://www.linkedin.com/in/marialorena-nunez/" target="_blank" class="mr-3">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                    </a>
+                                    <a href="https://github.com/MariaLoren" target="_blank">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    </a>
+                                </div>
+                                <p style="color: #2c3e50; line-height: 1.6;">
+                                    An experienced trilingual Project Manager, currently focusing on Data Analysis & projects at the University of Toronto and working at JP Morgan & CHASE solving problems and providing a great service to our customers.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Maria Lorena</h3>
-                    <a href="https://www.linkedin.com/in/marialorena-nunez/">
-                        <img class="social-icon " src="../img/linkedin-blk.png">
-                    </a>
-                    <a href="https://github.com/MariaLoren">
-                        <img class="social-icon" src="../img/github.png">
-                    </a>
-                    <p style="color: rgb(255, 255, 255);"> An experienced trilingual Project Manager, currently focusing on Data Analysis & projects at the University of Toronto and working at JP Morgan & CHASE solving problems and providing a great service to our customers.</p>
                 </div>
             </div>
         </div>
     </section>
-    <!-- ------------- END MAIN CONTAINER --------------------- -->
+
+    <!-- Enhanced Footer -->
+    <footer class="text-center enhanced-footer">
+        <div class="container">
+            <p class="mb-0">&copy; 2023 Eagle Dashboard. All rights reserved.</p>
+        </div>
+    </footer>
 
     <!-- Scripts -->
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
-    <!-- <script src="assets/js/jquery.min.js "></script>
-	<script src="assets/js/skel.min.js "></script>
-	<script src="assets/js/util.js "></script>
-	<script src="assets/js/main.js "></script> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
-
 </html>

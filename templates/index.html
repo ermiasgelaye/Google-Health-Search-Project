@@ -1,173 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Eagle Dashboard | Google Health Search Trends</title>
-
-    <!-- Bootstrap CSS -->
-    <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-        crossorigin="anonymous"
-    >
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../static/css/style.css">
-
-    <!-- Plotly -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eagle Dashboard | Health Analytics</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* Keep this only if you actually use #expimg somewhere */
-        #expimg {
-            margin: 30px;
+        :root {
+            --primary-dark: #030349;
+            --primary-blue: #1a237e;
+            --secondary-blue: #3498db;
+            --accent-red: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        
+        /* Navigation */
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-dark), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+            color: white;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle fill="%23ffffff" fill-opacity="0.05" cx="200" cy="200" r="100"/><circle fill="%23ffffff" fill-opacity="0.05" cx="800" cy="300" r="150"/></svg>');
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-stats {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+            background: linear-gradient(45deg, #fff, #c3cfe2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Feature Cards */
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: none;
+            transition: all 0.3s ease;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, var(--secondary-blue), var(--accent-red));
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent-red), #c0392b);
+            color: white;
+            padding: 4rem 0;
+            margin: 4rem 0;
+            border-radius: 20px;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+            border: none;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.4);
+            color: white;
+        }
+        
+        /* Health Conditions */
+        .health-tag {
+            display: inline-block;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            margin: 0.25rem;
+            font-size: 0.9rem;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .health-tag:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: scale(1.05);
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
         }
     </style>
 </head>
-
 <body>
-
-    <!-- -------------BEGIN NAV BAR --------------------- -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold">
-        <a class="navbar-brand" id="badge" href="/Home">Eagle Dashboard</a>
-
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto">
-
-                <!-- API Links Dropdown -->
-                <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle"
-                        href="#"
-                        id="apiLinksDropdown"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        API Links
-                    </a>
-                    <div class="dropdown-menu navbar-li-a" aria-labelledby="apiLinksDropdown">
-                        <a class="dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
-                        <a class="dropdown-item" href="/searchyearandcondition" target="_blank">
-                            Total Search by Year and Conditions
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/Home">
+                <i class="fas fa-chart-line me-2"></i>Eagle Dashboard
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-code me-1"></i>API Links
                         </a>
-                        <a class="dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
-                        <a class="dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
-                        <a class="dropdown-item" href="/bystateandyear" target="_blank">
-                            Total Search by Year and States
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/searchbyyear">Search by Year</a></li>
+                            <li><a class="dropdown-item" href="/searchbystate">Search by State</a></li>
+                            <li><a class="dropdown-item" href="/allsearchrecord">All Records</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboards
                         </a>
-                        <a class="dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
-                        <a class="dropdown-item" href="/allsearchrecord" target="_blank">All Search Record List</a>
-                        <a class="dropdown-item" href="/location" target="_blank">Location</a>
-                        <a class="dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
-                        <a class="dropdown-item" href="/mostsserached" target="_blank">
-                            Top Ten Searched States by Conditions
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="/Home">Home</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('static', filename='dashbords/main.html') }}">Analytics</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('static', filename='dashbords/comparison.html') }}">Comparison</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('static', filename='dashbords/about.html') }}">
+                            <i class="fas fa-users me-1"></i>About
                         </a>
-                        <a class="dropdown-item" href="/totalcondition" target="_blank">
-                            Sum of All Search Conditions
-                        </a>
-                        <a class="dropdown-item" href="/totaldeathcase" target="_blank">
-                            Sum Total of the Leading Causes of Death
-                        </a>
-                    </div>
-                </li>
-
-                <!-- Dashboards Dropdown -->
-                <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle"
-                        href="#"
-                        id="dashboardsDropdown"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        Dashboards
-                    </a>
-                    <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
-                        <a class="dropdown-item" href="/Home">Home</a>
-                        <a class="dropdown-item" href="../static/dashbords/main.html">Main Dashboard</a>
-                        <a class="dropdown-item" href="../static/dashbords/comparison.html">Comparison</a>
-                    </div>
-                </li>
-
-                <!-- About -->
-                <li class="nav-item">
-                    <a class="nav-link" href="../static/dashbords/about.html">About Us</a>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
-    <!-- -------------END NAV BAR --------------------- -->
 
-    <!-- -------------BEGIN LANDING CONTAINER --------------------- -->
-    <main class="container main-container my-5">
-        <section class="row">
-            <div class="col-md-12 main-content" id="main-column">
-                <article>
-                    <h1 class="display-4 main-header font-weight-bold text-center text-md-left">
-                        Welcome to Team Eagle Dashboard!!
-                        <br><br>
-                        Google Health Search Trends
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Discover Health Insights Through Search Data
                     </h1>
-                    <hr class="my-4">
-                </article>
+                    <p class="lead mb-4">
+                        Analyze 14 years of Google search trends across 9 major health conditions in the United States. Uncover patterns, correlations, and public health interests.
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number">14</span>
+                                    <span class="stat-label">Years Data</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number">9</span>
+                                    <span class="stat-label">Conditions</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number">50+</span>
+                                    <span class="stat-label">States</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="floating">
+                        <img src="{{ url_for('static', filename='img/main.gif') }}" 
+                             alt="Health Analytics" 
+                             class="img-fluid rounded-3 shadow-lg"
+                             style="max-height: 400px;">
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="row">
-            <div class="col-md-12 text-center">
-                <img
-                    class="main-image-wrap img-fluid"
-                    src="../static/img/main.gif"
-                    alt="Animated visualization for Google Health Search Trends"
-                >
-                <h3
-                    class="mt-4 font-weight-bold text-center align-middle"
-                    id="index-text-box"
-                >
-                    An Interactive Dashboard to Explore the Google Search Trends of People
-                    for Common Health Issues in the United States
-                </h3>
+    <!-- Main Content -->
+    <div class="container my-5 py-5">
+        <!-- Features Section -->
+        <div class="row mb-5">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Why Health Search Analytics?</h2>
+                <p class="lead text-muted">Google search data reveals public health concerns before they become statistics</p>
             </div>
-        </section>
-    </main>
-    <!-- -------------END LANDING BLOCK --------------------- -->
+            
+            <div class="col-lg-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Early Detection</h4>
+                    <p class="text-muted">
+                        Identify emerging health concerns through search pattern analysis before they appear in official health statistics.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Geographic Insights</h4>
+                    <p class="text-muted">
+                        Discover regional health patterns and concerns across all 50 states with interactive mapping and analysis.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Trend Analysis</h4>
+                    <p class="text-muted">
+                        Track how public interest in health conditions evolves over time with comprehensive analytics and visualization.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-    <!-- Scripts -->
-    <script
-        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"
-    ></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"
-    ></script>
-    <script
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"
-    ></script>
+        <!-- Health Conditions -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <h3 class="fw-bold mb-4">Tracked Health Conditions</h3>
+                        <div class="text-center">
+                            <span class="health-tag">Cancer</span>
+                            <span class="health-tag">Cardiovascular</span>
+                            <span class="health-tag">Depression</span>
+                            <span class="health-tag">Diabetes</span>
+                            <span class="health-tag">Obesity</span>
+                            <span class="health-tag">Stroke</span>
+                            <span class="health-tag">Vaccine</span>
+                            <span class="health-tag">Rehab</span>
+                            <span class="health-tag">Diarrhea</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Data Sources -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="feature-icon" style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Google Trends Data</h4>
+                        <p class="text-muted">
+                            Comprehensive search data from 2004-2017 across all US states and major cities, providing insights into public health interests.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="feature-icon" style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">CDC Statistics</h4>
+                        <p class="text-muted">
+                            Official health statistics from the Centers for Disease Control and Prevention for correlation analysis and validation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h2 class="display-5 fw-bold mb-4">Ready to Explore Health Insights?</h2>
+                    <p class="lead mb-5">Join researchers and healthcare professionals using data to understand public health trends</p>
+                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+                        <a href="{{ url_for('static', filename='dashbords/main.html') }}" class="btn btn-primary-custom btn-lg">
+                            <i class="fas fa-chart-bar me-2"></i>Explore Dashboard
+                        </a>
+                        <a href="{{ url_for('static', filename='dashbords/about.html') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-users me-2"></i>Meet Our Team
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2023 Eagle Dashboard. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0 text-muted">Data Sources: Google Trends & CDC Health Statistics</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Simple animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const featureCards = document.querySelectorAll('.feature-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            featureCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
 </body>
 </html>
