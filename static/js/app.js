@@ -1,5 +1,5 @@
 // Enhanced Health Search Trends Dashboard
-// With proper map legend positioning and non-overlapping download buttons
+// Consistent with home page styling
 
 class HealthDashboard {
     constructor() {
@@ -44,6 +44,44 @@ class HealthDashboard {
         this.setupLoadingStates();
         this.loadAllCharts();
         this.setupEventListeners();
+        this.addStatsOverview();
+    }
+
+    // Add stats overview similar to home page
+    addStatsOverview() {
+        const statsHTML = `
+            <div class="row text-center mb-5">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h3>14</h3>
+                        <p>Years Data</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h3>9</h3>
+                        <p>Health Conditions</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h3>50+</h3>
+                        <p>States Analyzed</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h3>1M+</h3>
+                        <p>Data Points</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        const jumbotron = document.querySelector('.jumbotron');
+        if (jumbotron) {
+            jumbotron.insertAdjacentHTML('afterend', statsHTML);
+        }
     }
 
     // Setup loading states for all chart containers
@@ -128,7 +166,7 @@ class HealthDashboard {
 
             const layout = {
                 width: 1000,
-                height: 600,
+                height: 500,
                 title: 'Total Volume of Searches by Year',
                 xaxis: {
                     title: 'Years',
@@ -181,7 +219,7 @@ class HealthDashboard {
 
             const layout = {
                 width: 1000,
-                height: 600,
+                height: 500,
                 title: 'Total Volume of Searches by year Versus Health Conditions',
                 xaxis: {
                     title: 'Years',
@@ -249,7 +287,7 @@ class HealthDashboard {
 
         const layout = {
             width: 1000,
-            height: 600,
+            height: 500,
             title: 'Correlation Between Health Conditions',
             plot_bgcolor: 'rgba(0,0,0,0)',
             paper_bgcolor: 'rgba(0,0,0,0)',
@@ -296,7 +334,7 @@ class HealthDashboard {
 
             const layout = {
                 width: 1000,
-                height: 600,
+                height: 500,
                 title: 'Boxplot of Health Google Search 2004-2017',
                 xaxis: {
                     title: 'Condition',
@@ -362,8 +400,8 @@ class HealthDashboard {
                     center: { lon: -95.712891, lat: 37.090240 }, 
                     zoom: 3 
                 },
-                width: 1200,
-                height: 600,
+                width: 1000,
+                height: 500,
                 margin: { t: 40, b: 100, l: 40, r: 40 },
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 paper_bgcolor: 'rgba(0,0,0,0)'
@@ -415,7 +453,7 @@ class HealthDashboard {
 
             const layout = {
                 width: 1000,
-                height: 600,
+                height: 500,
                 title: 'Health Searches by States',
                 barmode: 'group',
                 bargap: 0.15,
@@ -461,7 +499,7 @@ class HealthDashboard {
         const healthLayout = {
             title: 'The Sum total Volume of Health Condition Searches from 2004- 2017',
             width: 1000,
-            height: 700,
+            height: 500,
             polar: {
                 radialaxis: {
                     visible: true,
@@ -490,7 +528,7 @@ class HealthDashboard {
         const deathLayout = {
             title: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017',
             width: 1000,
-            height: 700,
+            height: 500,
             polar: {
                 radialaxis: {
                     visible: true,
@@ -540,7 +578,7 @@ class HealthDashboard {
 
             const layout = {
                 width: 1000,
-                height: 600,
+                height: 500,
                 xaxis: {
                     title: 'Years',
                     showgrid: false,
@@ -567,80 +605,6 @@ class HealthDashboard {
         });
     }
 
-    // Correlation Matrix Helper Functions
-    get_z_mid(z) {
-        const z_max = Math.max.apply(null, z.map(row => Math.max.apply(Math, row)));
-        const z_min = Math.min.apply(null, z.map(row => Math.min.apply(Math, row)));
-        return (z_max + z_min) / 2;
-    }
-
-    hexToRgb(hex) {
-        const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-        hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
-        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
-    }
-
-    to_rgb_color_list(color_str, Default) {
-        if (color_str.includes('rgb')) {
-            return color_str.replace(/[^0-9.,]+/g, '').split(',');
-        } else if (color_str.includes('#')) {
-            return this.hexToRgb(color_str);
-        } else {
-            return Default;
-        }
-    }
-
-    should_use_black_text(background_color) {
-        return (background_color[0] * 0.299 + background_color[1] * 0.587 + background_color[2] * 0.114) > 186;
-    }
-
-    get_text_color(colorscale) {
-        const black = '#000000';
-        const white = '#FFFFFF';
-        
-        if (Array.isArray(colorscale)) {
-            const min_col = this.to_rgb_color_list(colorscale[0][1], [255, 255, 255]);
-            const max_col = this.to_rgb_color_list(colorscale[1][1], [255, 255, 255]);
-            
-            const min_text_color = this.should_use_black_text(min_col) ? black : white;
-            const max_text_color = this.should_use_black_text(max_col) ? black : white;
-            
-            return [min_text_color, max_text_color];
-        }
-        return [black, white];
-    }
-
-    make_annotations(_x, _y, _z, colorscale) {
-        const text_colors = this.get_text_color(colorscale);
-        const min_text_color = text_colors[0];
-        const max_text_color = text_colors[1];
-        const z_mid = this.get_z_mid(_z);
-        const annotations = [];
-        
-        for (let n = 0; n < _z.length; n++) {
-            const row = _z[n];
-            for (let m = 0; m < row.length; m++) {
-                const val = row[m];
-                const font_color = (val < z_mid) ? min_text_color : max_text_color;
-                annotations.push({
-                    xref: 'x1',
-                    yref: 'y1',
-                    x: _x[m],
-                    y: _y[n],
-                    text: _z[n][m].toFixed(2),
-                    font: {
-                        family: 'Arial',
-                        size: 12,
-                        color: font_color
-                    },
-                    showarrow: false
-                });
-            }
-        }
-        return annotations;
-    }
-
     // Download functionality
     getChartConfig() {
         return {
@@ -653,7 +617,7 @@ class HealthDashboard {
             toImageButtonOptions: {
                 format: 'png',
                 filename: 'health_dashboard_chart',
-                height: 600,
+                height: 500,
                 width: 800,
                 scale: 2
             }
@@ -711,7 +675,7 @@ class HealthDashboard {
         Plotly.downloadImage(chartId, {
             format: 'png',
             filename: cleanName,
-            height: 600,
+            height: 500,
             width: 800,
             scale: 2
         });
@@ -808,6 +772,28 @@ const dashboardStyles = `
         margin-bottom: 2rem;
     }
     
+    /* Stats cards styling */
+    .stat-card {
+        background: white;
+        padding: 2rem 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 1rem;
+    }
+    
+    .stat-card h3 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #2E86AB;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-card p {
+        color: #6c757d;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .chart-download-container {
@@ -816,6 +802,14 @@ const dashboardStyles = `
         
         .download-chart-btn {
             width: 100%;
+        }
+        
+        .stat-card {
+            padding: 1.5rem 0.5rem;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
         }
     }
 `;

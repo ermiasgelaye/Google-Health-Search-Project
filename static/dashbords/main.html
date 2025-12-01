@@ -120,6 +120,9 @@
     </div>
 
     <div class="container">
+        <!-- Stats Overview -->
+        <div id="stats-overview"></div>
+
         <!-- Introduction Section -->
         <section class="posts">
             <article class="post">
@@ -137,11 +140,8 @@
                 <div class="plot-container">
                     <h3 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Health Search Volume by State and Region</h3>
                     
-                    <div class="row">
-                        <!-- Map -->
-                        <div class="col-md-12">
-                            <div id="mymapDiv" style="height: 500px; border-radius: 8px;"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id="mymapDiv" style="height: 500px; border-radius: 8px 8px 0 0;"></div>
                     </div>
 
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
@@ -157,11 +157,8 @@
                 <div class="plot-container">
                     <h3 style="text-align:center; font-size: 25px; margin-bottom: 20px;">The Trend of The Change in The Total Search Volume</h3>
 
-                    <div class="row">
-                        <!-- Line chart 1 -->
-                        <div class="col-md-12">
-                            <div id="line-chart" class="plot"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id="line-chart" class="plot"></div>
                     </div>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
                         It could be observed that the online searching volume of the diseases overall showed an increasing tendency. This result coincides and could be explained by technological advancements in terms of the growth of internet and people's growing reliance on telehealth.
@@ -178,11 +175,8 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         This boxplot allows us to see the amount variability in the search score (Google's own metric) in health searches from 2004 to 2017. It is interesting there a wide range for both diabetes and depression.
                     </p>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- Box Plot-->
-                            <div id="boxDiv" class="plot"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id="boxDiv" class="plot"></div>
                     </div>
                 </div>
             </article>
@@ -196,11 +190,8 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         How does the online searching interest in each health condition change in themselves per se? All of the observed diseases had demonstrated an upward tendency over the years from 2004 to 2017.This multi line graph presents a dramatic illustration of how the public is increasingly obtaining health care information by searching online.
                     </p>
-                    <div class="row">
-                        <!-- Multiple line chart -->
-                        <div class="col-md-12">
-                            <div id="line-chart2" class="plot"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id="line-chart2" class="plot"></div>
                     </div>
 
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
@@ -221,11 +212,8 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The detailed searching trends of each disease in each state are displayed below.
                     </p>
-                    <div class="row">
-                        <!-- Bar chart-->
-                        <div class="col-md-12">
-                            <div id="bar-chart" class="plot"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id="bar-chart" class="plot"></div>
                     </div>
 
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
@@ -243,10 +231,8 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The following visualization confirms that cancer's popularity in online search. Interestingly, the frequency of searches does not necessarily correlate with the frequency of the condition in the general population, as searches for stroke information are more common than cardiovascular searches even though strokes are more infrequent than cardiovascular disease.
                     </p>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="radarmyDiv" class="plot"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id="radarmyDiv" class="plot"></div>
                     </div>
                 </div>
             </article>
@@ -256,10 +242,8 @@
         <section class="posts">
             <article class="post">
                 <div class="plot-container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="radarmyDiv2" class="plot"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id="radarmyDiv2" class="plot"></div>
                     </div>
                 </div>
             </article>
@@ -273,11 +257,8 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The following diagram shows the online search correlations among all the observed diseases according to our data. The stronger correlations are in the darker shades.
                     </p>
-                    <div class="row">
-                        <!-- Correlation 1 -->
-                        <div class="col-md-12">
-                            <div id="myDiv" class="plot"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id="myDiv" class="plot"></div>
                     </div>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
                         Of course, however, correlation does not often imply causation, so some of the correlations might still be coincidental. Our visualization only provides a reference of information.
@@ -295,11 +276,8 @@
             <article class="post">
                 <div class="plot-container">
                     <h5 style="text-align:center; font-size: 25px; margin-bottom: 20px;">10 Leading Causes of Death Per 100,000 Population from 2004-2017</h5>
-                    <div class="row">
-                        <!-- Multiple line chart -->
-                        <div class="col-md-12">
-                            <div id='line-chart3' class="plot"></div>
-                        </div>
+                    <div class="chart-wrapper">
+                        <div id='line-chart3' class="plot"></div>
                     </div>
                 </div>
             </article>
