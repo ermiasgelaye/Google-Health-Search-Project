@@ -1,41 +1,38 @@
-// Enhanced Health Analytics Dashboard with AI Assistant
-// Professional, accessible, and interactive
+// Enhanced Health Search Trends Dashboard
+// Consistent with home page styling
 
-class HealthAnalyticsDashboard {
+class HealthDashboard {
     constructor() {
         this.charts = {};
         this.currentFilters = {
             yearRange: [2004, 2017],
-            conditions: new Set(['cancer', 'cardiovascular', 'diabetes', 'depression']),
-            states: new Set(),
-            metrics: new Set(['searches', 'trends'])
+            conditions: [],
+            states: []
         };
         
-        this.dataCache = {};
-        this.filteredData = {};
-        
-        // Professional color scheme
+        // Colors matching your original visual style
         this.colors = {
-            primary: '#2E86AB',
-            secondary: '#A23B72',
-            accent: '#F18F01',
-            success: '#2E8B57',
-            warning: '#FF6B6B',
             conditions: {
-                cancer: '#E74C3C',
-                cardiovascular: '#3498DB',
-                depression: '#9B59B6',
-                diabetes: '#2ECC71',
-                diarrhea: '#F39C12',
-                obesity: '#16A085',
-                rehab: '#95A5A6',
-                stroke: '#E67E22',
-                vaccine: '#27AE60'
+                cancer: 'rgba(255, 144, 14, 0.5)',
+                cardiovascular: 'rgba(44, 160, 101, 0.5)',
+                depression: 'rgba(255, 65, 54, 0.5)',
+                diabetes: 'rgba(207, 114, 255, 0.5)',
+                diarrhea: 'rgba(127, 96, 0, 0.5)',
+                obesity: 'rgba(255, 140, 184, 0.5)',
+                rehab: 'rgba(79, 90, 117, 0.5)',
+                stroke: 'rgba(222, 223, 0, 0.5)',
+                vaccine: 'rgba(222, 223, 0, 0.5)'
             },
-            gradients: {
-                primary: ['#2E86AB', '#A23B72'],
-                secondary: ['#3498DB', '#2ECC71'],
-                accent: ['#F18F01', '#E74C3C']
+            barColors: {
+                cancer: '#448',
+                cardiovascular: '#88C',
+                depression: '#CCF',
+                diabetes: '#080',
+                diarrhea: '#8c8',
+                obesity: '#CFC',
+                rehab: '#880',
+                stroke: '#CC8',
+                vaccine: '#FFC'
             }
         };
         
@@ -44,378 +41,38 @@ class HealthAnalyticsDashboard {
 
     init() {
         console.log('🚀 Initializing Health Analytics Dashboard...');
-        this.setupProfessionalStyles();
         this.setupLoadingStates();
-        this.setupAIAssistant();
-        this.setupFilters();
         this.loadAllCharts();
         this.setupEventListeners();
         this.addStatsOverview();
     }
 
-    setupProfessionalStyles() {
-        const styles = `
-            :root {
-                --primary-color: ${this.colors.primary};
-                --secondary-color: ${this.colors.secondary};
-                --accent-color: ${this.colors.accent};
-                --success-color: ${this.colors.success};
-                --text-primary: #2C3E50;
-                --text-secondary: #546E7A;
-                --bg-light: #F8F9FA;
-                --border-color: #E1E8ED;
-                --font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            }
-
-            body {
-                font-family: var(--font-family);
-                color: var(--text-primary);
-                line-height: 1.6;
-            }
-
-            .professional-header {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                color: white;
-                padding: 3rem 0;
-                margin-bottom: 2rem;
-            }
-
-            .section-heading {
-                color: var(--primary-color);
-                font-weight: 600;
-                font-size: 2rem;
-                margin-bottom: 1.5rem;
-                text-align: center;
-                border-bottom: 3px solid var(--accent-color);
-                padding-bottom: 0.5rem;
-                display: inline-block;
-            }
-
-            .subsection-heading {
-                color: var(--secondary-color);
-                font-weight: 500;
-                font-size: 1.5rem;
-                margin: 2rem 0 1rem 0;
-            }
-
-            .content-text {
-                font-size: 1.1rem;
-                color: var(--text-secondary);
-                line-height: 1.7;
-                text-align: justify;
-            }
-
-            .stats-overview-container {
-                background: white;
-                border-radius: 12px;
-                padding: 2rem;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-                margin: 2rem auto;
-                max-width: 1200px;
-            }
-
-            .stat-card {
-                background: linear-gradient(135deg, #fff, var(--bg-light));
-                border: 1px solid var(--border-color);
-                border-radius: 10px;
-                padding: 2rem 1rem;
-                text-align: center;
-                transition: all 0.3s ease;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .stat-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-                border-color: var(--primary-color);
-            }
-
-            .stat-card h3 {
-                font-size: 2.5rem;
-                font-weight: 700;
-                color: var(--primary-color);
-                margin-bottom: 0.5rem;
-                line-height: 1;
-            }
-
-            .stat-card p {
-                color: var(--text-secondary);
-                margin: 0;
-                font-size: 1rem;
-                font-weight: 500;
-            }
-
-            .chart-container {
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-                margin: 2rem 0;
-                overflow: hidden;
-            }
-
-            .chart-header {
-                background: linear-gradient(135deg, var(--bg-light), white);
-                padding: 1.5rem 2rem;
-                border-bottom: 1px solid var(--border-color);
-            }
-
-            .chart-title {
-                font-size: 1.4rem;
-                font-weight: 600;
-                color: var(--primary-color);
-                margin: 0;
-            }
-
-            .chart-content {
-                padding: 1rem;
-            }
-
-            .chart-download-container {
-                background: var(--bg-light);
-                padding: 1rem 2rem;
-                border-top: 1px solid var(--border-color);
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                gap: 1rem;
-            }
-
-            .download-btn {
-                font-size: 0.9rem;
-                padding: 0.6rem 1.2rem;
-                border-radius: 6px;
-                font-weight: 500;
-                transition: all 0.3s ease;
-            }
-
-            .download-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }
-
-            .filters-panel {
-                background: white;
-                border-radius: 12px;
-                padding: 2rem;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-                margin: 2rem 0;
-            }
-
-            .filter-section {
-                margin-bottom: 1.5rem;
-            }
-
-            .filter-title {
-                font-size: 1.1rem;
-                font-weight: 600;
-                color: var(--primary-color);
-                margin-bottom: 1rem;
-            }
-
-            .filter-tags {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-
-            .filter-tag {
-                background: var(--bg-light);
-                border: 1px solid var(--border-color);
-                border-radius: 20px;
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-
-            .filter-tag.active {
-                background: var(--primary-color);
-                color: white;
-                border-color: var(--primary-color);
-            }
-
-            .filter-tag:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-
-            .ai-assistant {
-                position: fixed;
-                bottom: 2rem;
-                right: 2rem;
-                z-index: 1000;
-            }
-
-            .ai-toggle {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-                cursor: pointer;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-                transition: all 0.3s ease;
-            }
-
-            .ai-toggle:hover {
-                transform: scale(1.1);
-                box-shadow: 0 6px 25px rgba(0,0,0,0.4);
-            }
-
-            .ai-chatbox {
-                position: absolute;
-                bottom: 70px;
-                right: 0;
-                width: 350px;
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-                display: none;
-            }
-
-            .ai-chatbox.active {
-                display: block;
-            }
-
-            .chat-header {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 12px 12px 0 0;
-                font-weight: 600;
-            }
-
-            .chat-messages {
-                height: 300px;
-                overflow-y: auto;
-                padding: 1rem;
-            }
-
-            .message {
-                margin-bottom: 1rem;
-                padding: 0.8rem 1rem;
-                border-radius: 10px;
-                max-width: 80%;
-            }
-
-            .message.user {
-                background: var(--primary-color);
-                color: white;
-                margin-left: auto;
-                border-bottom-right-radius: 4px;
-            }
-
-            .message.assistant {
-                background: var(--bg-light);
-                color: var(--text-primary);
-                margin-right: auto;
-                border-bottom-left-radius: 4px;
-            }
-
-            .chat-input {
-                padding: 1rem;
-                border-top: 1px solid var(--border-color);
-            }
-
-            .chat-input input {
-                width: 100%;
-                padding: 0.8rem;
-                border: 1px solid var(--border-color);
-                border-radius: 6px;
-                font-size: 0.9rem;
-            }
-
-            @media (max-width: 768px) {
-                .section-heading {
-                    font-size: 1.6rem;
-                }
-                
-                .content-text {
-                    font-size: 1rem;
-                    text-align: left;
-                }
-                
-                .ai-chatbox {
-                    width: 300px;
-                    right: -50px;
-                }
-                
-                .chart-download-container {
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-                
-                .download-btn {
-                    width: 100%;
-                }
-            }
-
-            .loading-spinner {
-                display: inline-block;
-                width: 2rem;
-                height: 2rem;
-                border: 3px solid #f3f3f3;
-                border-top: 3px solid var(--primary-color);
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-                margin-right: 0.5rem;
-            }
-
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-
-            .correlation-value {
-                font-size: 0.8rem;
-                font-weight: 600;
-            }
-        `;
-
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = styles;
-        document.head.appendChild(styleSheet);
-    }
-
+    // Add stats overview similar to home page
     addStatsOverview() {
         const statsHTML = `
-            <div class="stats-overview-container">
-                <div class="row text-center justify-content-center">
-                    <div class="col-lg-2 col-md-4 col-6 mb-4">
-                        <div class="stat-card">
-                            <h3>14</h3>
-                            <p>Years of Data</p>
-                        </div>
+            <div class="row text-center mb-5 justify-content-center stats-overview-container">
+                <div class="col-md-2 col-6 mb-4">
+                    <div class="stat-card">
+                        <h3>14</h3>
+                        <p>Years Data</p>
                     </div>
-                    <div class="col-lg-2 col-md-4 col-6 mb-4">
-                        <div class="stat-card">
-                            <h3>9</h3>
-                            <p>Health Conditions</p>
-                        </div>
+                </div>
+                <div class="col-md-2 col-6 mb-4">
+                    <div class="stat-card">
+                        <h3>9</h3>
+                        <p>Health Conditions</p>
                     </div>
-                    <div class="col-lg-2 col-md-4 col-6 mb-4">
-                        <div class="stat-card">
-                            <h3>50+</h3>
-                            <p>States Analyzed</p>
-                        </div>
+                </div>
+                <div class="col-md-2 col-6 mb-4">
+                    <div class="stat-card">
+                        <h3>50+</h3>
+                        <p>States Analyzed</p>
                     </div>
-                    <div class="col-lg-2 col-md-4 col-6 mb-4">
-                        <div class="stat-card">
-                            <h3>1M+</h3>
-                            <p>Data Points</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-6 mb-4">
-                        <div class="stat-card">
-                            <h3>10</h3>
-                            <p>Leading Causes</p>
-                        </div>
+                </div>
+                <div class="col-md-2 col-6 mb-4">
+                    <div class="stat-card">
+                        <h3>1M+</h3>
+                        <p>Data Points</p>
                     </div>
                 </div>
             </div>
@@ -427,242 +84,7 @@ class HealthAnalyticsDashboard {
         }
     }
 
-    setupFilters() {
-        const filtersHTML = `
-            <div class="filters-panel">
-                <h3 class="section-heading" style="font-size: 1.5rem; display: block; text-align: center;">Data Filters</h3>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="filter-section">
-                            <div class="filter-title">Year Range</div>
-                            <div class="d-flex align-items-center">
-                                <input type="range" class="form-range" id="yearRange" min="2004" max="2017" step="1" value="2017">
-                                <span class="ms-3" id="yearDisplay">2004 - 2017</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="filter-section">
-                            <div class="filter-title">Health Conditions</div>
-                            <div class="filter-tags">
-                                <span class="filter-tag active" data-condition="cancer">Cancer</span>
-                                <span class="filter-tag active" data-condition="cardiovascular">Cardiovascular</span>
-                                <span class="filter-tag active" data-condition="diabetes">Diabetes</span>
-                                <span class="filter-tag active" data-condition="depression">Depression</span>
-                                <span class="filter-tag" data-condition="obesity">Obesity</span>
-                                <span class="filter-tag" data-condition="stroke">Stroke</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="filter-section">
-                            <div class="filter-title">Metrics</div>
-                            <div class="filter-tags">
-                                <span class="filter-tag active" data-metric="searches">Search Volume</span>
-                                <span class="filter-tag active" data-metric="trends">Trend Analysis</span>
-                                <span class="filter-tag" data-metric="correlation">Correlations</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-3">
-                    <button class="btn btn-primary" onclick="healthDashboard.applyFilters()">
-                        <i class="fas fa-filter"></i> Apply Filters
-                    </button>
-                    <button class="btn btn-outline-secondary ms-2" onclick="healthDashboard.resetFilters()">
-                        <i class="fas fa-refresh"></i> Reset
-                    </button>
-                </div>
-            </div>
-        `;
-
-        const statsOverview = document.querySelector('.stats-overview-container');
-        if (statsOverview) {
-            statsOverview.insertAdjacentHTML('afterend', filtersHTML);
-        }
-
-        this.setupFilterEvents();
-    }
-
-    setupFilterEvents() {
-        // Year range slider
-        const yearSlider = document.getElementById('yearRange');
-        const yearDisplay = document.getElementById('yearDisplay');
-        
-        yearSlider.addEventListener('input', (e) => {
-            const year = parseInt(e.target.value);
-            yearDisplay.textContent = `2004 - ${year}`;
-            this.currentFilters.yearRange[1] = year;
-        });
-
-        // Condition tags
-        document.querySelectorAll('.filter-tag[data-condition]').forEach(tag => {
-            tag.addEventListener('click', (e) => {
-                e.target.classList.toggle('active');
-                const condition = e.target.dataset.condition;
-                if (e.target.classList.contains('active')) {
-                    this.currentFilters.conditions.add(condition);
-                } else {
-                    this.currentFilters.conditions.delete(condition);
-                }
-            });
-        });
-
-        // Metric tags
-        document.querySelectorAll('.filter-tag[data-metric]').forEach(tag => {
-            tag.addEventListener('click', (e) => {
-                e.target.classList.toggle('active');
-                const metric = e.target.dataset.metric;
-                if (e.target.classList.contains('active')) {
-                    this.currentFilters.metrics.add(metric);
-                } else {
-                    this.currentFilters.metrics.delete(metric);
-                }
-            });
-        });
-    }
-
-    applyFilters() {
-        console.log('Applying filters:', this.currentFilters);
-        this.showLoadingMessage('Applying filters and updating visualizations...');
-        
-        // Update all charts with new filters
-        this.updateChartsWithFilters();
-        
-        // Show success message
-        setTimeout(() => {
-            this.hideLoadingMessage();
-            this.showToast('Filters applied successfully!', 'success');
-        }, 1000);
-    }
-
-    resetFilters() {
-        this.currentFilters = {
-            yearRange: [2004, 2017],
-            conditions: new Set(['cancer', 'cardiovascular', 'diabetes', 'depression']),
-            states: new Set(),
-            metrics: new Set(['searches', 'trends'])
-        };
-
-        // Update UI
-        document.getElementById('yearRange').value = 2017;
-        document.getElementById('yearDisplay').textContent = '2004 - 2017';
-        
-        document.querySelectorAll('.filter-tag').forEach(tag => {
-            if (tag.dataset.condition === 'cancer' || tag.dataset.condition === 'cardiovascular' || 
-                tag.dataset.condition === 'diabetes' || tag.dataset.condition === 'depression') {
-                tag.classList.add('active');
-            } else if (tag.dataset.condition) {
-                tag.classList.remove('active');
-            }
-            
-            if (tag.dataset.metric === 'searches' || tag.dataset.metric === 'trends') {
-                tag.classList.add('active');
-            } else if (tag.dataset.metric) {
-                tag.classList.remove('active');
-            }
-        });
-
-        this.applyFilters();
-    }
-
-    updateChartsWithFilters() {
-        // Update line charts with filtered data
-        this.updateLineCharts();
-        
-        // Update other charts as needed
-        // Note: In a real implementation, you would update all charts based on filters
-    }
-
-    updateLineCharts() {
-        // This would typically refetch data with filters or filter existing data
-        // For now, we'll just show a message that charts are being updated
-        console.log('Updating charts with current filters');
-    }
-
-    setupAIAssistant() {
-        const aiHTML = `
-            <div class="ai-assistant">
-                <button class="ai-toggle" onclick="healthDashboard.toggleChat()">
-                    <i class="fas fa-robot"></i>
-                </button>
-                <div class="ai-chatbox">
-                    <div class="chat-header">
-                        <i class="fas fa-robot me-2"></i>Health Data Assistant
-                    </div>
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message assistant">
-                            Hello! I'm your Health Data Assistant. Ask me about health search trends, correlations, or insights from the data.
-                        </div>
-                    </div>
-                    <div class="chat-input">
-                        <input type="text" id="chatInput" placeholder="Ask about health data trends..." onkeypress="healthDashboard.handleChatInput(event)">
-                    </div>
-                </div>
-            </div>
-        `;
-
-        document.body.insertAdjacentHTML('beforeend', aiHTML);
-    }
-
-    toggleChat() {
-        const chatbox = document.querySelector('.ai-chatbox');
-        chatbox.classList.toggle('active');
-    }
-
-    handleChatInput(event) {
-        if (event.key === 'Enter') {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                this.addChatMessage('user', message);
-                input.value = '';
-                
-                // Simulate AI response
-                setTimeout(() => {
-                    this.generateAIResponse(message);
-                }, 1000);
-            }
-        }
-    }
-
-    addChatMessage(sender, text) {
-        const messages = document.getElementById('chatMessages');
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${sender}`;
-        messageDiv.textContent = text;
-        messages.appendChild(messageDiv);
-        messages.scrollTop = messages.scrollHeight;
-    }
-
-    generateAIResponse(userMessage) {
-        const responses = {
-            'trend': 'Health search trends show a significant increase over the years, with cancer being the most searched condition across all states.',
-            'correlation': 'Strong correlations exist between depression, diabetes, and obesity searches, suggesting comorbidity awareness among users.',
-            'cancer': 'Cancer remains the most searched health condition, with particularly high interest in California, Texas, and New York.',
-            'state': 'California shows the highest overall search volume, followed by Texas and New York. Regional variations reflect population density and health awareness.',
-            'help': 'I can help you explore health search trends, correlations between conditions, regional patterns, and data insights. Try asking about specific conditions, states, or trends.',
-            'default': 'I understand you\'re interested in health search data. I can provide insights on trends, correlations, regional patterns, and specific health conditions. Could you be more specific about what you\'d like to know?'
-        };
-
-        let response = responses.default;
-        
-        if (userMessage.toLowerCase().includes('trend')) {
-            response = responses.trend;
-        } else if (userMessage.toLowerCase().includes('correlation')) {
-            response = responses.correlation;
-        } else if (userMessage.toLowerCase().includes('cancer')) {
-            response = responses.cancer;
-        } else if (userMessage.toLowerCase().includes('state') || userMessage.toLowerCase().includes('california') || userMessage.toLowerCase().includes('texas')) {
-            response = responses.state;
-        } else if (userMessage.toLowerCase().includes('help')) {
-            response = responses.help;
-        }
-
-        this.addChatMessage('assistant', response);
-    }
-
+    // Setup loading states for all chart containers
     setupLoadingStates() {
         const chartContainers = [
             'line-chart', 'line-chart2', 'myDiv', 'boxDiv', 
@@ -674,63 +96,33 @@ class HealthAnalyticsDashboard {
         });
     }
 
+    // Show loading states
     showLoading(containerId) {
         const container = document.getElementById(containerId);
         if (container) {
             container.innerHTML = `
-                <div class="chart-loading text-center py-5">
-                    <div class="loading-spinner"></div>
-                    <p class="mt-2">Loading professional visualization...</p>
+                <div class="chart-loading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading chart...</span>
+                    </div>
+                    <p>Loading visualization...</p>
                 </div>
             `;
         }
     }
 
-    showLoadingMessage(message) {
-        // Create or update loading message
-        let loadingDiv = document.getElementById('loadingMessage');
-        if (!loadingDiv) {
-            loadingDiv = document.createElement('div');
-            loadingDiv.id = 'loadingMessage';
-            loadingDiv.className = 'alert alert-info text-center';
-            loadingDiv.style.position = 'fixed';
-            loadingDiv.style.top = '20px';
-            loadingDiv.style.left = '50%';
-            loadingDiv.style.transform = 'translateX(-50%)';
-            loadingDiv.style.zIndex = '9999';
-            document.body.appendChild(loadingDiv);
-        }
-        loadingDiv.innerHTML = `<div class="loading-spinner"></div> ${message}`;
-        loadingDiv.style.display = 'block';
-    }
-
-    hideLoadingMessage() {
-        const loadingDiv = document.getElementById('loadingMessage');
-        if (loadingDiv) {
-            loadingDiv.style.display = 'none';
+    // Hide loading state
+    hideLoading(containerId) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            const loadingElement = container.querySelector('.chart-loading');
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
         }
     }
 
-    showToast(message, type = 'info') {
-        // Simple toast notification
-        const toast = document.createElement('div');
-        toast.className = `alert alert-${type} alert-dismissible fade show`;
-        toast.style.position = 'fixed';
-        toast.style.top = '20px';
-        toast.style.right = '20px';
-        toast.style.zIndex = '9999';
-        toast.style.minWidth = '300px';
-        toast.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
-    }
-
+    // Load all charts
     async loadAllCharts() {
         try {
             await Promise.all([
@@ -751,7 +143,7 @@ class HealthAnalyticsDashboard {
         }
     }
 
-    // Updated chart loading methods with professional styling and no titles
+    // 1. Total Searches by Year (Single Line Chart)
     async loadTotalSearchesByYear() {
         Plotly.d3.json('/searchbyyear', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -767,33 +159,29 @@ class HealthAnalyticsDashboard {
                 fill: 'tonexty',
                 type: 'scatter',
                 line: {
-                    color: this.colors.primary,
+                    color: '#2E86AB',
                     width: 3
-                },
-                fillcolor: 'rgba(46, 134, 171, 0.1)'
+                }
             };
 
             const layout = {
-                width: null,
+                width: null, // Use container width for responsiveness
                 height: 500,
+                title: 'Total Volume of Searches by Year',
                 xaxis: {
-                    title: { text: 'Years', font: { size: 12 } },
-                    showgrid: true,
-                    gridcolor: 'rgba(0,0,0,0.1)',
-                    tickfont: { size: 11 }
+                    title: 'Years',
+                    showgrid: false,
+                    zeroline: false
                 },
                 yaxis: {
-                    title: { text: 'Search Volume', font: { size: 12 } },
-                    showgrid: true,
-                    gridcolor: 'rgba(0,0,0,0.1)',
-                    tickfont: { size: 11 }
+                    title: 'Searches',
+                    showline: false
                 },
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 paper_bgcolor: 'rgba(0,0,0,0)',
-                margin: { t: 40, r: 40, b: 60, l: 60 },
+                margin: { t: 60, r: 40, b: 80, l: 60 },
                 hovermode: 'closest',
-                font: { family: 'Segoe UI, sans-serif' },
-                showlegend: false
+                autosize: true
             };
 
             Plotly.newPlot('line-chart', [totalvolume], layout, this.getChartConfig());
@@ -801,6 +189,67 @@ class HealthAnalyticsDashboard {
         });
     }
 
+    // 2. Multiple Line Chart - Health Conditions
+    async loadSearchesByYearAndCondition() {
+        Plotly.d3.json('/searchyearandcondition', (rows) => {
+            const unpack = (rows, key) => rows.map(row => row[key]);
+            const data = rows.data;
+
+            const allyear = unpack(data, 'year'),
+                  cancer = unpack(data, 'cancer'),
+                  cardiovascular = unpack(data, 'cardiovascular'),
+                  depression = unpack(data, 'depression'),
+                  diabetes = unpack(data, 'diabetes'),
+                  diarrhea = unpack(data, 'diarrhea'),
+                  obesity = unpack(data, 'obesity'),
+                  rehab = unpack(data, 'rehab'),
+                  stroke = unpack(data, 'stroke'),
+                  vaccine = unpack(data, 'vaccine');
+
+            const traces = [
+                { x: allyear, y: cancer, name: 'Cancer', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.cancer } },
+                { x: allyear, y: cardiovascular, name: 'Cardiovascular', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.cardiovascular } },
+                { x: allyear, y: depression, name: 'Depression', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.depression } },
+                { x: allyear, y: diabetes, name: 'Diabetes', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.diabetes } },
+                { x: allyear, y: diarrhea, name: 'Diarrhea', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.diarrhea } },
+                { x: allyear, y: obesity, name: 'Obesity', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.obesity } },
+                { x: allyear, y: rehab, name: 'Rehab', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.rehab } },
+                { x: allyear, y: stroke, name: 'Stroke', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.stroke } },
+                { x: allyear, y: vaccine, name: 'Vaccine', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.vaccine } }
+            ];
+
+            const layout = {
+                width: null, // Use container width for responsiveness
+                height: 500,
+                title: 'Total Volume of Searches by year Versus Health Conditions',
+                xaxis: {
+                    title: 'Years',
+                    showgrid: false,
+                    zeroline: false
+                },
+                yaxis: {
+                    title: 'Searches',
+                    showline: false
+                },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                margin: { t: 60, r: 40, b: 100, l: 60 },
+                hovermode: 'closest',
+                legend: {
+                    orientation: 'h',
+                    y: -0.3,
+                    x: 0.5,
+                    xanchor: 'center'
+                },
+                autosize: true
+            };
+
+            Plotly.newPlot('line-chart2', traces, layout, this.getChartConfig());
+            this.hideLoading('line-chart2');
+        });
+    }
+
+    // 3. Correlation Matrix - Updated title
     async loadCorrelationMatrix() {
         const xValues = ['Cancer', 'Cardiovascular', 'Stroke', 'Depression', 'Rehab', 'Vaccine', 'Diarrhea', 'Obesity', 'Diabetes'];
         const yValues = ['Cancer', 'Cardiovascular', 'Stroke', 'Depression', 'Rehab', 'Vaccine', 'Diarrhea', 'Obesity', 'Diabetes'];
@@ -816,63 +265,356 @@ class HealthAnalyticsDashboard {
             [0.40, 0.50, 0.64, 0.74, 0.51, 0.69, 0.72, 0.61, 1]
         ];
 
-        // Add annotations for correlation values
-        const annotations = [];
-        for (let i = 0; i < yValues.length; i++) {
-            for (let j = 0; j < xValues.length; j++) {
-                annotations.push({
-                    x: xValues[j],
-                    y: yValues[i],
-                    text: zValues[i][j].toFixed(2),
-                    font: { color: zValues[i][j] > 0.5 ? 'white' : 'black', size: 10 },
-                    showarrow: false
-                });
-            }
-        }
+        const colorscale = [
+            [0, '#3D9970'],
+            [1, '#001f3f']
+        ];
 
         const data = [{
             x: xValues,
             y: yValues,
             z: zValues,
             type: 'heatmap',
-            colorscale: [
-                [0, '#ECF0F1'],
-                [0.5, '#3498DB'],
-                [1, '#2C3E50']
-            ],
+            colorscale: colorscale,
             showscale: true,
             colorbar: {
-                title: 'Correlation (r)',
+                title: 'Correlation',
                 titleside: 'right',
-                tickfont: { size: 10 }
+                x: 1.02,
+                xanchor: 'left',
+                y: 0.5,
+                yanchor: 'middle'
             }
         }];
 
         const layout = {
-            width: null,
+            width: null, // Use container width for responsiveness
             height: 500,
+            title: 'Correlations Among Health Conditions',
             plot_bgcolor: 'rgba(0,0,0,0)',
             paper_bgcolor: 'rgba(0,0,0,0)',
-            margin: { t: 40, r: 100, b: 80, l: 80 },
+            margin: { t: 60, r: 120, b: 100, l: 100 },
             xaxis: {
-                tickangle: -45,
-                tickfont: { size: 10 }
+                tickangle: -45
             },
             yaxis: {
-                autorange: 'reversed',
-                tickfont: { size: 10 }
+                autorange: 'reversed'
             },
-            annotations: annotations,
-            font: { family: 'Segoe UI, sans-serif' }
+            autosize: true
         };
 
         Plotly.newPlot('myDiv', data, layout, this.getChartConfig());
         this.hideLoading('myDiv');
     }
 
-    // Similar updates for other chart methods...
-    // [Other chart loading methods would follow the same pattern]
+    // 4. Box Plot
+    async loadBoxPlot() {
+        Plotly.d3.json('/searchyearandcondition', (rows) => {
+            const unpack = (rows, key) => rows.map(row => row[key]);
+            const data = rows.data;
 
+            const cancer = unpack(data, 'cancer'),
+                  cardiovascular = unpack(data, 'cardiovascular'),
+                  depression = unpack(data, 'depression'),
+                  diabetes = unpack(data, 'diabetes'),
+                  diarrhea = unpack(data, 'diarrhea'),
+                  obesity = unpack(data, 'obesity'),
+                  rehab = unpack(data, 'rehab'),
+                  stroke = unpack(data, 'stroke'),
+                  vaccine = unpack(data, 'vaccine');
+
+            const traces = [
+                { y: cancer, type: 'box', name: 'Cancer', boxpoints: 'all', marker: { color: this.colors.conditions.cancer, size: 3 }, line: { width: 1 } },
+                { y: cardiovascular, type: 'box', name: 'Cardiovascular', boxpoints: 'all', marker: { color: this.colors.conditions.cardiovascular, size: 3 }, line: { width: 1 } },
+                { y: depression, type: 'box', name: 'Depression', boxpoints: 'all', marker: { color: this.colors.conditions.depression, size: 3 }, line: { width: 1 } },
+                { y: diabetes, type: 'box', name: 'Diabetes', boxpoints: 'all', marker: { color: this.colors.conditions.diabetes, size: 3 }, line: { width: 1 } },
+                { y: diarrhea, type: 'box', name: 'Diarrhea', boxpoints: 'all', marker: { color: this.colors.conditions.diarrhea, size: 3 }, line: { width: 1 } },
+                { y: obesity, type: 'box', name: 'Obesity', boxpoints: 'all', marker: { color: this.colors.conditions.obesity, size: 3 }, line: { width: 1 } },
+                { y: rehab, type: 'box', name: 'Rehab', boxpoints: 'all', marker: { color: this.colors.conditions.rehab, size: 3 }, line: { width: 1 } },
+                { y: stroke, type: 'box', name: 'Stroke', boxpoints: 'all', marker: { color: this.colors.conditions.stroke, size: 3 }, line: { width: 1 } },
+                { y: vaccine, type: 'box', name: 'Vaccine', boxpoints: 'all', marker: { color: this.colors.conditions.vaccine, size: 3 }, line: { width: 1 } }
+            ];
+
+            const layout = {
+                width: null, // Use container width for responsiveness
+                height: 500,
+                title: 'Boxplot of Health Google Search 2004-2017',
+                xaxis: {
+                    title: 'Condition',
+                    showgrid: false,
+                    zeroline: false
+                },
+                yaxis: {
+                    title: 'Search',
+                    showline: false
+                },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                margin: { t: 60, r: 40, b: 80, l: 60 },
+                showlegend: false,
+                autosize: true
+            };
+
+            Plotly.newPlot('boxDiv', traces, layout, this.getChartConfig());
+            this.hideLoading('boxDiv');
+        });
+    }
+
+    // 5. Choropleth Map with Centered Right Legend
+    async loadChoroplethMap() {
+        Plotly.d3.json('/searchbystate', (rows) => {
+            const unpack = (rows, key) => rows.map(row => row[key]);
+            const data = rows.data;
+
+            const state = unpack(data, 'postal'),
+                  searches = unpack(data, 'searches');
+
+            const mapData = [{
+                type: "choroplethmapbox",
+                name: "Searches",
+                geojson: "https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/us-states.json",
+                locations: state,
+                z: searches,
+                zmin: 2555,
+                zmax: 98134,
+                colorbar: { 
+                    y: 0.5,
+                    yanchor: "middle",
+                    len: 0.8,
+                    x: 1.02,
+                    xanchor: "left",
+                    orientation: "v",
+                    title: { 
+                        text: "Search Volume", 
+                        side: "right" 
+                    },
+                    thickness: 20,
+                    outlinewidth: 0
+                },
+                colorscale: [
+                    [0, '#131f0c'],
+                    [1, '#bdfe88']
+                ],
+                autocolorscale: false,
+            }];
+
+            const layout = {
+                mapbox: { 
+                    style: "dark", 
+                    center: { lon: -95.712891, lat: 37.090240 }, 
+                    zoom: 3 
+                },
+                width: null, // Use container width for responsiveness
+                height: 500,
+                margin: { t: 40, b: 40, l: 40, r: 120 },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                autosize: true
+            };
+
+            const config = {
+                mapboxAccessToken: "pk.eyJ1IjoiZWdhZ2EiLCJhIjoiY2tmOG51MXY4MGR3NjJ5cnE4N3B2NTl0cCJ9.vVCAwSF-oh9ymZ8-pM-nBQ",
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+                modeBarButtonsToAdd: [],
+                modeBarButtons: [['toImage']]
+            };
+
+            Plotly.newPlot('mymapDiv', mapData, layout, config);
+            this.hideLoading('mymapDiv');
+        });
+    }
+
+    // 6. Bar Chart - Health Searches by State
+    async loadHealthSearchesByState() {
+        Plotly.d3.json('/mostsserached', (rows) => {
+            const unpack = (rows, key) => rows.map(row => row[key]);
+            const data = rows.data;
+
+            const state = unpack(data, 'state'),
+                  cancer = unpack(data, 'cancer'),
+                  cardiovascular = unpack(data, 'cardiovascular'),
+                  depression = unpack(data, 'depression'),
+                  diabetes = unpack(data, 'diabetes'),
+                  diarrhea = unpack(data, 'diarrhea'),
+                  obesity = unpack(data, 'obesity'),
+                  rehab = unpack(data, 'rehab'),
+                  stroke = unpack(data, 'stroke'),
+                  vaccine = unpack(data, 'vaccine');
+
+            const traces = [
+                { x: state, y: cancer, type: 'bar', marker: { color: this.colors.barColors.cancer }, name: 'Cancer' },
+                { x: state, y: cardiovascular, type: 'bar', marker: { color: this.colors.barColors.cardiovascular }, name: 'Cardiovascular' },
+                { x: state, y: depression, type: 'bar', marker: { color: this.colors.barColors.depression }, name: 'Depression' },
+                { x: state, y: diabetes, type: 'bar', marker: { color: this.colors.barColors.diabetes }, name: 'Diabetes' },
+                { x: state, y: diarrhea, type: 'bar', marker: { color: this.colors.barColors.diarrhea }, name: 'Diarrhea' },
+                { x: state, y: obesity, type: 'bar', marker: { color: this.colors.barColors.obesity }, name: 'Obesity' },
+                { x: state, y: rehab, type: 'bar', marker: { color: this.colors.barColors.rehab }, name: 'Rehab' },
+                { x: state, y: stroke, type: 'bar', marker: { color: this.colors.barColors.stroke }, name: 'Stroke' },
+                { x: state, y: vaccine, type: 'bar', marker: { color: this.colors.barColors.vaccine }, name: 'Vaccine' }
+            ];
+
+            const layout = {
+                width: null, // Use container width for responsiveness
+                height: 500,
+                title: 'Health Searches by States',
+                barmode: 'group',
+                bargap: 0.15,
+                bargroupgap: 0.1,
+                xaxis: {
+                    title: 'States',
+                    showgrid: false,
+                    zeroline: false,
+                    tickangle: -45
+                },
+                yaxis: {
+                    title: 'Searches',
+                    showline: false
+                },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                margin: { t: 60, r: 40, b: 120, l: 60 },
+                legend: {
+                    orientation: 'h',
+                    y: -0.4,
+                    x: 0.5,
+                    xanchor: 'center'
+                },
+                autosize: true
+            };
+
+            Plotly.newPlot('bar-chart', traces, layout, this.getChartConfig());
+            this.hideLoading('bar-chart');
+        });
+    }
+
+    // 7. Radar Charts
+    async loadRadarCharts() {
+        // Radar Chart 1 - Health Condition Searches
+        const healthData = [{
+            type: 'scatterpolar',
+            r: [179192, 94220, 137010, 167778, 150355, 121874, 137974, 155732, 143489],
+            theta: ["Cancer", "Cardiovascular", "Depression", "Diabetes", "Diarrhea", "Obesity", "Rehab", "Stroke", "Vaccine"],
+            fill: 'toself',
+            line: { color: '#2E86AB' },
+            fillcolor: 'rgba(46, 134, 171, 0.3)'
+        }];
+
+        const healthLayout = {
+            title: 'The Sum total Volume of Health Condition Searches from 2004- 2017',
+            width: null, // Use container width for responsiveness
+            height: 500,
+            polar: {
+                radialaxis: {
+                    visible: true,
+                    range: [0, 179192]
+                }
+            },
+            showlegend: false,
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            margin: { t: 60, r: 40, b: 80, l: 60 },
+            autosize: true
+        };
+
+        Plotly.newPlot("radarmyDiv", healthData, healthLayout, this.getChartConfig());
+        this.hideLoading('radarmyDiv');
+
+        // Radar Chart 2 - Leading Causes of Death
+        const deathData = [{
+            type: 'scatterpolar',
+            r: [571, 357.3, 568.3, 308.5, 2574, 229.9, 2282.4, 196.8, 589.5, 171],
+            theta: ["Accidents", "Alzheimer ", "Cerebrovascular", "Diabetes", "Diseases of heart", "Influenza and Pneumonia", "Malignant Neoplasms(Tumor)", "Nephrosis ", "Respiratory", "Suicide"],
+            fill: 'toself',
+            line: { color: '#F18F01' },
+            fillcolor: 'rgba(241, 143, 1, 0.3)'
+        }];
+
+        const deathLayout = {
+            title: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017',
+            width: null, // Use container width for responsiveness
+            height: 500,
+            polar: {
+                radialaxis: {
+                    visible: true,
+                    range: [-2000, 2874]
+                }
+            },
+            showlegend: false,
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            margin: { t: 60, r: 40, b: 80, l: 60 },
+            autosize: true
+        };
+
+        Plotly.newPlot("radarmyDiv2", deathData, deathLayout, this.getChartConfig());
+        this.hideLoading('radarmyDiv2');
+    }
+
+    // 8. Leading Causes of Death Line Chart
+    async loadLeadingCausesOfDeath() {
+        Plotly.d3.json('/casesleadingdeath', (rows) => {
+            const unpack = (rows, key) => rows.map(row => row[key]);
+            const data = rows.data;
+
+            const year = unpack(data, 'year'),
+                  accidents = unpack(data, "Accidents"),
+                  alzheimer = unpack(data, "Alzheimer"),
+                  cerebrovascular = unpack(data, "Cerebrovascular"),
+                  ddiabetes = unpack(data, "Diabetes"),
+                  heart = unpack(data, "Diseases_of_heart"),
+                  influenza = unpack(data, "Influenza_and_pneumonia"),
+                  malignant = unpack(data, "Malignant_neoplasms"),
+                  nephrosis = unpack(data, "Nephrosis"),
+                  respiratory = unpack(data, "Respiratory"),
+                  suicide = unpack(data, "Suicide");
+
+            const traces = [
+                { x: year, y: accidents, name: 'Accidents', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#D32F2F' } },
+                { x: year, y: alzheimer, name: 'Alzheimer', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#1976D2' } },
+                { x: year, y: cerebrovascular, name: 'Cerebrovascular', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#7B1FA2' } },
+                { x: year, y: ddiabetes, name: 'Diabetes', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#F57C00' } },
+                { x: year, y: heart, name: 'Diseases of Heart', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#E65100' } },
+                { x: year, y: influenza, name: 'Influenza and Pneumonia', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#00796B' } },
+                { x: year, y: malignant, name: 'Malignant Neoplasms', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#5D4037' } },
+                { x: year, y: nephrosis, name: 'Nephrosis', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#455A64' } },
+                { x: year, y: respiratory, name: 'Respiratory', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#F57C00' } },
+                { x: year, y: suicide, name: 'Suicide', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#616161' } }
+            ];
+
+            const layout = {
+                width: null, // Use container width for responsiveness
+                height: 500,
+                xaxis: {
+                    title: 'Years',
+                    showgrid: false,
+                    zeroline: false
+                },
+                yaxis: {
+                    title: 'Sum of number of death per 100,000',
+                    showline: false
+                },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                margin: { t: 60, r: 40, b: 100, l: 60 },
+                hovermode: 'closest',
+                legend: {
+                    orientation: 'h',
+                    y: -0.4,
+                    x: 0.5,
+                    xanchor: 'center'
+                },
+                autosize: true
+            };
+
+            Plotly.newPlot('line-chart3', traces, layout, this.getChartConfig());
+            this.hideLoading('line-chart3');
+        });
+    }
+
+    // Download functionality
     getChartConfig() {
         return {
             responsive: true,
@@ -883,7 +625,7 @@ class HealthAnalyticsDashboard {
             modeBarButtons: [['toImage', 'resetScale2d']],
             toImageButtonOptions: {
                 format: 'png',
-                filename: 'health_analytics',
+                filename: 'health_analytics_chart',
                 height: 500,
                 width: 800,
                 scale: 2
@@ -894,13 +636,13 @@ class HealthAnalyticsDashboard {
     setupIndividualDownloadButtons() {
         const chartConfigs = [
             { id: 'line-chart', name: 'Total Volume of Searches by Year', endpoint: '/searchbyyear' },
-            { id: 'line-chart2', name: 'Search Trends by Health Condition', endpoint: '/searchyearandcondition' },
+            { id: 'line-chart2', name: 'Total Volume of Searches by year Versus Health Conditions', endpoint: '/searchyearandcondition' },
             { id: 'myDiv', name: 'Correlations Among Health Conditions', endpoint: null },
-            { id: 'boxDiv', name: 'Health Search Distribution', endpoint: '/searchyearandcondition' },
-            { id: 'mymapDiv', name: 'Health Searches by State', endpoint: '/searchbystate' },
-            { id: 'bar-chart', name: 'Health Searches by State and Condition', endpoint: '/mostsserached' },
-            { id: 'radarmyDiv', name: 'Total Health Search Volume', endpoint: null },
-            { id: 'radarmyDiv2', name: 'Leading Causes of Death Statistics', endpoint: null },
+            { id: 'boxDiv', name: 'Boxplot of Health Google Search 2004-2017', endpoint: '/searchyearandcondition' },
+            { id: 'mymapDiv', name: 'Health Searches by State Map', endpoint: '/searchbystate' },
+            { id: 'bar-chart', name: 'Health Searches by States', endpoint: '/mostsserached' },
+            { id: 'radarmyDiv', name: 'The Sum total Volume of Health Condition Searches from 2004- 2017', endpoint: null },
+            { id: 'radarmyDiv2', name: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017', endpoint: null },
             { id: 'line-chart3', name: 'Leading Causes of Death Trends', endpoint: '/casesleadingdeath' }
         ];
 
@@ -925,7 +667,7 @@ class HealthAnalyticsDashboard {
         let csvButton = '';
         if (endpoint) {
             csvButton = `
-                <button class="btn btn-success download-btn download-csv-btn" 
+                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" 
                         onclick="healthDashboard.downloadCSV('${endpoint}', '${chartName}')">
                     <i class="fas fa-file-csv"></i> Download CSV
                 </button>
@@ -934,19 +676,22 @@ class HealthAnalyticsDashboard {
 
         buttonContainer.innerHTML = `
             <div class="download-buttons-wrapper">
-                <button class="btn btn-primary download-btn download-chart-btn" 
+                <button class="btn btn-outline-primary btn-sm download-chart-btn" 
                         onclick="healthDashboard.downloadChart('${chartId}', '${chartName}')">
-                    <i class="fas fa-download"></i> Download Chart
+                    <i class="fas fa-download"></i> Download chart
                 </button>
                 ${csvButton}
             </div>
         `;
 
+        // Insert the download button right after the chart container
         chartContainer.parentNode.insertBefore(buttonContainer, chartContainer.nextSibling);
     }
 
     downloadChart(chartId, chartName) {
+        // Use the exact visual name for the file
         const cleanName = this.cleanFileName(chartName);
+            
         Plotly.downloadImage(chartId, {
             format: 'png',
             filename: cleanName,
@@ -958,32 +703,34 @@ class HealthAnalyticsDashboard {
 
     async downloadCSV(endpoint, chartName) {
         try {
-            this.showLoadingMessage('Preparing CSV download...');
             const response = await fetch(endpoint);
             const data = await response.json();
             
             const cleanName = this.cleanFileName(chartName);
             this.convertToCSVAndDownload(data.data, cleanName);
-            this.hideLoadingMessage();
         } catch (error) {
             console.error('Error downloading CSV:', error);
-            this.hideLoadingMessage();
-            this.showToast('Error downloading CSV data', 'error');
+            alert('Error downloading CSV data. Please try again.');
         }
     }
 
     convertToCSVAndDownload(data, filename) {
         if (!data || data.length === 0) {
-            this.showToast('No data available to download', 'warning');
+            alert('No data available to download.');
             return;
         }
 
+        // Get headers from the first object
         const headers = Object.keys(data[0]);
+        
+        // Create CSV content
         let csvContent = headers.join(',') + '\n';
         
+        // Add data rows
         data.forEach(row => {
             const values = headers.map(header => {
                 const value = row[header];
+                // Handle values that might contain commas or quotes
                 if (value === null || value === undefined) return '';
                 const stringValue = String(value);
                 if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
@@ -994,6 +741,7 @@ class HealthAnalyticsDashboard {
             csvContent += values.join(',') + '\n';
         });
 
+        // Create and trigger download
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
@@ -1005,8 +753,6 @@ class HealthAnalyticsDashboard {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
-        this.showToast('CSV downloaded successfully!', 'success');
     }
 
     cleanFileName(name) {
@@ -1024,19 +770,240 @@ class HealthAnalyticsDashboard {
                     if (element) Plotly.Plots.resize(id);
                 });
         });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'k') {
-                e.preventDefault();
-                this.toggleChat();
-                document.getElementById('chatInput').focus();
-            }
-        });
     }
 }
 
+// Add CSS for styling
+const dashboardStyles = `
+    .chart-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        color: #6c757d;
+    }
+    
+    .chart-download-container {
+        text-align: right;
+        margin: 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        clear: both;
+    }
+    
+    .download-buttons-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .download-chart-btn, .download-csv-btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        margin: 0;
+        white-space: nowrap;
+    }
+    
+    .plot-container .plot {
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 0;
+        border: 1px solid #dee2e6;
+        border-bottom: none;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    /* Ensure proper spacing between sections */
+    .posts {
+        margin-bottom: 3rem;
+    }
+    
+    .post {
+        margin-bottom: 0;
+    }
+    
+    /* Center all visuals */
+    .plot-container {
+        text-align: center;
+    }
+    
+    .plot {
+        display: inline-block;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    /* Hide loading circles when charts are loaded */
+    .chart-loaded .chart-loading {
+        display: none !important;
+    }
+    
+    /* Map specific styling */
+    #mymapDiv {
+        margin: 0 auto;
+        border: 1px solid #dee2e6;
+        border-radius: 8px 8px 0 0;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    /* Ensure map legend is properly positioned */
+    .js-plotly-plot .plotly .mapboxgl-ctrl-bottom-left {
+        bottom: 120px !important;
+    }
+    
+    .js-plotly-plot .plotly .mapboxgl-ctrl-bottom-right {
+        bottom: 120px !important;
+    }
+    
+    /* Make sure download buttons are properly positioned */
+    .chart-wrapper {
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+    
+    /* Stats cards styling - Equal size and centered */
+    .stats-overview-container {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+    }
+    
+    .stat-card {
+        background: white;
+        padding: 2rem 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 1rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 140px;
+    }
+    
+    .stat-card h3 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #2E86AB;
+        margin-bottom: 0.5rem;
+        line-height: 1;
+    }
+    
+    .stat-card p {
+        color: #6c757d;
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.2;
+    }
+    
+    /* Ensure charts stay in frame */
+    .chart-frame {
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .chart-download-container {
+            text-align: center;
+        }
+        
+        .download-buttons-wrapper {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .download-chart-btn, .download-csv-btn {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card {
+            padding: 1.5rem 0.5rem;
+            min-height: 120px;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+        }
+        
+        .stats-overview-container .col-6 {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        
+        /* Adjust chart margins for mobile */
+        .plot {
+            width: 100% !important;
+        }
+        
+        /* Improve mobile readability */
+        .post p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        h3, h5 {
+            font-size: 1.5rem !important;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .stat-card {
+            padding: 1rem 0.5rem;
+            min-height: 100px;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.75rem;
+        }
+        
+        .stat-card p {
+            font-size: 0.8rem;
+        }
+        
+        .jumbotron h1 {
+            font-size: 2rem;
+        }
+        
+        .jumbotron p {
+            font-size: 1rem;
+        }
+        
+        .download-buttons-wrapper {
+            flex-direction: column;
+        }
+    }
+    
+    /* Ensure proper printing */
+    @media print {
+        .chart-download-container {
+            display: none;
+        }
+        
+        .stat-card {
+            break-inside: avoid;
+        }
+    }
+`;
+
+// Inject styles
+const styleSheet = document.createElement('style');
+styleSheet.textContent = dashboardStyles;
+document.head.appendChild(styleSheet);
+
 // Initialize the dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    window.healthDashboard = new HealthAnalyticsDashboard();
+    window.healthDashboard = new HealthDashboard();
 });
