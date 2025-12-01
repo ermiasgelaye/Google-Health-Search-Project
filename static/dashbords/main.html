@@ -122,12 +122,28 @@
         </div>
     </div>
 
-    <!-- Centered Stats Overview -->
+    <!-- Centered Stats Overview - FIXED -->
     <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-10">
-                <div class="stats-overview text-center">
-                    <!-- Stats will be loaded by JavaScript -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-12">
+                <h2 class="text-center mb-4">Key Insights at a Glance</h2>
+                <div class="stats-overview-container justify-content-center">
+                    <div class="stat-card">
+                        <h3>14</h3>
+                        <p>Years of Data</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>9</h3>
+                        <p>Health Conditions</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>50+</h3>
+                        <p>States Analyzed</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>1M+</h3>
+                        <p>Data Points</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,7 +153,8 @@
         <!-- Introduction Section -->
         <section class="posts" role="region" aria-label="Introduction">
             <article class="post">
-                <div class="plot-container">
+                <div class="chart-frame">
+                    <h2>Introduction</h2>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         How has the search interest for top health issues or diseases change over time? And how does it compare with the real-life leading causes of death? To investigate this question, our team used the online search data in the US from 2004 to 2017 provided by Google Trends data as well as the leading death-causing diseases data provided by the US CDC data. Google Trends data in particular allows us to see what people are searching for at a very local level. We will compare them with the actual location of occurrences for those same health conditions to understand how online search data reflects real life for millions of Americans.
                     </p>
@@ -148,32 +165,31 @@
         <!-- Health Search Volume by State and Region -->
         <section class="posts" role="region" aria-label="Health Search Volume by State and Region">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Health Search Volume by State and Region</h2>
+                <div class="chart-frame">
+                    <h2>Health Search Volume by State and Region</h2>
                     
-                    <div class="chart-frame">
-                        <div id="mymapDiv" 
-                             class="plot"
-                             style="height: 500px;" 
-                             role="img" 
-                             aria-label="Choropleth map showing health search volume by state. Darker colors indicate higher search volume. Interactive map allows zooming and panning."
-                             aria-describedby="map-description">
-                        </div>
-                        <div id="map-description" class="sr-only">
-                            This interactive map shows health search volume across all US states from 2004 to 2017. 
-                            States are color-coded based on total search volume, with darker colors indicating higher search activity.
-                            California, Texas, and New York show the highest search volumes.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('mymapDiv', 'Health_Search_Volume_Map')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" onclick="downloadCSV('/searchbystate', 'Health_Search_By_State')">
-                                    <i class="fas fa-file-csv"></i> Download CSV
-                                </button>
-                            </div>
+                    <div id="mymapDiv" 
+                         class="plot"
+                         style="height: 500px;" 
+                         role="img" 
+                         aria-label="Choropleth map showing health search volume by state. Darker colors indicate higher search volume. Interactive map allows zooming and panning."
+                         aria-describedby="map-description">
+                    </div>
+                    <div id="map-description" class="sr-only">
+                        This interactive map shows health search volume across all US states from 2004 to 2017. 
+                        States are color-coded based on total search volume, with darker colors indicating higher search activity.
+                        California, Texas, and New York show the highest search volumes.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Health_Search_Volume_Map">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/searchbystate" data-chart-name="Health_Search_By_State">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
 
@@ -187,33 +203,33 @@
         <!-- Trend of Change in Total Search Volume -->
         <section class="posts" role="region" aria-label="Trend of Change in Total Search Volume">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">The Trend of The Change in The Total Search Volume</h2>
+                <div class="chart-frame">
+                    <h2>The Trend of The Change in The Total Search Volume</h2>
 
-                    <div class="chart-frame">
-                        <div id="line-chart" 
-                             class="plot" 
-                             role="img" 
-                             aria-label="Line chart showing total health search volume from 2004 to 2017. X-axis shows years, Y-axis shows search volume."
-                             aria-describedby="line-chart-description">
-                        </div>
-                        <div id="line-chart-description" class="sr-only">
-                            Line chart showing overall health search trends from 2004 to 2017. 
-                            Search volume shows a consistent upward trend over the 14-year period, 
-                            with significant increases in later years indicating growing public interest in online health information.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('line-chart', 'Total_Search_Volume_Trend')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" onclick="downloadCSV('/searchbyyear', 'Total_Search_By_Year')">
-                                    <i class="fas fa-file-csv"></i> Download CSV
-                                </button>
-                            </div>
+                    <div id="line-chart" 
+                         class="plot" 
+                         role="img" 
+                         aria-label="Line chart showing total health search volume from 2004 to 2017. X-axis shows years, Y-axis shows search volume."
+                         aria-describedby="line-chart-description">
+                    </div>
+                    <div id="line-chart-description" class="sr-only">
+                        Line chart showing overall health search trends from 2004 to 2017. 
+                        Search volume shows a consistent upward trend over the 14-year period, 
+                        with significant increases in later years indicating growing public interest in online health information.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Total_Search_Volume_Trend">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/searchbyyear" data-chart-name="Total_Search_By_Year">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
+                    
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
                         It could be observed that the online searching volume of the diseases overall showed an increasing tendency. This result coincides and could be explained by technological advancements in terms of the growth of internet and people's growing reliance on telehealth.
                     </p>
@@ -224,33 +240,32 @@
         <!-- Boxplot Section -->
         <section class="posts" role="region" aria-label="Boxplot of Health Google Search">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Boxplot of Health Google Search 2004-2017</h2>
+                <div class="chart-frame">
+                    <h2>Boxplot of Health Google Search 2004-2017</h2>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         This boxplot allows us to see the amount variability in the search score (Google's own metric) in health searches from 2004 to 2017. It is interesting there a wide range for both diabetes and depression.
                     </p>
-                    <div class="chart-frame">
-                        <div id="boxDiv" 
-                             class="plot" 
-                             role="img" 
-                             aria-label="Boxplot showing search score distribution for 9 health conditions from 2004 to 2017"
-                             aria-describedby="boxplot-description">
-                        </div>
-                        <div id="boxplot-description" class="sr-only">
-                            Boxplot visualization showing the distribution of search scores for 9 health conditions over 14 years.
-                            Each box represents the interquartile range, with whiskers showing the full range of data.
-                            Diabetes and depression show the widest variability in search scores.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('boxDiv', 'Health_Search_Boxplot')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" onclick="downloadCSV('/searchyearandcondition', 'Search_Year_Condition_Data')">
-                                    <i class="fas fa-file-csv"></i> Download CSV
-                                </button>
-                            </div>
+                    <div id="boxDiv" 
+                         class="plot" 
+                         role="img" 
+                         aria-label="Boxplot showing search score distribution for 9 health conditions from 2004 to 2017"
+                         aria-describedby="boxplot-description">
+                    </div>
+                    <div id="boxplot-description" class="sr-only">
+                        Boxplot visualization showing the distribution of search scores for 9 health conditions over 14 years.
+                        Each box represents the interquartile range, with whiskers showing the full range of data.
+                        Diabetes and depression show the widest variability in search scores.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Health_Search_Boxplot">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/searchyearandcondition" data-chart-name="Search_Year_Condition_Data">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -260,33 +275,32 @@
         <!-- Searching Trends of Each Health Condition -->
         <section class="posts" role="region" aria-label="Searching Trends of Each Health Condition">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Searching Trends of Each Health Condition</h2>
+                <div class="chart-frame">
+                    <h2>Searching Trends of Each Health Condition</h2>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         How does the online searching interest in each health condition change in themselves per se? All of the observed diseases had demonstrated an upward tendency over the years from 2004 to 2017.This multi line graph presents a dramatic illustration of how the public is increasingly obtaining health care information by searching online.
                     </p>
-                    <div class="chart-frame">
-                        <div id="line-chart2" 
-                             class="plot" 
-                             role="img" 
-                             aria-label="Multi-line chart showing search trends for 9 health conditions from 2004 to 2017"
-                             aria-describedby="multiline-description">
-                        </div>
-                        <div id="multiline-description" class="sr-only">
-                            Multi-line chart showing individual search trends for 9 health conditions over time.
-                            All conditions show upward trends, with cancer consistently having the highest search volume.
-                            Lines can be toggled on/off for focused comparison.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('line-chart2', 'Health_Condition_Trends')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" onclick="downloadCSV('/searchyearandcondition', 'Search_Year_Condition_Data')">
-                                    <i class="fas fa-file-csv"></i> Download CSV
-                                </button>
-                            </div>
+                    <div id="line-chart2" 
+                         class="plot" 
+                         role="img" 
+                         aria-label="Multi-line chart showing search trends for 9 health conditions from 2004 to 2017"
+                         aria-describedby="multiline-description">
+                    </div>
+                    <div id="multiline-description" class="sr-only">
+                        Multi-line chart showing individual search trends for 9 health conditions over time.
+                        All conditions show upward trends, with cancer consistently having the highest search volume.
+                        Lines can be toggled on/off for focused comparison.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Health_Condition_Trends">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/searchyearandcondition" data-chart-name="Search_Year_Condition_Data">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
 
@@ -303,33 +317,32 @@
         <!-- Health Search in Each State -->
         <section class="posts" role="region" aria-label="Health Search in Each State">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Health Search in Each State</h2>
+                <div class="chart-frame">
+                    <h2>Health Search in Each State</h2>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The detailed searching trends of each disease in each state are displayed below.
                     </p>
-                    <div class="chart-frame">
-                        <div id="bar-chart" 
-                             class="plot" 
-                             role="img" 
-                             aria-label="Grouped bar chart showing search volume by state for 9 health conditions"
-                             aria-describedby="barchart-description">
-                        </div>
-                        <div id="barchart-description" class="sr-only">
-                            Grouped bar chart comparing search volumes across different states for 9 health conditions.
-                            Each state has 9 colored bars representing different health conditions.
-                            Cancer consistently shows the highest search volume across most states.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('bar-chart', 'Health_Search_By_State_Bar')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" onclick="downloadCSV('/mostsserached', 'Top_States_Health_Searches')">
-                                    <i class="fas fa-file-csv"></i> Download CSV
-                                </button>
-                            </div>
+                    <div id="bar-chart" 
+                         class="plot" 
+                         role="img" 
+                         aria-label="Grouped bar chart showing search volume by state for 9 health conditions"
+                         aria-describedby="barchart-description">
+                    </div>
+                    <div id="barchart-description" class="sr-only">
+                        Grouped bar chart comparing search volumes across different states for 9 health conditions.
+                        Each state has 9 colored bars representing different health conditions.
+                        Cancer consistently shows the highest search volume across most states.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Health_Search_By_State_Bar">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/mostsserached" data-chart-name="Top_States_Health_Searches">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
 
@@ -343,33 +356,32 @@
         <!-- Total Volume of Health Search -->
         <section class="posts" role="region" aria-label="Total Volume of Health Search">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Total Volume of Health Search</h2>
+                <div class="chart-frame">
+                    <h2>Total Volume of Health Search</h2>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The following visualization confirms that cancer's popularity in online search. Interestingly, the frequency of searches does not necessarily correlate with the frequency of the condition in the general population, as searches for stroke information are more common than cardiovascular searches even though strokes are more infrequent than cardiovascular disease.
                     </p>
-                    <div class="chart-frame">
-                        <div id="radarmyDiv" 
-                             class="plot" 
-                             role="img" 
-                             aria-label="Radar chart showing total search volume for 9 health conditions"
-                             aria-describedby="radar1-description">
-                        </div>
-                        <div id="radar1-description" class="sr-only">
-                            Radar chart (spider chart) showing comparative search volumes for 9 health conditions.
-                            Cancer shows the largest area, indicating highest total search volume.
-                            Each axis represents a different health condition.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('radarmyDiv', 'Health_Search_Radar')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" onclick="downloadCSV('/totalcondition', 'Total_Condition_Search_Data')">
-                                    <i class="fas fa-file-csv"></i> Download CSV
-                                </button>
-                            </div>
+                    <div id="radarmyDiv" 
+                         class="plot" 
+                         role="img" 
+                         aria-label="Radar chart showing total search volume for 9 health conditions"
+                         aria-describedby="radar1-description">
+                    </div>
+                    <div id="radar1-description" class="sr-only">
+                        Radar chart (spider chart) showing comparative search volumes for 9 health conditions.
+                        Cancer shows the largest area, indicating highest total search volume.
+                        Each axis represents a different health condition.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Health_Search_Radar">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/totalcondition" data-chart-name="Total_Condition_Search_Data">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -379,30 +391,29 @@
         <!-- Radar Chart 2 -->
         <section class="posts" role="region" aria-label="Leading Causes of Death Radar Chart">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Leading Causes of Death Trends</h2>
-                    <div class="chart-frame">
-                        <div id="radarmyDiv2" 
-                             class="plot" 
-                             role="img" 
-                             aria-label="Radar chart showing leading causes of death from 2004 to 2017 per 100,000 population"
-                             aria-describedby="radar2-description">
-                        </div>
-                        <div id="radar2-description" class="sr-only">
-                            Radar chart showing 10 leading causes of death in the US from 2004 to 2017.
-                            Diseases of the heart and malignant neoplasms (cancer) show the highest death rates.
-                            Data is normalized per 100,000 population.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('radarmyDiv2', 'Death_Causes_Radar')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" onclick="downloadCSV('/totaldeathcase', 'Total_Death_Case_Data')">
-                                    <i class="fas fa-file-csv"></i> Download CSV
-                                </button>
-                            </div>
+                <div class="chart-frame">
+                    <h2>Leading Causes of Death Trends</h2>
+                    <div id="radarmyDiv2" 
+                         class="plot" 
+                         role="img" 
+                         aria-label="Radar chart showing leading causes of death from 2004 to 2017 per 100,000 population"
+                         aria-describedby="radar2-description">
+                    </div>
+                    <div id="radar2-description" class="sr-only">
+                        Radar chart showing 10 leading causes of death in the US from 2004 to 2017.
+                        Diseases of the heart and malignant neoplasms (cancer) show the highest death rates.
+                        Data is normalized per 100,000 population.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Death_Causes_Radar">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/totaldeathcase" data-chart-name="Total_Death_Case_Data">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -412,32 +423,35 @@
         <!-- Correlations Among Health Conditions -->
         <section class="posts" role="region" aria-label="Correlations Among Health Conditions">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Correlations Among Health Conditions</h2>
+                <div class="chart-frame">
+                    <h2>Correlations Among Health Conditions</h2>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The following diagram shows the online search correlations among all the observed diseases according to our data. The stronger correlations are in the darker shades.
                     </p>
-                    <div class="chart-frame">
-                        <div id="myDiv" 
-                             class="plot" 
-                             role="img" 
-                             aria-label="Correlation matrix heatmap showing relationships between 9 health conditions"
-                             aria-describedby="correlation-description">
-                        </div>
-                        <div id="correlation-description" class="sr-only">
-                            Heatmap showing correlation coefficients between search trends for 9 health conditions.
-                            Darker colors indicate stronger correlations. Diabetes shows strong correlations with depression and obesity.
-                            Correlation values range from 0.28 to 0.74.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('myDiv', 'Health_Condition_Correlations')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                            </div>
+                    <div id="myDiv" 
+                         class="plot" 
+                         role="img" 
+                         aria-label="Correlation matrix heatmap showing relationships between 9 health conditions"
+                         aria-describedby="correlation-description">
+                    </div>
+                    <div id="correlation-description" class="sr-only">
+                        Heatmap showing correlation coefficients between search trends for 9 health conditions.
+                        Darker colors indicate stronger correlations. Diabetes shows strong correlations with depression and obesity.
+                        Correlation values range from 0.28 to 0.74.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Health_Condition_Correlations">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/totalcondition" data-chart-name="Condition_Correlation_Data">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
+                    
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
                         Of course, however, correlation does not often imply causation, so some of the correlations might still be coincidental. Our visualization only provides a reference of information.
                     </p>
@@ -452,30 +466,29 @@
         <!-- Leading Causes of Death -->
         <section class="posts" role="region" aria-label="Leading Causes of Death">
             <article class="post">
-                <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 20px;">10 Leading Causes of Death Per 100,000 Population from 2004-2017</h2>
-                    <div class="chart-frame">
-                        <div id='line-chart3' 
-                             class="plot" 
-                             role="img" 
-                             aria-label="Multi-line chart showing trends in 10 leading causes of death from 2004 to 2017"
-                             aria-describedby="deathchart-description">
-                        </div>
-                        <div id="deathchart-description" class="sr-only">
-                            Line chart showing trends for 10 leading causes of death in the US from 2004 to 2017.
-                            Diseases of the heart show the highest death rates, followed by malignant neoplasms.
-                            Most causes show decreasing or stable trends over time.
-                        </div>
-                        <!-- Download Buttons -->
-                        <div class="chart-download-container text-center mt-3">
-                            <div class="download-buttons-wrapper">
-                                <button class="btn btn-outline-primary btn-sm download-chart-btn" onclick="downloadChart('line-chart3', 'Leading_Causes_of_Death_Trends')">
-                                    <i class="fas fa-download"></i> Download Chart
-                                </button>
-                                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" onclick="downloadCSV('/casesleadingdeath', 'Leading_Causes_of_Death_Data')">
-                                    <i class="fas fa-file-csv"></i> Download CSV
-                                </button>
-                            </div>
+                <div class="chart-frame">
+                    <h2>10 Leading Causes of Death Per 100,000 Population from 2004-2017</h2>
+                    <div id='line-chart3' 
+                         class="plot" 
+                         role="img" 
+                         aria-label="Multi-line chart showing trends in 10 leading causes of death from 2004 to 2017"
+                         aria-describedby="deathchart-description">
+                    </div>
+                    <div id="deathchart-description" class="sr-only">
+                        Line chart showing trends for 10 leading causes of death in the US from 2004 to 2017.
+                        Diseases of the heart show the highest death rates, followed by malignant neoplasms.
+                        Most causes show decreasing or stable trends over time.
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="chart-download-container">
+                        <div class="download-buttons-wrapper">
+                            <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Leading_Causes_of_Death_Trends">
+                                <i class="fas fa-download"></i> Download Chart
+                            </button>
+                            <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/casesleadingdeath" data-chart-name="Leading_Causes_of_Death_Data">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
                         </div>
                     </div>
                 </div>

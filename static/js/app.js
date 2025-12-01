@@ -1,5 +1,4 @@
-// Enhanced Health Search Trends Dashboard
-// Consistent with home page styling
+// Enhanced Health Search Trends Dashboard - FIXED VERSION
 
 class HealthDashboard {
     constructor() {
@@ -10,7 +9,6 @@ class HealthDashboard {
             states: []
         };
         
-        // Colors matching your original visual style
         this.colors = {
             conditions: {
                 cancer: 'rgba(255, 144, 14, 0.5)',
@@ -22,17 +20,6 @@ class HealthDashboard {
                 rehab: 'rgba(79, 90, 117, 0.5)',
                 stroke: 'rgba(222, 223, 0, 0.5)',
                 vaccine: 'rgba(222, 223, 0, 0.5)'
-            },
-            barColors: {
-                cancer: '#448',
-                cardiovascular: '#88C',
-                depression: '#CCF',
-                diabetes: '#080',
-                diarrhea: '#8c8',
-                obesity: '#CFC',
-                rehab: '#880',
-                stroke: '#CC8',
-                vaccine: '#FFC'
             }
         };
         
@@ -44,47 +31,10 @@ class HealthDashboard {
         this.setupLoadingStates();
         this.loadAllCharts();
         this.setupEventListeners();
-        this.addStatsOverview();
+        this.setupDownloadButtons();
     }
 
-    // Add stats overview similar to home page
-    addStatsOverview() {
-        const statsHTML = `
-            <div class="row text-center mb-5 justify-content-center stats-overview-container">
-                <div class="col-md-2 col-6 mb-4">
-                    <div class="stat-card">
-                        <h3>14</h3>
-                        <p>Years Data</p>
-                    </div>
-                </div>
-                <div class="col-md-2 col-6 mb-4">
-                    <div class="stat-card">
-                        <h3>9</h3>
-                        <p>Health Conditions</p>
-                    </div>
-                </div>
-                <div class="col-md-2 col-6 mb-4">
-                    <div class="stat-card">
-                        <h3>50+</h3>
-                        <p>States Analyzed</p>
-                    </div>
-                </div>
-                <div class="col-md-2 col-6 mb-4">
-                    <div class="stat-card">
-                        <h3>1M+</h3>
-                        <p>Data Points</p>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        const jumbotron = document.querySelector('.jumbotron');
-        if (jumbotron) {
-            jumbotron.insertAdjacentHTML('afterend', statsHTML);
-        }
-    }
-
-    // Setup loading states for all chart containers
+    // Setup loading states
     setupLoadingStates() {
         const chartContainers = [
             'line-chart', 'line-chart2', 'myDiv', 'boxDiv', 
@@ -96,7 +46,6 @@ class HealthDashboard {
         });
     }
 
-    // Show loading states
     showLoading(containerId) {
         const container = document.getElementById(containerId);
         if (container) {
@@ -111,7 +60,6 @@ class HealthDashboard {
         }
     }
 
-    // Hide loading state
     hideLoading(containerId) {
         const container = document.getElementById(containerId);
         if (container) {
@@ -120,6 +68,44 @@ class HealthDashboard {
                 loadingElement.style.display = 'none';
             }
         }
+    }
+
+    // Setup download button event listeners
+    setupDownloadButtons() {
+        // Set up chart download buttons
+        document.querySelectorAll('.download-chart-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const chartId = e.target.closest('.chart-frame').querySelector('.plot').id;
+                const chartName = e.target.dataset.chartName || this.getDefaultChartName(chartId);
+                this.downloadChart(chartId, chartName);
+            });
+        });
+
+        // Set up CSV download buttons
+        document.querySelectorAll('.download-csv-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const endpoint = e.target.dataset.endpoint;
+                const chartName = e.target.dataset.chartName || 'Health_Data';
+                if (endpoint) {
+                    this.downloadCSV(endpoint, chartName);
+                }
+            });
+        });
+    }
+
+    getDefaultChartName(chartId) {
+        const chartNames = {
+            'line-chart': 'Total_Search_Volume_Trend',
+            'line-chart2': 'Health_Condition_Trends',
+            'myDiv': 'Health_Condition_Correlations',
+            'boxDiv': 'Health_Search_Boxplot',
+            'mymapDiv': 'Health_Search_Volume_Map',
+            'bar-chart': 'Health_Search_By_State',
+            'radarmyDiv': 'Health_Search_Radar',
+            'radarmyDiv2': 'Death_Causes_Radar',
+            'line-chart3': 'Leading_Causes_of_Death_Trends'
+        };
+        return chartNames[chartId] || 'Health_Chart';
     }
 
     // Load all charts
@@ -137,13 +123,12 @@ class HealthDashboard {
             ]);
             
             console.log('✅ All charts loaded successfully');
-            this.setupIndividualDownloadButtons();
         } catch (error) {
             console.error('Error loading charts:', error);
         }
     }
 
-    // 1. Total Searches by Year (Single Line Chart)
+    // Chart loading methods (unchanged from your original)
     async loadTotalSearchesByYear() {
         Plotly.d3.json('/searchbyyear', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -165,7 +150,7 @@ class HealthDashboard {
             };
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 title: 'Total Volume of Searches by Year',
                 xaxis: {
@@ -189,7 +174,6 @@ class HealthDashboard {
         });
     }
 
-    // 2. Multiple Line Chart - Health Conditions
     async loadSearchesByYearAndCondition() {
         Plotly.d3.json('/searchyearandcondition', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -219,7 +203,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 title: 'Total Volume of Searches by year Versus Health Conditions',
                 xaxis: {
@@ -249,7 +233,6 @@ class HealthDashboard {
         });
     }
 
-    // 3. Correlation Matrix - Updated title
     async loadCorrelationMatrix() {
         const xValues = ['Cancer', 'Cardiovascular', 'Stroke', 'Depression', 'Rehab', 'Vaccine', 'Diarrhea', 'Obesity', 'Diabetes'];
         const yValues = ['Cancer', 'Cardiovascular', 'Stroke', 'Depression', 'Rehab', 'Vaccine', 'Diarrhea', 'Obesity', 'Diabetes'];
@@ -288,7 +271,7 @@ class HealthDashboard {
         }];
 
         const layout = {
-            width: null, // Use container width for responsiveness
+            width: null,
             height: 500,
             title: 'Correlations Among Health Conditions',
             plot_bgcolor: 'rgba(0,0,0,0)',
@@ -307,7 +290,6 @@ class HealthDashboard {
         this.hideLoading('myDiv');
     }
 
-    // 4. Box Plot
     async loadBoxPlot() {
         Plotly.d3.json('/searchyearandcondition', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -336,7 +318,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 title: 'Boxplot of Health Google Search 2004-2017',
                 xaxis: {
@@ -360,7 +342,6 @@ class HealthDashboard {
         });
     }
 
-    // 5. Choropleth Map with Centered Right Legend
     async loadChoroplethMap() {
         Plotly.d3.json('/searchbystate', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -404,7 +385,7 @@ class HealthDashboard {
                     center: { lon: -95.712891, lat: 37.090240 }, 
                     zoom: 3 
                 },
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 margin: { t: 40, b: 40, l: 40, r: 120 },
                 plot_bgcolor: 'rgba(0,0,0,0)',
@@ -427,7 +408,6 @@ class HealthDashboard {
         });
     }
 
-    // 6. Bar Chart - Health Searches by State
     async loadHealthSearchesByState() {
         Plotly.d3.json('/mostsserached', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -445,19 +425,19 @@ class HealthDashboard {
                   vaccine = unpack(data, 'vaccine');
 
             const traces = [
-                { x: state, y: cancer, type: 'bar', marker: { color: this.colors.barColors.cancer }, name: 'Cancer' },
-                { x: state, y: cardiovascular, type: 'bar', marker: { color: this.colors.barColors.cardiovascular }, name: 'Cardiovascular' },
-                { x: state, y: depression, type: 'bar', marker: { color: this.colors.barColors.depression }, name: 'Depression' },
-                { x: state, y: diabetes, type: 'bar', marker: { color: this.colors.barColors.diabetes }, name: 'Diabetes' },
-                { x: state, y: diarrhea, type: 'bar', marker: { color: this.colors.barColors.diarrhea }, name: 'Diarrhea' },
-                { x: state, y: obesity, type: 'bar', marker: { color: this.colors.barColors.obesity }, name: 'Obesity' },
-                { x: state, y: rehab, type: 'bar', marker: { color: this.colors.barColors.rehab }, name: 'Rehab' },
-                { x: state, y: stroke, type: 'bar', marker: { color: this.colors.barColors.stroke }, name: 'Stroke' },
-                { x: state, y: vaccine, type: 'bar', marker: { color: this.colors.barColors.vaccine }, name: 'Vaccine' }
+                { x: state, y: cancer, type: 'bar', marker: { color: '#448' }, name: 'Cancer' },
+                { x: state, y: cardiovascular, type: 'bar', marker: { color: '#88C' }, name: 'Cardiovascular' },
+                { x: state, y: depression, type: 'bar', marker: { color: '#CCF' }, name: 'Depression' },
+                { x: state, y: diabetes, type: 'bar', marker: { color: '#080' }, name: 'Diabetes' },
+                { x: state, y: diarrhea, type: 'bar', marker: { color: '#8c8' }, name: 'Diarrhea' },
+                { x: state, y: obesity, type: 'bar', marker: { color: '#CFC' }, name: 'Obesity' },
+                { x: state, y: rehab, type: 'bar', marker: { color: '#880' }, name: 'Rehab' },
+                { x: state, y: stroke, type: 'bar', marker: { color: '#CC8' }, name: 'Stroke' },
+                { x: state, y: vaccine, type: 'bar', marker: { color: '#FFC' }, name: 'Vaccine' }
             ];
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 title: 'Health Searches by States',
                 barmode: 'group',
@@ -490,9 +470,8 @@ class HealthDashboard {
         });
     }
 
-    // 7. Radar Charts
     async loadRadarCharts() {
-        // Radar Chart 1 - Health Condition Searches
+        // Radar Chart 1
         const healthData = [{
             type: 'scatterpolar',
             r: [179192, 94220, 137010, 167778, 150355, 121874, 137974, 155732, 143489],
@@ -504,7 +483,7 @@ class HealthDashboard {
 
         const healthLayout = {
             title: 'The Sum total Volume of Health Condition Searches from 2004- 2017',
-            width: null, // Use container width for responsiveness
+            width: null,
             height: 500,
             polar: {
                 radialaxis: {
@@ -522,7 +501,7 @@ class HealthDashboard {
         Plotly.newPlot("radarmyDiv", healthData, healthLayout, this.getChartConfig());
         this.hideLoading('radarmyDiv');
 
-        // Radar Chart 2 - Leading Causes of Death
+        // Radar Chart 2
         const deathData = [{
             type: 'scatterpolar',
             r: [571, 357.3, 568.3, 308.5, 2574, 229.9, 2282.4, 196.8, 589.5, 171],
@@ -534,7 +513,7 @@ class HealthDashboard {
 
         const deathLayout = {
             title: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017',
-            width: null, // Use container width for responsiveness
+            width: null,
             height: 500,
             polar: {
                 radialaxis: {
@@ -553,7 +532,6 @@ class HealthDashboard {
         this.hideLoading('radarmyDiv2');
     }
 
-    // 8. Leading Causes of Death Line Chart
     async loadLeadingCausesOfDeath() {
         Plotly.d3.json('/casesleadingdeath', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -585,7 +563,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 xaxis: {
                     title: 'Years',
@@ -633,63 +611,7 @@ class HealthDashboard {
         };
     }
 
-    setupIndividualDownloadButtons() {
-        const chartConfigs = [
-            { id: 'line-chart', name: 'Total Volume of Searches by Year', endpoint: '/searchbyyear' },
-            { id: 'line-chart2', name: 'Total Volume of Searches by year Versus Health Conditions', endpoint: '/searchyearandcondition' },
-            { id: 'myDiv', name: 'Correlations Among Health Conditions', endpoint: null },
-            { id: 'boxDiv', name: 'Boxplot of Health Google Search 2004-2017', endpoint: '/searchyearandcondition' },
-            { id: 'mymapDiv', name: 'Health Searches by State Map', endpoint: '/searchbystate' },
-            { id: 'bar-chart', name: 'Health Searches by States', endpoint: '/mostsserached' },
-            { id: 'radarmyDiv', name: 'The Sum total Volume of Health Condition Searches from 2004- 2017', endpoint: null },
-            { id: 'radarmyDiv2', name: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017', endpoint: null },
-            { id: 'line-chart3', name: 'Leading Causes of Death Trends', endpoint: '/casesleadingdeath' }
-        ];
-
-        chartConfigs.forEach(config => {
-            this.addDownloadButton(config.id, config.name, config.endpoint);
-        });
-    }
-
-    addDownloadButton(chartId, chartName, endpoint) {
-        const chartContainer = document.getElementById(chartId);
-        if (!chartContainer) return;
-
-        // Remove any existing download button first
-        const existingButton = chartContainer.parentNode.querySelector('.chart-download-container');
-        if (existingButton) {
-            existingButton.remove();
-        }
-
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'chart-download-container';
-        
-        let csvButton = '';
-        if (endpoint) {
-            csvButton = `
-                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" 
-                        onclick="healthDashboard.downloadCSV('${endpoint}', '${chartName}')">
-                    <i class="fas fa-file-csv"></i> Download CSV
-                </button>
-            `;
-        }
-
-        buttonContainer.innerHTML = `
-            <div class="download-buttons-wrapper">
-                <button class="btn btn-outline-primary btn-sm download-chart-btn" 
-                        onclick="healthDashboard.downloadChart('${chartId}', '${chartName}')">
-                    <i class="fas fa-download"></i> Download chart
-                </button>
-                ${csvButton}
-            </div>
-        `;
-
-        // Insert the download button right after the chart container
-        chartContainer.parentNode.insertBefore(buttonContainer, chartContainer.nextSibling);
-    }
-
     downloadChart(chartId, chartName) {
-        // Use the exact visual name for the file
         const cleanName = this.cleanFileName(chartName);
             
         Plotly.downloadImage(chartId, {
@@ -720,17 +642,13 @@ class HealthDashboard {
             return;
         }
 
-        // Get headers from the first object
         const headers = Object.keys(data[0]);
         
-        // Create CSV content
         let csvContent = headers.join(',') + '\n';
         
-        // Add data rows
         data.forEach(row => {
             const values = headers.map(header => {
                 const value = row[header];
-                // Handle values that might contain commas or quotes
                 if (value === null || value === undefined) return '';
                 const stringValue = String(value);
                 if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
@@ -741,7 +659,6 @@ class HealthDashboard {
             csvContent += values.join(',') + '\n';
         });
 
-        // Create and trigger download
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
@@ -785,215 +702,139 @@ const dashboardStyles = `
     }
     
     .chart-download-container {
-        text-align: right;
-        margin: 0;
+        text-align: center;
+        margin-top: 1rem;
         padding: 1rem;
         background: #f8f9fa;
+        border-radius: 8px;
         border: 1px solid #dee2e6;
-        border-top: none;
-        border-radius: 0 0 8px 8px;
-        clear: both;
     }
     
     .download-buttons-wrapper {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         align-items: center;
         gap: 10px;
+        flex-wrap: wrap;
     }
     
     .download-chart-btn, .download-csv-btn {
         font-size: 0.875rem;
         padding: 0.5rem 1rem;
-        margin: 0;
-        white-space: nowrap;
+        min-width: 140px;
     }
     
     .plot-container .plot {
-        border-radius: 8px 8px 0 0;
+        border-radius: 8px;
         margin-bottom: 0;
-        border: 1px solid #dee2e6;
-        border-bottom: none;
         width: 100%;
         overflow: hidden;
     }
     
-    /* Ensure proper spacing between sections */
-    .posts {
-        margin-bottom: 3rem;
-    }
-    
-    .post {
-        margin-bottom: 0;
-    }
-    
-    /* Center all visuals */
-    .plot-container {
-        text-align: center;
-    }
-    
-    .plot {
-        display: inline-block;
-        margin: 0 auto;
-        max-width: 100%;
-    }
-    
-    /* Hide loading circles when charts are loaded */
-    .chart-loaded .chart-loading {
-        display: none !important;
-    }
-    
-    /* Map specific styling */
-    #mymapDiv {
-        margin: 0 auto;
-        border: 1px solid #dee2e6;
-        border-radius: 8px 8px 0 0;
-        width: 100%;
-        overflow: hidden;
-    }
-    
-    /* Ensure map legend is properly positioned */
-    .js-plotly-plot .plotly .mapboxgl-ctrl-bottom-left {
-        bottom: 120px !important;
-    }
-    
-    .js-plotly-plot .plotly .mapboxgl-ctrl-bottom-right {
-        bottom: 120px !important;
-    }
-    
-    /* Make sure download buttons are properly positioned */
-    .chart-wrapper {
-        margin-bottom: 2rem;
-        width: 100%;
-    }
-    
-    /* Stats cards styling - Equal size and centered */
+    /* Stats overview - fixed positioning */
     .stats-overview-container {
         display: flex;
         justify-content: center;
         align-items: stretch;
+        flex-wrap: wrap;
+        margin: 2rem 0 3rem 0;
     }
     
     .stat-card {
-        background: white;
-        padding: 2rem 1rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+        color: white;
+        padding: 1.5rem 1rem;
+        border-radius: 10px;
+        margin: 0.5rem;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
-        min-height: 140px;
+        min-height: 120px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        flex: 1;
+        min-width: 180px;
+        max-width: 240px;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
     
     .stat-card h3 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         font-weight: bold;
-        color: #2E86AB;
+        color: white;
         margin-bottom: 0.5rem;
         line-height: 1;
     }
     
     .stat-card p {
-        color: #6c757d;
+        color: rgba(255,255,255,0.9);
         margin: 0;
         font-size: 0.9rem;
         line-height: 1.2;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
     
-    /* Ensure charts stay in frame */
+    /* Chart frame styling */
     .chart-frame {
-        width: 100%;
-        overflow: hidden;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
         margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        border: 1px solid #eaeaea;
+    }
+    
+    .chart-frame h2, .chart-frame h3 {
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        text-align: center;
     }
     
     /* Responsive adjustments */
     @media (max-width: 768px) {
-        .chart-download-container {
-            text-align: center;
-        }
-        
-        .download-buttons-wrapper {
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .download-chart-btn, .download-csv-btn {
-            width: 100%;
-            margin-bottom: 5px;
-        }
-        
         .stat-card {
-            padding: 1.5rem 0.5rem;
-            min-height: 120px;
-        }
-        
-        .stat-card h3 {
-            font-size: 2rem;
-        }
-        
-        .stats-overview-container .col-6 {
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-        
-        /* Adjust chart margins for mobile */
-        .plot {
-            width: 100% !important;
-        }
-        
-        /* Improve mobile readability */
-        .post p {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        
-        h3, h5 {
-            font-size: 1.5rem !important;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .stat-card {
+            min-width: 140px;
             padding: 1rem 0.5rem;
-            min-height: 100px;
         }
         
         .stat-card h3 {
-            font-size: 1.75rem;
-        }
-        
-        .stat-card p {
-            font-size: 0.8rem;
-        }
-        
-        .jumbotron h1 {
-            font-size: 2rem;
-        }
-        
-        .jumbotron p {
-            font-size: 1rem;
+            font-size: 1.8rem;
         }
         
         .download-buttons-wrapper {
             flex-direction: column;
         }
-    }
-    
-    /* Ensure proper printing */
-    @media print {
-        .chart-download-container {
-            display: none;
+        
+        .download-chart-btn, .download-csv-btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
         }
         
+        .stats-overview-container {
+            justify-content: space-around;
+        }
+    }
+    
+    @media (max-width: 576px) {
         .stat-card {
-            break-inside: avoid;
+            min-width: 45%;
+            margin: 0.25rem;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.6rem;
+        }
+        
+        .stat-card p {
+            font-size: 0.8rem;
         }
     }
 `;
