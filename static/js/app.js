@@ -1,6 +1,62 @@
-// Enhanced Health Search Trends Dashboard
-// Consistent with home page styling
+// Enhanced Health Analytics Dashboard - Main JavaScript File
 
+// Global utility functions
+function downloadChart(chartId, chartName) {
+    Plotly.downloadImage(chartId, {
+        format: 'png',
+        filename: chartName,
+        height: 600,
+        width: 800,
+        scale: 2
+    });
+}
+
+async function downloadCSV(endpoint, filename) {
+    try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        
+        // Convert to CSV
+        if (!data.data || data.data.length === 0) {
+            alert('No data available to download.');
+            return;
+        }
+
+        const headers = Object.keys(data.data[0]);
+        let csvContent = headers.join(',') + '\n';
+        
+        data.data.forEach(row => {
+            const values = headers.map(header => {
+                const value = row[header];
+                if (value === null || value === undefined) return '';
+                const stringValue = String(value);
+                if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+                    return '"' + stringValue.replace(/"/g, '""') + '"';
+                }
+                return stringValue;
+            });
+            csvContent += values.join(',') + '\n';
+        });
+
+        // Create and trigger download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${filename}.csv`);
+        link.style.visibility = 'hidden';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('Error downloading CSV:', error);
+        alert('Error downloading CSV data. Please try again.');
+    }
+}
+
+// Main Dashboard Class
 class HealthDashboard {
     constructor() {
         this.charts = {};
@@ -42,12 +98,12 @@ class HealthDashboard {
     init() {
         console.log('🚀 Initializing Health Analytics Dashboard...');
         this.setupLoadingStates();
+        this.addStatsOverview();
         this.loadAllCharts();
         this.setupEventListeners();
-        this.addStatsOverview();
     }
 
-    // Add stats overview similar to home page
+    // Add centered stats overview
     addStatsOverview() {
         const statsHTML = `
             <div class="row text-center mb-5 justify-content-center stats-overview-container">
@@ -78,9 +134,9 @@ class HealthDashboard {
             </div>
         `;
         
-        const jumbotron = document.querySelector('.jumbotron');
-        if (jumbotron) {
-            jumbotron.insertAdjacentHTML('afterend', statsHTML);
+        const statsContainer = document.querySelector('.stats-overview');
+        if (statsContainer) {
+            statsContainer.innerHTML = statsHTML;
         }
     }
 
@@ -137,7 +193,6 @@ class HealthDashboard {
             ]);
             
             console.log('✅ All charts loaded successfully');
-            this.setupIndividualDownloadButtons();
         } catch (error) {
             console.error('Error loading charts:', error);
         }
@@ -165,7 +220,7 @@ class HealthDashboard {
             };
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 title: 'Total Volume of Searches by Year',
                 xaxis: {
@@ -219,7 +274,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 title: 'Total Volume of Searches by year Versus Health Conditions',
                 xaxis: {
@@ -288,7 +343,7 @@ class HealthDashboard {
         }];
 
         const layout = {
-            width: null, // Use container width for responsiveness
+            width: null,
             height: 500,
             title: 'Correlations Among Health Conditions',
             plot_bgcolor: 'rgba(0,0,0,0)',
@@ -336,7 +391,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 title: 'Boxplot of Health Google Search 2004-2017',
                 xaxis: {
@@ -404,7 +459,7 @@ class HealthDashboard {
                     center: { lon: -95.712891, lat: 37.090240 }, 
                     zoom: 3 
                 },
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 margin: { t: 40, b: 40, l: 40, r: 120 },
                 plot_bgcolor: 'rgba(0,0,0,0)',
@@ -457,7 +512,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 title: 'Health Searches by States',
                 barmode: 'group',
@@ -504,7 +559,7 @@ class HealthDashboard {
 
         const healthLayout = {
             title: 'The Sum total Volume of Health Condition Searches from 2004- 2017',
-            width: null, // Use container width for responsiveness
+            width: null,
             height: 500,
             polar: {
                 radialaxis: {
@@ -534,7 +589,7 @@ class HealthDashboard {
 
         const deathLayout = {
             title: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017',
-            width: null, // Use container width for responsiveness
+            width: null,
             height: 500,
             polar: {
                 radialaxis: {
@@ -585,7 +640,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: null, // Use container width for responsiveness
+                width: null,
                 height: 500,
                 xaxis: {
                     title: 'Years',
@@ -633,135 +688,6 @@ class HealthDashboard {
         };
     }
 
-    setupIndividualDownloadButtons() {
-        const chartConfigs = [
-            { id: 'line-chart', name: 'Total Volume of Searches by Year', endpoint: '/searchbyyear' },
-            { id: 'line-chart2', name: 'Total Volume of Searches by year Versus Health Conditions', endpoint: '/searchyearandcondition' },
-            { id: 'myDiv', name: 'Correlations Among Health Conditions', endpoint: null },
-            { id: 'boxDiv', name: 'Boxplot of Health Google Search 2004-2017', endpoint: '/searchyearandcondition' },
-            { id: 'mymapDiv', name: 'Health Searches by State Map', endpoint: '/searchbystate' },
-            { id: 'bar-chart', name: 'Health Searches by States', endpoint: '/mostsserached' },
-            { id: 'radarmyDiv', name: 'The Sum total Volume of Health Condition Searches from 2004- 2017', endpoint: null },
-            { id: 'radarmyDiv2', name: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017', endpoint: null },
-            { id: 'line-chart3', name: 'Leading Causes of Death Trends', endpoint: '/casesleadingdeath' }
-        ];
-
-        chartConfigs.forEach(config => {
-            this.addDownloadButton(config.id, config.name, config.endpoint);
-        });
-    }
-
-    addDownloadButton(chartId, chartName, endpoint) {
-        const chartContainer = document.getElementById(chartId);
-        if (!chartContainer) return;
-
-        // Remove any existing download button first
-        const existingButton = chartContainer.parentNode.querySelector('.chart-download-container');
-        if (existingButton) {
-            existingButton.remove();
-        }
-
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'chart-download-container';
-        
-        let csvButton = '';
-        if (endpoint) {
-            csvButton = `
-                <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" 
-                        onclick="healthDashboard.downloadCSV('${endpoint}', '${chartName}')">
-                    <i class="fas fa-file-csv"></i> Download CSV
-                </button>
-            `;
-        }
-
-        buttonContainer.innerHTML = `
-            <div class="download-buttons-wrapper">
-                <button class="btn btn-outline-primary btn-sm download-chart-btn" 
-                        onclick="healthDashboard.downloadChart('${chartId}', '${chartName}')">
-                    <i class="fas fa-download"></i> Download chart
-                </button>
-                ${csvButton}
-            </div>
-        `;
-
-        // Insert the download button right after the chart container
-        chartContainer.parentNode.insertBefore(buttonContainer, chartContainer.nextSibling);
-    }
-
-    downloadChart(chartId, chartName) {
-        // Use the exact visual name for the file
-        const cleanName = this.cleanFileName(chartName);
-            
-        Plotly.downloadImage(chartId, {
-            format: 'png',
-            filename: cleanName,
-            height: 500,
-            width: 800,
-            scale: 2
-        });
-    }
-
-    async downloadCSV(endpoint, chartName) {
-        try {
-            const response = await fetch(endpoint);
-            const data = await response.json();
-            
-            const cleanName = this.cleanFileName(chartName);
-            this.convertToCSVAndDownload(data.data, cleanName);
-        } catch (error) {
-            console.error('Error downloading CSV:', error);
-            alert('Error downloading CSV data. Please try again.');
-        }
-    }
-
-    convertToCSVAndDownload(data, filename) {
-        if (!data || data.length === 0) {
-            alert('No data available to download.');
-            return;
-        }
-
-        // Get headers from the first object
-        const headers = Object.keys(data[0]);
-        
-        // Create CSV content
-        let csvContent = headers.join(',') + '\n';
-        
-        // Add data rows
-        data.forEach(row => {
-            const values = headers.map(header => {
-                const value = row[header];
-                // Handle values that might contain commas or quotes
-                if (value === null || value === undefined) return '';
-                const stringValue = String(value);
-                if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
-                    return '"' + stringValue.replace(/"/g, '""') + '"';
-                }
-                return stringValue;
-            });
-            csvContent += values.join(',') + '\n';
-        });
-
-        // Create and trigger download
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${filename}.csv`);
-        link.style.visibility = 'hidden';
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
-    cleanFileName(name) {
-        return name
-            .toLowerCase()
-            .replace(/[^a-z0-9\s]/g, '')
-            .replace(/\s+/g, '_');
-    }
-
     setupEventListeners() {
         window.addEventListener('resize', () => {
             ['line-chart', 'line-chart2', 'myDiv', 'boxDiv', 'bar-chart', 'line-chart3', 'radarmyDiv', 'radarmyDiv2']
@@ -773,237 +699,19 @@ class HealthDashboard {
     }
 }
 
-// Add CSS for styling
-const dashboardStyles = `
-    .chart-loading {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 3rem;
-        color: #6c757d;
-    }
-    
-    .chart-download-container {
-        text-align: right;
-        margin: 0;
-        padding: 1rem;
-        background: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-top: none;
-        border-radius: 0 0 8px 8px;
-        clear: both;
-    }
-    
-    .download-buttons-wrapper {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .download-chart-btn, .download-csv-btn {
-        font-size: 0.875rem;
-        padding: 0.5rem 1rem;
-        margin: 0;
-        white-space: nowrap;
-    }
-    
-    .plot-container .plot {
-        border-radius: 8px 8px 0 0;
-        margin-bottom: 0;
-        border: 1px solid #dee2e6;
-        border-bottom: none;
-        width: 100%;
-        overflow: hidden;
-    }
-    
-    /* Ensure proper spacing between sections */
-    .posts {
-        margin-bottom: 3rem;
-    }
-    
-    .post {
-        margin-bottom: 0;
-    }
-    
-    /* Center all visuals */
-    .plot-container {
-        text-align: center;
-    }
-    
-    .plot {
-        display: inline-block;
-        margin: 0 auto;
-        max-width: 100%;
-    }
-    
-    /* Hide loading circles when charts are loaded */
-    .chart-loaded .chart-loading {
-        display: none !important;
-    }
-    
-    /* Map specific styling */
-    #mymapDiv {
-        margin: 0 auto;
-        border: 1px solid #dee2e6;
-        border-radius: 8px 8px 0 0;
-        width: 100%;
-        overflow: hidden;
-    }
-    
-    /* Ensure map legend is properly positioned */
-    .js-plotly-plot .plotly .mapboxgl-ctrl-bottom-left {
-        bottom: 120px !important;
-    }
-    
-    .js-plotly-plot .plotly .mapboxgl-ctrl-bottom-right {
-        bottom: 120px !important;
-    }
-    
-    /* Make sure download buttons are properly positioned */
-    .chart-wrapper {
-        margin-bottom: 2rem;
-        width: 100%;
-    }
-    
-    /* Stats cards styling - Equal size and centered */
-    .stats-overview-container {
-        display: flex;
-        justify-content: center;
-        align-items: stretch;
-    }
-    
-    .stat-card {
-        background: white;
-        padding: 2rem 1rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        margin-bottom: 1rem;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        min-height: 140px;
-    }
-    
-    .stat-card h3 {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #2E86AB;
-        margin-bottom: 0.5rem;
-        line-height: 1;
-    }
-    
-    .stat-card p {
-        color: #6c757d;
-        margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.2;
-    }
-    
-    /* Ensure charts stay in frame */
-    .chart-frame {
-        width: 100%;
-        overflow: hidden;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .chart-download-container {
-            text-align: center;
-        }
-        
-        .download-buttons-wrapper {
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .download-chart-btn, .download-csv-btn {
-            width: 100%;
-            margin-bottom: 5px;
-        }
-        
-        .stat-card {
-            padding: 1.5rem 0.5rem;
-            min-height: 120px;
-        }
-        
-        .stat-card h3 {
-            font-size: 2rem;
-        }
-        
-        .stats-overview-container .col-6 {
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-        
-        /* Adjust chart margins for mobile */
-        .plot {
-            width: 100% !important;
-        }
-        
-        /* Improve mobile readability */
-        .post p {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        
-        h3, h5 {
-            font-size: 1.5rem !important;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .stat-card {
-            padding: 1rem 0.5rem;
-            min-height: 100px;
-        }
-        
-        .stat-card h3 {
-            font-size: 1.75rem;
-        }
-        
-        .stat-card p {
-            font-size: 0.8rem;
-        }
-        
-        .jumbotron h1 {
-            font-size: 2rem;
-        }
-        
-        .jumbotron p {
-            font-size: 1rem;
-        }
-        
-        .download-buttons-wrapper {
-            flex-direction: column;
-        }
-    }
-    
-    /* Ensure proper printing */
-    @media print {
-        .chart-download-container {
-            display: none;
-        }
-        
-        .stat-card {
-            break-inside: avoid;
-        }
-    }
-`;
-
-// Inject styles
-const styleSheet = document.createElement('style');
-styleSheet.textContent = dashboardStyles;
-document.head.appendChild(styleSheet);
-
 // Initialize the dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     window.healthDashboard = new HealthDashboard();
+    
+    // Add accessibility focus management
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+        skipLink.addEventListener('click', function() {
+            const mainContent = document.getElementById('dashboard-content');
+            if (mainContent) {
+                mainContent.setAttribute('tabindex', '-1');
+                mainContent.focus();
+            }
+        });
+    }
 });

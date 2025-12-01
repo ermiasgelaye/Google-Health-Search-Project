@@ -19,10 +19,11 @@
 </head>
 
 <body>
+
     <!-- Enhanced Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar">
-        <a class="navbar-brand enhanced-navbar-brand" href="/Home">
-            <i class="fas fa-chart-line"></i>Eagle Health Analytics
+    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar" aria-label="Main Navigation">
+        <a class="navbar-brand enhanced-navbar-brand" href="/Home" aria-label="Eagle Health Analytics Home">
+            <i class="fas fa-chart-line" aria-hidden="true"></i>Eagle Health Analytics
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,41 +34,41 @@
             <ul class="navbar-nav ml-auto">
                 <!-- API Links Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-code mr-1"></i>API Links
+                    <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="API Links Menu">
+                        <i class="fas fa-code mr-1" aria-hidden="true"></i>API Links
                     </a>
                     <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition" target="_blank">Total Search by Year and Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" target="_blank">Total Search by Year and States</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" target="_blank">All Search Record List</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/location" target="_blank">Location</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" target="_blank">Top Ten Searched States by Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" target="_blank">Sum of All Search Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" target="_blank">Sum Total of the Leading Causes of Death</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" target="_blank" aria-label="Total Search by Year">Total Search by Year</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition" target="_blank" aria-label="Total Search by Year and Conditions">Total Search by Year and Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" target="_blank" aria-label="Total Search by States">Total Search by States</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" target="_blank" aria-label="Total Search by City">Total Search by City</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" target="_blank" aria-label="Total Search by Year and States">Total Search by Year and States</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath" target="_blank" aria-label="Leading Cases of Death">Leading Cases of Death</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" target="_blank" aria-label="All Search Record List">All Search Record List</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/location" target="_blank" aria-label="Location Data">Location</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/conditions" target="_blank" aria-label="Search Conditions">Search Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" target="_blank" aria-label="Top Ten Searched States by Conditions">Top Ten Searched States by Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" target="_blank" aria-label="Sum of All Search Conditions">Sum of All Search Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" target="_blank" aria-label="Sum Total of the Leading Causes of Death">Sum Total of the Leading Causes of Death</a>
                     </div>
                 </li>
 
                 <!-- Dashboards Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-tachometer-alt mr-1"></i>Dashboards
+                    <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Dashboards Menu">
+                        <i class="fas fa-tachometer-alt mr-1" aria-hidden="true"></i>Dashboards
                     </a>
                     <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item enhanced-dropdown-item" href="/Home">Home</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="main.html">Main Dashboard</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="comparison.html">Comparison</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/Home" aria-label="Home Dashboard">Home</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="main.html" aria-label="Analytics Dashboard">Main Dashboard</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="comparison.html" aria-label="Comparison Dashboard">Comparison</a>
                     </div>
                 </li>
 
                 <!-- About -->
                 <li class="nav-item">
-                    <a class="nav-link enhanced-nav-link active" href="about.html">
-                        <i class="fas fa-users mr-1"></i>About Us
+                    <a class="nav-link enhanced-nav-link active" href="about.html" aria-label="About Us" aria-current="page">
+                        <i class="fas fa-users mr-1" aria-hidden="true"></i>About Us
                     </a>
                 </li>
             </ul>
@@ -84,24 +85,26 @@
     </div>
 
     <!-- Team Members Section -->
-    <section class="team-section">
+    <section class="team-section" id="team-content" role="main" aria-label="Team Members">
         <div class="container">
             <div class="row justify-content-center">
                 <!-- Team Member 1 -->
                 <div class="col-md-10 mb-4">
-                    <div class="team-member-card">
+                    <div class="team-member-card" role="article" aria-label="Team Member: Ermias Gaga" tabindex="0">
                         <div class="row align-items-center">
                             <div class="col-md-3 text-center">
-                                <img class="team-member-image" src="../img/ermias.jpg" alt="Ermias Gaga">
+                                <img class="team-member-image" 
+                                     src="../img/ermias.jpg" 
+                                     alt="Portrait of Ermias Gaga, a data-driven researcher and emerging data scientist with expertise in analytics, cognitive science, and psychology">
                             </div>
                             <div class="col-md-9">
-                                <h3 class="team-member-name">Ermias Gaga</h3>
-                                <div class="social-links mb-3">
-                                    <a href="https://www.linkedin.com/in/egaga/" target="_blank" class="mr-3">
-                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                <h2 class="team-member-name">Ermias Gaga</h2>
+                                <div class="social-links mb-3" aria-label="Social media links for Ermias Gaga">
+                                    <a href="https://www.linkedin.com/in/egaga/" target="_blank" class="mr-3" aria-label="Visit Ermias Gaga's LinkedIn profile">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn icon">
                                     </a>
-                                    <a href="https://github.com/ermiasgelaye" target="_blank">
-                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    <a href="https://github.com/ermiasgelaye" target="_blank" aria-label="Visit Ermias Gaga's GitHub profile">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub icon">
                                     </a>
                                 </div>
                                 <p style="color: #2c3e50; line-height: 1.6;">
@@ -114,19 +117,21 @@
 
                 <!-- Team Member 2 -->
                 <div class="col-md-10 mb-4">
-                    <div class="team-member-card">
+                    <div class="team-member-card" role="article" aria-label="Team Member: Amanda Qianyue Ma" tabindex="0">
                         <div class="row align-items-center">
                             <div class="col-md-3 text-center">
-                                <img class="team-member-image" src="../img/amanda.jpg" alt="Amanda Qianyue Ma">
+                                <img class="team-member-image" 
+                                     src="../img/amanda.jpg" 
+                                     alt="Portrait of Amanda Qianyue Ma, seeking an analytic position with academic background in Economics, Psychology, and Philosophy">
                             </div>
                             <div class="col-md-9">
-                                <h3 class="team-member-name">Amanda Qianyue Ma</h3>
-                                <div class="social-links mb-3">
-                                    <a href="https://www.linkedin.com/in/amanda-qianyue-ma-77b5b9105/" target="_blank" class="mr-3">
-                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                <h2 class="team-member-name">Amanda Qianyue Ma</h2>
+                                <div class="social-links mb-3" aria-label="Social media links for Amanda Qianyue Ma">
+                                    <a href="https://www.linkedin.com/in/amanda-qianyue-ma-77b5b9105/" target="_blank" class="mr-3" aria-label="Visit Amanda Qianyue Ma's LinkedIn profile">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn icon">
                                     </a>
-                                    <a href="https://github.com/QianyueMa" target="_blank">
-                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    <a href="https://github.com/QianyueMa" target="_blank" aria-label="Visit Amanda Qianyue Ma's GitHub profile">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub icon">
                                     </a>
                                 </div>
                                 <p style="color: #2c3e50; line-height: 1.6;">
@@ -139,19 +144,21 @@
 
                 <!-- Team Member 3 -->
                 <div class="col-md-10 mb-4">
-                    <div class="team-member-card">
+                    <div class="team-member-card" role="article" aria-label="Team Member: Amos Johnson" tabindex="0">
                         <div class="row align-items-center">
                             <div class="col-md-3 text-center">
-                                <img class="team-member-image" src="../img/amos.jpg" alt="Amos Johnson">
+                                <img class="team-member-image" 
+                                     src="../img/amos.jpg" 
+                                     alt="Portrait of Amos Johnson, journalism graduate pursuing data analytics with experience in service industry, editing, and website design">
                             </div>
                             <div class="col-md-9">
-                                <h3 class="team-member-name">Amos Johnson</h3>
-                                <div class="social-links mb-3">
-                                    <a href="https://www.linkedin.com/in/amos-johnson-data-journalism/" target="_blank" class="mr-3">
-                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                <h2 class="team-member-name">Amos Johnson</h2>
+                                <div class="social-links mb-3" aria-label="Social media links for Amos Johnson">
+                                    <a href="https://www.linkedin.com/in/amos-johnson-data-journalism/" target="_blank" class="mr-3" aria-label="Visit Amos Johnson's LinkedIn profile">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn icon">
                                     </a>
-                                    <a href="https://github.com/AmosJAMcLovin" target="_blank">
-                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    <a href="https://github.com/AmosJAMcLovin" target="_blank" aria-label="Visit Amos Johnson's GitHub profile">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub icon">
                                     </a>
                                 </div>
                                 <p style="color: #2c3e50; line-height: 1.6;">
@@ -164,19 +171,21 @@
 
                 <!-- Team Member 4 -->
                 <div class="col-md-10 mb-4">
-                    <div class="team-member-card">
+                    <div class="team-member-card" role="article" aria-label="Team Member: Adedamola Atekoja (Damola)" tabindex="0">
                         <div class="row align-items-center">
                             <div class="col-md-3 text-center">
-                                <img class="team-member-image" src="../img/damola.jpg" alt="Adedamola Atekoja">
+                                <img class="team-member-image" 
+                                     src="../img/damola.jpg" 
+                                     alt="Portrait of Adedamola Atekoja (Damola), chartered accountant with Big Four consulting experience and technical skills in Excel, Python, SQL, and Tableau">
                             </div>
                             <div class="col-md-9">
-                                <h3 class="team-member-name">Adedamola Atekoja ('Damola)</h3>
-                                <div class="social-links mb-3">
-                                    <a href="https://www.linkedin.com/in/adedamola-atekoja-aca-115463103/" target="_blank" class="mr-3">
-                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                <h2 class="team-member-name">Adedamola Atekoja ('Damola)</h2>
+                                <div class="social-links mb-3" aria-label="Social media links for Adedamola Atekoja">
+                                    <a href="https://www.linkedin.com/in/adedamola-atekoja-aca-115463103/" target="_blank" class="mr-3" aria-label="Visit Adedamola Atekoja's LinkedIn profile">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn icon">
                                     </a>
-                                    <a href="https://github.com/Damola-A" target="_blank">
-                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    <a href="https://github.com/Damola-A" target="_blank" aria-label="Visit Adedamola Atekoja's GitHub profile">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub icon">
                                     </a>
                                 </div>
                                 <p style="color: #2c3e50; line-height: 1.6;">
@@ -189,19 +198,21 @@
 
                 <!-- Team Member 5 -->
                 <div class="col-md-10 mb-4">
-                    <div class="team-member-card">
+                    <div class="team-member-card" role="article" aria-label="Team Member: Maria Lorena" tabindex="0">
                         <div class="row align-items-center">
                             <div class="col-md-3 text-center">
-                                <img class="team-member-image" src="../img/maria.jpg" alt="Maria Lorena">
+                                <img class="team-member-image" 
+                                     src="../img/maria.jpg" 
+                                     alt="Portrait of Maria Lorena, trilingual Project Manager focusing on Data Analysis at University of Toronto and JP Morgan & Chase">
                             </div>
                             <div class="col-md-9">
-                                <h3 class="team-member-name">Maria Lorena</h3>
-                                <div class="social-links mb-3">
-                                    <a href="https://www.linkedin.com/in/marialorena-nunez/" target="_blank" class="mr-3">
-                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn">
+                                <h2 class="team-member-name">Maria Lorena</h2>
+                                <div class="social-links mb-3" aria-label="Social media links for Maria Lorena">
+                                    <a href="https://www.linkedin.com/in/marialorena-nunez/" target="_blank" class="mr-3" aria-label="Visit Maria Lorena's LinkedIn profile">
+                                        <img class="social-icon" src="../img/linkedin-blk.png" alt="LinkedIn icon">
                                     </a>
-                                    <a href="https://github.com/MariaLoren" target="_blank">
-                                        <img class="social-icon" src="../img/github.png" alt="GitHub">
+                                    <a href="https://github.com/MariaLoren" target="_blank" aria-label="Visit Maria Lorena's GitHub profile">
+                                        <img class="social-icon" src="../img/github.png" alt="GitHub icon">
                                     </a>
                                 </div>
                                 <p style="color: #2c3e50; line-height: 1.6;">
@@ -216,7 +227,7 @@
     </section>
 
     <!-- Enhanced Footer -->
-    <footer class="text-center enhanced-footer">
+    <footer class="text-center enhanced-footer" role="contentinfo">
         <div class="container">
             <p class="mb-0">&copy; 2025 Eagle Health Analytics. All rights reserved.</p>
         </div>
@@ -226,5 +237,96 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        // Accessibility enhancements for about page
+        document.addEventListener('DOMContentLoaded', function() {
+
+
+            // Make team cards fully keyboard accessible
+            const teamCards = document.querySelectorAll('.team-member-card');
+            teamCards.forEach((card, index) => {
+                card.setAttribute('tabindex', '0');
+                
+                // Add keyboard navigation
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        // Focus the card
+                        this.focus();
+                        
+                        // Announce team member name for screen readers
+                        const memberName = this.querySelector('.team-member-name').textContent;
+                        const liveRegion = document.createElement('div');
+                        liveRegion.className = 'sr-only';
+                        liveRegion.setAttribute('aria-live', 'polite');
+                        liveRegion.textContent = 'Selected team member: ' + memberName;
+                        document.body.appendChild(liveRegion);
+                        setTimeout(() => {
+                            document.body.removeChild(liveRegion);
+                        }, 1000);
+                    }
+                    
+                    // Arrow key navigation between cards
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        const nextCard = teamCards[index + 1];
+                        if (nextCard) {
+                            nextCard.focus();
+                        }
+                    }
+                    
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        const prevCard = teamCards[index - 1];
+                        if (prevCard) {
+                            prevCard.focus();
+                        }
+                    }
+                });
+                
+                // Add hover/focus states
+                card.addEventListener('focus', function() {
+                    this.style.outline = '3px solid #2E86AB';
+                    this.style.outlineOffset = '2px';
+                });
+                
+                card.addEventListener('blur', function() {
+                    this.style.outline = 'none';
+                });
+            });
+
+            // Make social links more accessible
+            const socialLinks = document.querySelectorAll('.social-links a');
+            socialLinks.forEach(link => {
+                link.setAttribute('tabindex', '0');
+                link.setAttribute('aria-label', link.getAttribute('aria-label') || 'Social media link');
+                
+                // Add visual focus indicator
+                link.addEventListener('focus', function() {
+                    this.style.outline = '2px solid #2E86AB';
+                    this.style.outlineOffset = '2px';
+                });
+                
+                link.addEventListener('blur', function() {
+                    this.style.outline = 'none';
+                });
+            });
+
+            // Add keyboard shortcuts info (for screen reader users)
+            const keyboardShortcuts = document.createElement('div');
+            keyboardShortcuts.className = 'sr-only';
+            keyboardShortcuts.innerHTML = `
+                <h3>Keyboard Navigation Tips</h3>
+                <ul>
+                    <li>Use Tab to navigate between interactive elements</li>
+                    <li>Use Enter or Space to select team member cards</li>
+                    <li>Use Arrow keys to navigate between team members</li>
+                    <li>Press Escape to close any open menus</li>
+                </ul>
+            `;
+            document.body.appendChild(keyboardShortcuts);
+        });
+    </script>
 </body>
 </html>

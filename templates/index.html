@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Health Analytics - Google Health Search Trends Analysis">
-    <title>Eagle Health Analytics </title>
+    <title>Eagle Health Analytics</title>
     
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -147,7 +147,7 @@
             font-size: 0.9rem;
             border: 1px solid rgba(52, 152, 219, 0.2);
             transition: all 0.3s ease;
-            color: #424949;
+            color: #2c3e50; /* Improved color contrast */
         }
         
         .health-tag:hover {
@@ -181,14 +181,17 @@
     </style>
 </head>
 <body>
+    <!-- Skip to Content Link (Accessibility) -->
+    <a href="#main-content" class="skip-link" tabindex="0">Skip to main content</a>
+    
     <!-- Enhanced Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar fixed-top" aria-label="Main Navigation">
         <div class="container">
-            <a class="navbar-brand enhanced-navbar-brand" href="/Home">
-                <i class="fas fa-chart-line"></i> Eagle Health Analytics
+            <a class="navbar-brand enhanced-navbar-brand" href="/Home" aria-label="Eagle Health Analytics Home">
+                <i class="fas fa-chart-line" aria-hidden="true"></i> Eagle Health Analytics
             </a>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -196,41 +199,41 @@
                 <ul class="navbar-nav ml-auto">
                     <!-- API Links Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="apiLinksDropdown" role="button" data-toggle="dropdown">
-                            <i class="fas fa-code mr-1"></i>API Links
+                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="apiLinksDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="API Links Menu">
+                            <i class="fas fa-code mr-1" aria-hidden="true"></i>API Links
                         </a>
                         <div class="dropdown-menu navbar-li-a" aria-labelledby="apiLinksDropdown">
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear">Total Search by Year</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition">Total Search by Year and Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate">Total Search by States</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity">Total Search by City</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear">Total Search by Year and States</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath">Leading Cases of Death</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord">All Search Record List</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/location">Location</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/conditions">Search Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached">Top Ten Searched States by Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition">Sum of All Search Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase">Sum Total of the Leading Causes of Death</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" aria-label="Total Search by Year">Total Search by Year</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition" aria-label="Total Search by Year and Conditions">Total Search by Year and Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" aria-label="Total Search by States">Total Search by States</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" aria-label="Total Search by City">Total Search by City</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" aria-label="Total Search by Year and States">Total Search by Year and States</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath" aria-label="Leading Cases of Death">Leading Cases of Death</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" aria-label="All Search Record List">All Search Record List</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/location" aria-label="Location Data">Location</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/conditions" aria-label="Search Conditions">Search Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" aria-label="Top Ten Searched States by Conditions">Top Ten Searched States by Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" aria-label="Sum of All Search Conditions">Sum of All Search Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" aria-label="Sum Total of the Leading Causes of Death">Sum Total of the Leading Causes of Death</a>
                         </div>
                     </li>
 
                     <!-- Dashboards Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="dashboardsDropdown" role="button" data-toggle="dropdown">
-                            <i class="fas fa-tachometer-alt mr-1"></i>Dashboards
+                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="dashboardsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Dashboards Menu">
+                            <i class="fas fa-tachometer-alt mr-1" aria-hidden="true"></i>Dashboards
                         </a>
                         <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
-                            <a class="dropdown-item enhanced-dropdown-item active" href="/Home">Home</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="{{ url_for('static', filename='dashbords/main.html') }}">Analytics</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="{{ url_for('static', filename='dashbords/comparison.html') }}">Comparison</a>
+                            <a class="dropdown-item enhanced-dropdown-item active" href="/Home" aria-label="Home Dashboard" aria-current="page">Home</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="{{ url_for('static', filename='dashbords/main.html') }}" aria-label="Analytics Dashboard">Analytics</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="{{ url_for('static', filename='dashbords/comparison.html') }}" aria-label="Comparison Dashboard">Comparison</a>
                         </div>
                     </li>
 
                     <!-- About -->
                     <li class="nav-item">
-                        <a class="nav-link enhanced-nav-link" href="{{ url_for('static', filename='dashbords/about.html') }}">
-                            <i class="fas fa-users mr-1"></i>About Us
+                        <a class="nav-link enhanced-nav-link" href="{{ url_for('static', filename='dashbords/about.html') }}" aria-label="About Us">
+                            <i class="fas fa-users mr-1" aria-hidden="true"></i>About Us
                         </a>
                     </li>
                 </ul>
@@ -239,7 +242,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section" id="main-content" role="main" aria-label="Health Analytics Hero Section">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 hero-content">
@@ -250,23 +253,23 @@
                         Analyze 14 years of Google search trends across 9 major health conditions in the United States. Uncover patterns, correlations, and public health interests.
                     </p>
                     
-                    <div class="hero-stats">
+                    <div class="hero-stats" role="region" aria-label="Statistics Overview">
                         <div class="row text-center">
                             <div class="col-4">
                                 <div class="stat-item">
-                                    <span class="stat-number">14</span>
+                                    <span class="stat-number" aria-label="14 Years of Data">14</span>
                                     <span class="stat-label">Years Data</span>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-item">
-                                    <span class="stat-number">9</span>
+                                    <span class="stat-number" aria-label="9 Health Conditions">9</span>
                                     <span class="stat-label">Conditions</span>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-item">
-                                    <span class="stat-number">50+</span>
+                                    <span class="stat-number" aria-label="50 plus States Analyzed">50+</span>
                                     <span class="stat-label">States</span>
                                 </div>
                             </div>
@@ -276,7 +279,7 @@
                 <div class="col-lg-6 text-center">
                     <div class="floating">
                         <img src="{{ url_for('static', filename='img/main.gif') }}" 
-                             alt="Health Analytics" 
+                             alt="Animated health data visualization showing search trends for various health conditions from 2004 to 2017" 
                              class="hero-image"
                              style="max-height: 400px;">
                     </div>
@@ -295,11 +298,11 @@
             </div>
             
             <div class="col-lg-4 mb-4">
-                <div class="feature-card">
-                    <div class="feature-icon">
+                <div class="feature-card" role="article" aria-label="Early Detection Feature">
+                    <div class="feature-icon" aria-hidden="true">
                         <i class="fas fa-search"></i>
                     </div>
-                    <h4 class="font-weight-bold mb-3">Early Detection</h4>
+                    <h3 class="font-weight-bold mb-3">Early Detection</h3>
                     <p class="text-muted">
                         Identify emerging health concerns through search pattern analysis before they appear in official health statistics.
                     </p>
@@ -307,11 +310,11 @@
             </div>
             
             <div class="col-lg-4 mb-4">
-                <div class="feature-card">
-                    <div class="feature-icon">
+                <div class="feature-card" role="article" aria-label="Geographic Insights Feature">
+                    <div class="feature-icon" aria-hidden="true">
                         <i class="fas fa-map-marked-alt"></i>
                     </div>
-                    <h4 class="font-weight-bold mb-3">Geographic Insights</h4>
+                    <h3 class="font-weight-bold mb-3">Geographic Insights</h3>
                     <p class="text-muted">
                         Discover regional health patterns and concerns across all 50 states with interactive mapping and analysis.
                     </p>
@@ -319,11 +322,11 @@
             </div>
             
             <div class="col-lg-4 mb-4">
-                <div class="feature-card">
-                    <div class="feature-icon">
+                <div class="feature-card" role="article" aria-label="Trend Analysis Feature">
+                    <div class="feature-icon" aria-hidden="true">
                         <i class="fas fa-chart-line"></i>
                     </div>
-                    <h4 class="font-weight-bold mb-3">Trend Analysis</h4>
+                    <h3 class="font-weight-bold mb-3">Trend Analysis</h3>
                     <p class="text-muted">
                         Track how public interest in health conditions evolves over time with comprehensive analytics and visualization.
                     </p>
@@ -337,16 +340,16 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
                         <h3 class="font-weight-bold mb-4">Tracked Health Conditions</h3>
-                        <div class="text-center">
-                            <span class="health-tag">Cancer</span>
-                            <span class="health-tag">Cardiovascular</span>
-                            <span class="health-tag">Depression</span>
-                            <span class="health-tag">Diabetes</span>
-                            <span class="health-tag">Obesity</span>
-                            <span class="health-tag">Stroke</span>
-                            <span class="health-tag">Vaccine</span>
-                            <span class="health-tag">Rehab</span>
-                            <span class="health-tag">Diarrhea</span>
+                        <div class="text-center" role="list" aria-label="List of tracked health conditions">
+                            <span class="health-tag" role="listitem" tabindex="0">Cancer</span>
+                            <span class="health-tag" role="listitem" tabindex="0">Cardiovascular</span>
+                            <span class="health-tag" role="listitem" tabindex="0">Depression</span>
+                            <span class="health-tag" role="listitem" tabindex="0">Diabetes</span>
+                            <span class="health-tag" role="listitem" tabindex="0">Obesity</span>
+                            <span class="health-tag" role="listitem" tabindex="0">Stroke</span>
+                            <span class="health-tag" role="listitem" tabindex="0">Vaccine</span>
+                            <span class="health-tag" role="listitem" tabindex="0">Rehab</span>
+                            <span class="health-tag" role="listitem" tabindex="0">Diarrhea</span>
                         </div>
                     </div>
                 </div>
@@ -356,22 +359,22 @@
         <!-- Data Sources -->
         <div class="row mb-5">
             <div class="col-md-6 mb-4">
-                <div class="feature-card">
-                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;">
+                <div class="feature-card" role="article" aria-label="Google Trends Data Source">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;" aria-hidden="true">
                         <i class="fab fa-google"></i>
                     </div>
-                    <h4 class="font-weight-bold mb-3">Google Trends Data</h4>
+                    <h3 class="font-weight-bold mb-3">Google Trends Data</h3>
                     <p class="text-muted">
                         Comprehensive search data from 2004-2017 across all US states and major cities, providing insights into public health interests.
                     </p>
                 </div>
             </div>
             <div class="col-md-6 mb-4">
-                <div class="feature-card">
-                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;">
+                <div class="feature-card" role="article" aria-label="CDC Statistics Data Source">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;" aria-hidden="true">
                         <i class="fas fa-hospital"></i>
                     </div>
-                    <h4 class="font-weight-bold mb-3">CDC Statistics</h4>
+                    <h3 class="font-weight-bold mb-3">CDC Statistics</h3>
                     <p class="text-muted">
                         Official health statistics from the Centers for Disease Control and Prevention for correlation analysis and validation.
                     </p>
@@ -381,18 +384,18 @@
     </div>
 
     <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="cta-section" role="region" aria-label="Call to Action">
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-8">
                     <h2 class="display-5 font-weight-bold mb-4">Ready to Explore Health Insights?</h2>
                     <p class="lead mb-5">Join researchers and healthcare professionals using data to understand public health trends</p>
                     <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                        <a href="{{ url_for('static', filename='dashbords/main.html') }}" class="btn btn-primary-custom btn-lg">
-                            <i class="fas fa-chart-bar mr-2"></i>Explore Dashboard
+                        <a href="{{ url_for('static', filename='dashbords/main.html') }}" class="btn btn-primary-custom btn-lg" aria-label="Explore Analytics Dashboard">
+                            <i class="fas fa-chart-bar mr-2" aria-hidden="true"></i>Explore Dashboard
                         </a>
-                        <a href="{{ url_for('static', filename='dashbords/about.html') }}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-users mr-2"></i>Meet Our Team
+                        <a href="{{ url_for('static', filename='dashbords/about.html') }}" class="btn btn-outline-light btn-lg" aria-label="Meet Our Team">
+                            <i class="fas fa-users mr-2" aria-hidden="true"></i>Meet Our Team
                         </a>
                     </div>
                 </div>
@@ -401,7 +404,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
+    <footer class="bg-dark text-white py-4" role="contentinfo">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
@@ -438,6 +441,22 @@
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'all 0.6s ease';
                 observer.observe(card);
+            });
+
+            // Add keyboard navigation to health tags
+            document.querySelectorAll('.health-tag').forEach(tag => {
+                tag.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        window.location.href = 'dashbords/main.html?condition=' + this.textContent.toLowerCase();
+                    }
+                });
+            });
+
+            // Focus management for skip link
+            document.querySelector('.skip-link').addEventListener('click', function() {
+                document.getElementById('main-content').setAttribute('tabindex', '-1');
+                document.getElementById('main-content').focus();
             });
         });
     </script>
