@@ -16,8 +16,6 @@ from dotenv import load_dotenv
 ##################################################
 
 load_dotenv()
-
-# Get DATABASE_URL from environment
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if not DATABASE_URL:
@@ -27,13 +25,9 @@ if not DATABASE_URL:
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
+# Create SQLAlchemy engine
 engine = create_engine(DATABASE_URL)
 
-# Check database connection and tables
-meta = sqlalchemy.MetaData()
-meta.reflect(bind=engine)
-table_names = meta.tables.keys()
-print("Available tables:", table_names)
 
 #################################################
 # Flask Setup
