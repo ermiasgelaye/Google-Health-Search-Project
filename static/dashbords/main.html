@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Main Dashboard - Google Health Search Trends Analysis">
+    <meta name="description" content="Health Analytics - Google Health Search Trends Analysis">
 
-    <title>Main Dashboard | Eagle Dashboard</title>
+    <title>Analytics | Eagle Dashboard</title>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
@@ -27,7 +27,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <title>Eagle Dashboard</title>
+    <title>Analytics - Eagle Dashboard</title>
 </head>
 
 <body>
@@ -95,7 +95,7 @@
                     </a>
                     <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
                         <a class="dropdown-item enhanced-dropdown-item" href="/Home">Home</a>
-                        <a class="dropdown-item enhanced-dropdown-item active" href="main.html">Main Dashboard</a>
+                        <a class="dropdown-item enhanced-dropdown-item active" href="main.html">Analytics</a>
                         <a class="dropdown-item enhanced-dropdown-item" href="comparison.html">Comparison</a>
                     </div>
                 </li>
@@ -113,9 +113,9 @@
     <!-- Dashboard Header -->
     <div class="row">
         <div class="col-md-12 jumbotron text-center dashboard-jumbotron">
-            <h1 id="head">Google Health Search Trends</h1>
+            <h1 id="head">Health Analytics Dashboard</h1>
             <hr>
-            <p>An interactive charts to explore the search trends of people for common health issues in the United States</p>
+            <p>Interactive analytics exploring Google search trends for common health issues in the United States (2004-2017)</p>
         </div>
     </div>
 
@@ -140,8 +140,8 @@
                 <div class="plot-container">
                     <h3 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Health Search Volume by State and Region</h3>
                     
-                    <div class="chart-wrapper">
-                        <div id="mymapDiv" style="height: 500px; border-radius: 8px 8px 0 0;"></div>
+                    <div class="chart-frame">
+                        <div id="mymapDiv" style="height: 500px;"></div>
                     </div>
 
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
@@ -157,7 +157,7 @@
                 <div class="plot-container">
                     <h3 style="text-align:center; font-size: 25px; margin-bottom: 20px;">The Trend of The Change in The Total Search Volume</h3>
 
-                    <div class="chart-wrapper">
+                    <div class="chart-frame">
                         <div id="line-chart" class="plot"></div>
                     </div>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
@@ -175,7 +175,7 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         This boxplot allows us to see the amount variability in the search score (Google's own metric) in health searches from 2004 to 2017. It is interesting there a wide range for both diabetes and depression.
                     </p>
-                    <div class="chart-wrapper">
+                    <div class="chart-frame">
                         <div id="boxDiv" class="plot"></div>
                     </div>
                 </div>
@@ -190,7 +190,7 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         How does the online searching interest in each health condition change in themselves per se? All of the observed diseases had demonstrated an upward tendency over the years from 2004 to 2017.This multi line graph presents a dramatic illustration of how the public is increasingly obtaining health care information by searching online.
                     </p>
-                    <div class="chart-wrapper">
+                    <div class="chart-frame">
                         <div id="line-chart2" class="plot"></div>
                     </div>
 
@@ -212,7 +212,7 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The detailed searching trends of each disease in each state are displayed below.
                     </p>
-                    <div class="chart-wrapper">
+                    <div class="chart-frame">
                         <div id="bar-chart" class="plot"></div>
                     </div>
 
@@ -231,7 +231,7 @@
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The following visualization confirms that cancer's popularity in online search. Interestingly, the frequency of searches does not necessarily correlate with the frequency of the condition in the general population, as searches for stroke information are more common than cardiovascular searches even though strokes are more infrequent than cardiovascular disease.
                     </p>
-                    <div class="chart-wrapper">
+                    <div class="chart-frame">
                         <div id="radarmyDiv" class="plot"></div>
                     </div>
                 </div>
@@ -242,7 +242,7 @@
         <section class="posts">
             <article class="post">
                 <div class="plot-container">
-                    <div class="chart-wrapper">
+                    <div class="chart-frame">
                         <div id="radarmyDiv2" class="plot"></div>
                     </div>
                 </div>
@@ -253,11 +253,11 @@
         <section class="posts">
             <article class="post">
                 <div class="plot-container">
-                    <h3 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Correlations Among the Health Conditions</h3>
+                    <h3 style="text-align:center; font-size: 25px; margin-bottom: 20px;">Correlations Among Health Conditions</h3>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6;">
                         The following diagram shows the online search correlations among all the observed diseases according to our data. The stronger correlations are in the darker shades.
                     </p>
-                    <div class="chart-wrapper">
+                    <div class="chart-frame">
                         <div id="myDiv" class="plot"></div>
                     </div>
                     <p style="text-align:left; font-size: 18px; line-height: 1.6; margin-top: 20px;">
@@ -276,7 +276,7 @@
             <article class="post">
                 <div class="plot-container">
                     <h5 style="text-align:center; font-size: 25px; margin-bottom: 20px;">10 Leading Causes of Death Per 100,000 Population from 2004-2017</h5>
-                    <div class="chart-wrapper">
+                    <div class="chart-frame">
                         <div id='line-chart3' class="plot"></div>
                     </div>
                 </div>

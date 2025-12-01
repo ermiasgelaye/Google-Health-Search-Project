@@ -50,26 +50,26 @@ class HealthDashboard {
     // Add stats overview similar to home page
     addStatsOverview() {
         const statsHTML = `
-            <div class="row text-center mb-5">
-                <div class="col-md-3">
+            <div class="row text-center mb-5 stats-overview-container">
+                <div class="col-md-3 col-6 mb-4">
                     <div class="stat-card">
                         <h3>14</h3>
                         <p>Years Data</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-6 mb-4">
                     <div class="stat-card">
                         <h3>9</h3>
                         <p>Health Conditions</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-6 mb-4">
                     <div class="stat-card">
                         <h3>50+</h3>
                         <p>States Analyzed</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-6 mb-4">
                     <div class="stat-card">
                         <h3>1M+</h3>
                         <p>Data Points</p>
@@ -165,7 +165,7 @@ class HealthDashboard {
             };
 
             const layout = {
-                width: 1000,
+                width: null, // Use container width for responsiveness
                 height: 500,
                 title: 'Total Volume of Searches by Year',
                 xaxis: {
@@ -180,7 +180,8 @@ class HealthDashboard {
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 margin: { t: 60, r: 40, b: 80, l: 60 },
-                hovermode: 'closest'
+                hovermode: 'closest',
+                autosize: true
             };
 
             Plotly.newPlot('line-chart', [totalvolume], layout, this.getChartConfig());
@@ -218,7 +219,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: 1000,
+                width: null, // Use container width for responsiveness
                 height: 500,
                 title: 'Total Volume of Searches by year Versus Health Conditions',
                 xaxis: {
@@ -239,7 +240,8 @@ class HealthDashboard {
                     y: -0.3,
                     x: 0.5,
                     xanchor: 'center'
-                }
+                },
+                autosize: true
             };
 
             Plotly.newPlot('line-chart2', traces, layout, this.getChartConfig());
@@ -286,7 +288,7 @@ class HealthDashboard {
         }];
 
         const layout = {
-            width: 1000,
+            width: null, // Use container width for responsiveness
             height: 500,
             title: 'Correlations Among Health Conditions',
             plot_bgcolor: 'rgba(0,0,0,0)',
@@ -297,7 +299,8 @@ class HealthDashboard {
             },
             yaxis: {
                 autorange: 'reversed'
-            }
+            },
+            autosize: true
         };
 
         Plotly.newPlot('myDiv', data, layout, this.getChartConfig());
@@ -333,7 +336,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: 1000,
+                width: null, // Use container width for responsiveness
                 height: 500,
                 title: 'Boxplot of Health Google Search 2004-2017',
                 xaxis: {
@@ -348,7 +351,8 @@ class HealthDashboard {
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 margin: { t: 60, r: 40, b: 80, l: 60 },
-                showlegend: false
+                showlegend: false,
+                autosize: true
             };
 
             Plotly.newPlot('boxDiv', traces, layout, this.getChartConfig());
@@ -400,11 +404,12 @@ class HealthDashboard {
                     center: { lon: -95.712891, lat: 37.090240 }, 
                     zoom: 3 
                 },
-                width: 1000,
+                width: null, // Use container width for responsiveness
                 height: 500,
                 margin: { t: 40, b: 40, l: 40, r: 120 },
                 plot_bgcolor: 'rgba(0,0,0,0)',
-                paper_bgcolor: 'rgba(0,0,0,0)'
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                autosize: true
             };
 
             const config = {
@@ -452,7 +457,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: 1000,
+                width: null, // Use container width for responsiveness
                 height: 500,
                 title: 'Health Searches by States',
                 barmode: 'group',
@@ -476,7 +481,8 @@ class HealthDashboard {
                     y: -0.4,
                     x: 0.5,
                     xanchor: 'center'
-                }
+                },
+                autosize: true
             };
 
             Plotly.newPlot('bar-chart', traces, layout, this.getChartConfig());
@@ -498,7 +504,7 @@ class HealthDashboard {
 
         const healthLayout = {
             title: 'The Sum total Volume of Health Condition Searches from 2004- 2017',
-            width: 1000,
+            width: null, // Use container width for responsiveness
             height: 500,
             polar: {
                 radialaxis: {
@@ -509,7 +515,8 @@ class HealthDashboard {
             showlegend: false,
             plot_bgcolor: 'rgba(0,0,0,0)',
             paper_bgcolor: 'rgba(0,0,0,0)',
-            margin: { t: 60, r: 40, b: 80, l: 60 }
+            margin: { t: 60, r: 40, b: 80, l: 60 },
+            autosize: true
         };
 
         Plotly.newPlot("radarmyDiv", healthData, healthLayout, this.getChartConfig());
@@ -527,7 +534,7 @@ class HealthDashboard {
 
         const deathLayout = {
             title: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017',
-            width: 1000,
+            width: null, // Use container width for responsiveness
             height: 500,
             polar: {
                 radialaxis: {
@@ -538,7 +545,8 @@ class HealthDashboard {
             showlegend: false,
             plot_bgcolor: 'rgba(0,0,0,0)',
             paper_bgcolor: 'rgba(0,0,0,0)',
-            margin: { t: 60, r: 40, b: 80, l: 60 }
+            margin: { t: 60, r: 40, b: 80, l: 60 },
+            autosize: true
         };
 
         Plotly.newPlot("radarmyDiv2", deathData, deathLayout, this.getChartConfig());
@@ -577,7 +585,7 @@ class HealthDashboard {
             ];
 
             const layout = {
-                width: 1000,
+                width: null, // Use container width for responsiveness
                 height: 500,
                 xaxis: {
                     title: 'Years',
@@ -597,7 +605,8 @@ class HealthDashboard {
                     y: -0.4,
                     x: 0.5,
                     xanchor: 'center'
-                }
+                },
+                autosize: true
             };
 
             Plotly.newPlot('line-chart3', traces, layout, this.getChartConfig());
@@ -657,7 +666,7 @@ class HealthDashboard {
         buttonContainer.innerHTML = `
             <button class="btn btn-outline-primary btn-sm download-chart-btn" 
                     onclick="healthDashboard.downloadChart('${chartId}', '${chartName}')">
-                <i class="fas fa-download"></i> Download ${chartName}
+                <i class="fas fa-download"></i> Download chart
             </button>
         `;
 
@@ -704,7 +713,7 @@ const dashboardStyles = `
     }
     
     .chart-download-container {
-        text-align: right;
+        text-align: center;
         margin: 0;
         padding: 1rem;
         background: #f8f9fa;
@@ -725,6 +734,8 @@ const dashboardStyles = `
         margin-bottom: 0;
         border: 1px solid #dee2e6;
         border-bottom: none;
+        width: 100%;
+        overflow: hidden;
     }
     
     /* Ensure proper spacing between sections */
@@ -744,6 +755,7 @@ const dashboardStyles = `
     .plot {
         display: inline-block;
         margin: 0 auto;
+        max-width: 100%;
     }
     
     /* Hide loading circles when charts are loaded */
@@ -756,6 +768,8 @@ const dashboardStyles = `
         margin: 0 auto;
         border: 1px solid #dee2e6;
         border-radius: 8px 8px 0 0;
+        width: 100%;
+        overflow: hidden;
     }
     
     /* Ensure map legend is properly positioned */
@@ -770,15 +784,29 @@ const dashboardStyles = `
     /* Make sure download buttons are properly positioned */
     .chart-wrapper {
         margin-bottom: 2rem;
+        width: 100%;
     }
     
-    /* Stats cards styling */
+    /* Stats cards styling - Equal size and centered */
+    .stats-overview-container {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+    }
+    
     .stat-card {
         background: white;
         padding: 2rem 1rem;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         margin-bottom: 1rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 140px;
     }
     
     .stat-card h3 {
@@ -786,12 +814,23 @@ const dashboardStyles = `
         font-weight: bold;
         color: #2E86AB;
         margin-bottom: 0.5rem;
+        line-height: 1;
     }
     
     .stat-card p {
         color: #6c757d;
         margin: 0;
         font-size: 0.9rem;
+        line-height: 1.2;
+    }
+    
+    /* Ensure charts stay in frame */
+    .chart-frame {
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 2rem;
     }
     
     /* Responsive adjustments */
@@ -806,10 +845,65 @@ const dashboardStyles = `
         
         .stat-card {
             padding: 1.5rem 0.5rem;
+            min-height: 120px;
         }
         
         .stat-card h3 {
             font-size: 2rem;
+        }
+        
+        .stats-overview-container .col-6 {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        
+        /* Adjust chart margins for mobile */
+        .plot {
+            width: 100% !important;
+        }
+        
+        /* Improve mobile readability */
+        .post p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        h3, h5 {
+            font-size: 1.5rem !important;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .stat-card {
+            padding: 1rem 0.5rem;
+            min-height: 100px;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.75rem;
+        }
+        
+        .stat-card p {
+            font-size: 0.8rem;
+        }
+        
+        .jumbotron h1 {
+            font-size: 2rem;
+        }
+        
+        .jumbotron p {
+            font-size: 1rem;
+        }
+    }
+    
+    /* Ensure proper printing */
+    @media print {
+        .chart-download-container {
+            display: none;
+        }
+        
+        .stat-card {
+            break-inside: avoid;
         }
     }
 `;
