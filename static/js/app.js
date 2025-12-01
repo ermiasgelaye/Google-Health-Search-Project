@@ -40,7 +40,7 @@ class HealthDashboard {
     }
 
     init() {
-        console.log('🚀 Initializing Enhanced Health Dashboard...');
+        console.log('🚀 Initializing Health Analytics Dashboard...');
         this.setupLoadingStates();
         this.loadAllCharts();
         this.setupEventListeners();
@@ -247,7 +247,7 @@ class HealthDashboard {
         });
     }
 
-    // 3. Correlation Matrix
+    // 3. Correlation Matrix - Updated title
     async loadCorrelationMatrix() {
         const xValues = ['Cancer', 'Cardiovascular', 'Stroke', 'Depression', 'Rehab', 'Vaccine', 'Diarrhea', 'Obesity', 'Diabetes'];
         const yValues = ['Cancer', 'Cardiovascular', 'Stroke', 'Depression', 'Rehab', 'Vaccine', 'Diarrhea', 'Obesity', 'Diabetes'];
@@ -288,7 +288,7 @@ class HealthDashboard {
         const layout = {
             width: 1000,
             height: 500,
-            title: 'Correlation Between Health Conditions',
+            title: 'Correlations Among Health Conditions',
             plot_bgcolor: 'rgba(0,0,0,0)',
             paper_bgcolor: 'rgba(0,0,0,0)',
             margin: { t: 60, r: 120, b: 100, l: 100 },
@@ -356,7 +356,7 @@ class HealthDashboard {
         });
     }
 
-    // 5. Choropleth Map with Horizontal Legend at Bottom Right
+    // 5. Choropleth Map with Centered Right Legend
     async loadChoroplethMap() {
         Plotly.d3.json('/searchbystate', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -374,17 +374,17 @@ class HealthDashboard {
                 zmin: 2555,
                 zmax: 98134,
                 colorbar: { 
-                    y: -0.15,
-                    yanchor: "bottom",
+                    y: 0.5,
+                    yanchor: "middle",
                     len: 0.8,
-                    x: 0.95,
-                    xanchor: "right",
-                    orientation: "h",
+                    x: 1.02,
+                    xanchor: "left",
+                    orientation: "v",
                     title: { 
                         text: "Search Volume", 
-                        side: "bottom" 
+                        side: "right" 
                     },
-                    thickness: 15,
+                    thickness: 20,
                     outlinewidth: 0
                 },
                 colorscale: [
@@ -402,7 +402,7 @@ class HealthDashboard {
                 },
                 width: 1000,
                 height: 500,
-                margin: { t: 40, b: 100, l: 40, r: 40 },
+                margin: { t: 40, b: 40, l: 40, r: 120 },
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 paper_bgcolor: 'rgba(0,0,0,0)'
             };
@@ -616,7 +616,7 @@ class HealthDashboard {
             modeBarButtons: [['toImage', 'resetScale2d']],
             toImageButtonOptions: {
                 format: 'png',
-                filename: 'health_dashboard_chart',
+                filename: 'health_analytics_chart',
                 height: 500,
                 width: 800,
                 scale: 2
@@ -628,7 +628,7 @@ class HealthDashboard {
         const chartConfigs = [
             { id: 'line-chart', name: 'Total Volume of Searches by Year' },
             { id: 'line-chart2', name: 'Total Volume of Searches by year Versus Health Conditions' },
-            { id: 'myDiv', name: 'Correlation Between Health Conditions' },
+            { id: 'myDiv', name: 'Correlations Among Health Conditions' },
             { id: 'boxDiv', name: 'Boxplot of Health Google Search 2004-2017' },
             { id: 'mymapDiv', name: 'Health Searches by State Map' },
             { id: 'bar-chart', name: 'Health Searches by States' },
@@ -657,7 +657,7 @@ class HealthDashboard {
         buttonContainer.innerHTML = `
             <button class="btn btn-outline-primary btn-sm download-chart-btn" 
                     onclick="healthDashboard.downloadChart('${chartId}', '${chartName}')">
-                <i class="fas fa-download"></i> Download chart
+                <i class="fas fa-download"></i> Download ${chartName}
             </button>
         `;
 
@@ -666,7 +666,7 @@ class HealthDashboard {
     }
 
     downloadChart(chartId, chartName) {
-        // Create a clean filename from the chart name (exact visual name)
+        // Use the exact visual name for the file
         const cleanName = chartName
             .toLowerCase()
             .replace(/[^a-z0-9\s]/g, '')
@@ -758,7 +758,7 @@ const dashboardStyles = `
         border-radius: 8px 8px 0 0;
     }
     
-    /* Ensure map legend doesn't overlap with download button */
+    /* Ensure map legend is properly positioned */
     .js-plotly-plot .plotly .mapboxgl-ctrl-bottom-left {
         bottom: 120px !important;
     }
