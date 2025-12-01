@@ -28,9 +28,9 @@
 
 <body>
     <!-- Enhanced Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar" aria-label="Main Navigation">
-        <a class="navbar-brand enhanced-navbar-brand" href="/Home" aria-label="Eagle Health Analytics Home">
-            <i class="fas fa-chart-line" aria-hidden="true"></i>Eagle Health Analytics
+    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar">
+        <a class="navbar-brand enhanced-navbar-brand" href="/Home">
+            <i class="fas fa-chart-line"></i>Eagle Health Analytics
         </a>
 
         <button
@@ -57,23 +57,22 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        aria-label="API Links Menu"
                     >
-                        <i class="fas fa-code mr-1" aria-hidden="true"></i>API Links
+                        <i class="fas fa-code mr-1"></i>API Links
                     </a>
                     <div class="dropdown-menu navbar-li-a" aria-labelledby="apiLinksDropdown">
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" target="_blank" aria-label="Total Search by Year">Total Search by Year</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition" target="_blank" aria-label="Total Search by Year and Conditions">Total Search by Year and Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" target="_blank" aria-label="Total Search by States">Total Search by States</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" target="_blank" aria-label="Total Search by City">Total Search by City</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" target="_blank" aria-label="Total Search by Year and States">Total Search by Year and States</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath" target="_blank" aria-label="Leading Cases of Death">Leading Cases of Death</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" target="_blank" aria-label="All Search Record List">All Search Record List</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/location" target="_blank" aria-label="Location Data">Location</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/conditions" target="_blank" aria-label="Search Conditions">Search Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" target="_blank" aria-label="Top Ten Searched States by Conditions">Top Ten Searched States by Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" target="_blank" aria-label="Sum of All Search Conditions">Sum of All Search Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" target="_blank" aria-label="Sum Total of the Leading Causes of Death">Sum Total of the Leading Causes of Death</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition" target="_blank">Total Search by Year and Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" target="_blank">Total Search by Year and States</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" target="_blank">All Search Record List</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/location" target="_blank">Location</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" target="_blank">Top Ten Searched States by Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" target="_blank">Sum of All Search Conditions</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" target="_blank">Sum Total of the Leading Causes of Death</a>
                     </div>
                 </li>
 
@@ -87,21 +86,20 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        aria-label="Dashboards Menu"
                     >
-                        <i class="fas fa-tachometer-alt mr-1" aria-hidden="true"></i>Dashboards
+                        <i class="fas fa-tachometer-alt mr-1"></i>Dashboards
                     </a>
                     <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
-                        <a class="dropdown-item enhanced-dropdown-item" href="/Home" aria-label="Home Dashboard">Home</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="main.html" aria-label="Analytics Dashboard">Analytics</a>
-                        <a class="dropdown-item enhanced-dropdown-item active" href="comparison.html" aria-label="Comparison Dashboard" aria-current="page">Comparison</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="/Home">Home</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="main.html">Analytics</a>
+                        <a class="dropdown-item enhanced-dropdown-item active" href="comparison.html">Comparison</a>
                     </div>
                 </li>
 
                 <!-- About -->
                 <li class="nav-item">
-                    <a class="nav-link enhanced-nav-link" href="about.html" aria-label="About Us">
-                        <i class="fas fa-users mr-1" aria-hidden="true"></i>About Us
+                    <a class="nav-link enhanced-nav-link" href="about.html">
+                        <i class="fas fa-users mr-1"></i>About Us
                     </a>
                 </li>
             </ul>
@@ -117,9 +115,9 @@
         </div>
     </div>
 
-    <div class="container" id="comparison-content" role="main">
+    <div class="container">
         <!-- City Selection and Bar Charts Section -->
-        <section class="posts" role="region" aria-label="City Comparison Selection">
+        <section class="posts">
             <article class="post">
                 <div class="plot-container">
                     <div class="showcase__section" id="bar">
@@ -127,59 +125,29 @@
                         <div id="barplots">
                             <div class="barplots" data-num="0">
                                 <div class="control-row mb-4">
-                                    <h2 class="feature-title mb-3">Select City to Compare Health Search Trends</h2>
-                                    <div class="form-group">
-                                        <label for="city-selector" class="sr-only">Select a city to compare health search trends</label>
-                                        <select id="city-selector" class="citydata form-control form-control-lg" style="max-width: 300px; margin: 0 auto;" aria-label="Select a city to compare health search trends">
-                                            <option value="">Choose a city...</option>
-                                        </select>
-                                    </div>
+                                    <h4 class="feature-title mb-3">Select City to Compare Health Search Trends</h4>
+                                    <select class="citydata form-control form-control-lg" style="max-width: 300px; margin: 0 auto;">
+                                        <option value="">Choose a city...</option>
+                                    </select>
                                 </div>
                                 <hr>
                                 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="plot" 
-                                             id="comparison-1" 
-                                             role="img" 
-                                             aria-label="Stacked bar chart showing health search trends for selected city from 2004 to 2017"
-                                             aria-describedby="comparison-chart-description">
-                                        </div>
-                                        <div id="comparison-chart-description" class="sr-only">
-                                            Stacked bar chart showing search volume for 9 health conditions over time for the selected city.
-                                            Each bar represents a year, with colored segments showing different health conditions.
-                                            Use the city selector above to compare different cities.
-                                        </div>
+                                        <div class="plot" id="comparison-1"></div>
                                     </div>
                                 </div>
                                 
                                 <div class="row mt-4">
                                     <div class="col-md-12">
-                                        <div class="plot" 
-                                             id="IntermapDiv" 
-                                             role="img" 
-                                             aria-label="Map showing location of selected city within United States"
-                                             aria-describedby="intermap-description">
-                                        </div>
-                                        <div id="intermap-description" class="sr-only">
-                                            Map showing the geographic location of the selected city within the United States.
-                                            The selected city is highlighted for reference.
-                                        </div>
+                                        <div class="plot" id="IntermapDiv"></div>
                                     </div>
                                 </div>
 
                                 <div class="row mt-4">
                                     <div class="col-md-12">
                                         <figure class="highcharts-figure">
-                                            <div id="container" 
-                                                 role="img" 
-                                                 aria-label="Solid gauge chart showing percentage distribution of diabetes, depression, and diarrhea searches for selected city"
-                                                 aria-describedby="gauge-description">
-                                            </div>
-                                            <figcaption id="gauge-description" class="sr-only">
-                                                Solid gauge chart showing the percentage of total searches for diabetes, depression, and diarrhea in the selected city.
-                                                Three concentric circles show percentages for each condition.
-                                            </figcaption>
+                                            <div id="container"></div>
                                         </figure>
                                     </div>
                                 </div>
@@ -191,40 +159,20 @@
         </section>
 
         <!-- Scatter Plots Section -->
-        <section class="posts" role="region" aria-label="Health Condition Correlations">
+        <section class="posts">
             <article class="post">
                 <div class="plot-container">
-                    <h2 style="text-align:center; font-size: 25px; margin-bottom: 30px;">Scatter Plots for Strongly Correlated Health Conditions</h2>
+                    <h3 style="text-align:center; font-size: 25px; margin-bottom: 30px;">Scatter Plots for Strongly Correlated Health Conditions</h3>
 
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <div class="plot-container" style="height: 500px;">
-                                <div class="plot" 
-                                     id="scatter1" 
-                                     role="img" 
-                                     aria-label="Scatter plot comparing diarrhea and diabetes search trends over time"
-                                     aria-describedby="scatter1-description">
-                                </div>
-                                <div id="scatter1-description" class="sr-only">
-                                    Scatter plot showing correlation between diarrhea and diabetes search trends.
-                                    Each point represents a year from 2004 to 2017.
-                                    Shows moderate positive correlation between the two conditions.
-                                </div>
+                                <div class="plot" id="scatter1"></div>
                             </div>
                         </div>
                         <div class="col-md-6 mb-4">
                             <div class="plot-container" style="height: 500px;">
-                                <div class="plot" 
-                                     id="scatter2" 
-                                     role="img" 
-                                     aria-label="Scatter plot comparing depression and diabetes search trends over time"
-                                     aria-describedby="scatter2-description">
-                                </div>
-                                <div id="scatter2-description" class="sr-only">
-                                    Scatter plot showing correlation between depression and diabetes search trends.
-                                    Each point represents a year from 2004 to 2017.
-                                    Shows strong positive correlation between mental and physical health conditions.
-                                </div>
+                                <div class="plot" id="scatter2"></div>
                             </div>
                         </div>
                     </div>
@@ -232,40 +180,14 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <div class="plot-container" style="height: 500px;">
-                                <div class="plot" 
-                                     id="scatter3" 
-                                     role="img" 
-                                     aria-label="Scatter plot comparing vaccine and diabetes search trends over time"
-                                     aria-describedby="scatter3-description">
-                                </div>
-                                <div id="scatter3-description" class="sr-only">
-                                    Scatter plot showing correlation between vaccine and diabetes search trends.
-                                    Each point represents a year from 2004 to 2017.
-                                    Shows moderate correlation between preventive and chronic condition searches.
-                                </div>
+                                <div class="plot" id="scatter3"></div>
                             </div>
                         </div>
                         <div class="col-md-6 mb-4">
                             <div class="plot-container" style="height: 500px;">
-                                <div class="plot" 
-                                     id="scatter4" 
-                                     role="img" 
-                                     aria-label="Scatter plot comparing vaccine and depression search trends over time"
-                                     aria-describedby="scatter4-description">
-                                </div>
-                                <div id="scatter4-description" class="sr-only">
-                                    Scatter plot showing correlation between vaccine and depression search trends.
-                                    Each point represents a year from 2004 to 2017.
-                                    Shows moderate correlation between preventive and mental health searches.
-                                </div>
+                                <div class="plot" id="scatter4"></div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Data Tables for Accessibility -->
-                    <div class="accessibility-data mt-4" style="display: none;" id="accessibility-data-tables">
-                        <h3>Data Tables for Screen Readers</h3>
-                        <div id="scatter-data-tables"></div>
                     </div>
                 </div>
             </article>
@@ -273,7 +195,7 @@
     </div>
 
     <!-- Enhanced Footer -->
-    <footer class="text-center enhanced-footer" role="contentinfo">
+    <footer class="text-center enhanced-footer">
         <div class="container">
             <p class="mb-0">&copy; 2025 Eagle Health Analytics. All rights reserved.</p>
         </div>
@@ -286,111 +208,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="../js/comparison.js"></script>
-
-    <script>
-        // Accessibility enhancements for comparison page
-        document.addEventListener('DOMContentLoaded', function() {
-       
-            // Add label association for city selector
-            const citySelect = document.querySelector('.citydata');
-            if (citySelect) {
-                citySelect.id = 'city-selector';
-                
-                // Add keyboard navigation
-                citySelect.addEventListener('keydown', function(e) {
-                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                        // Allow default behavior for arrow keys
-                        return;
-                    }
-                    if (e.key === 'Enter') {
-                        // Trigger city update on Enter
-                        if (typeof updateCity === 'function') {
-                            updateCity();
-                        }
-                    }
-                });
-            }
-
-            // Make chart containers keyboard accessible
-            const charts = document.querySelectorAll('.plot');
-            charts.forEach((chart, index) => {
-                chart.setAttribute('tabindex', '0');
-                chart.setAttribute('role', 'img');
-                
-                chart.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        // Focus the chart for screen readers
-                        this.focus();
-                        
-                        // Provide additional context for screen readers
-                        const description = this.getAttribute('aria-describedby');
-                        if (description) {
-                            const descElement = document.getElementById(description);
-                            if (descElement) {
-                                // Announce description for screen readers
-                                const liveRegion = document.createElement('div');
-                                liveRegion.className = 'sr-only';
-                                liveRegion.setAttribute('aria-live', 'polite');
-                                liveRegion.textContent = descElement.textContent;
-                                document.body.appendChild(liveRegion);
-                                setTimeout(() => {
-                                    document.body.removeChild(liveRegion);
-                                }, 1000);
-                            }
-                        }
-                    }
-                });
-            });
-
-            // Add toggle for data tables (for screen readers)
-            const toggleDataTablesBtn = document.createElement('button');
-            toggleDataTablesBtn.className = 'btn btn-outline-secondary btn-sm mt-2';
-            toggleDataTablesBtn.innerHTML = '<i class="fas fa-table"></i> Show/Hide Data Tables for Screen Readers';
-            toggleDataTablesBtn.addEventListener('click', function() {
-                const dataTables = document.getElementById('accessibility-data-tables');
-                dataTables.style.display = dataTables.style.display === 'none' ? 'block' : 'none';
-            });
-            
-            const scatterSection = document.querySelector('.posts[aria-label="Health Condition Correlations"]');
-            if (scatterSection) {
-                scatterSection.querySelector('.plot-container').appendChild(toggleDataTablesBtn);
-            }
-
-            // Generate data tables from scatter plots
-            function generateDataTables() {
-                // This would be populated with actual data from the charts
-                const dataTablesHTML = `
-                    <h4>Scatter Plot Data</h4>
-                    <div class="table-responsive">
-                        <table class="table table-sm" aria-label="Scatter plot data table">
-                            <thead>
-                                <tr>
-                                    <th>Year</th>
-                                    <th>Diarrhea Searches</th>
-                                    <th>Diabetes Searches</th>
-                                    <th>Depression Searches</th>
-                                    <th>Vaccine Searches</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>2004</td><td>Data loading...</td><td>Data loading...</td><td>Data loading...</td><td>Data loading...</td></tr>
-                                <tr><td>2005</td><td>Data loading...</td><td>Data loading...</td><td>Data loading...</td><td>Data loading...</td></tr>
-                                <!-- More rows would be populated dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-                
-                const dataTablesContainer = document.getElementById('scatter-data-tables');
-                if (dataTablesContainer) {
-                    dataTablesContainer.innerHTML = dataTablesHTML;
-                }
-            }
-
-            // Generate data tables after charts load
-            setTimeout(generateDataTables, 2000);
-        });
-    </script>
 </body>
 </html>
