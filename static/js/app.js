@@ -152,7 +152,6 @@ class HealthDashboard {
             const layout = {
                 width: null,
                 height: 500,
-                title: 'Total Volume of Searches by Year',
                 xaxis: {
                     title: 'Years',
                     showgrid: false,
@@ -205,7 +204,6 @@ class HealthDashboard {
             const layout = {
                 width: null,
                 height: 500,
-                title: 'Total Volume of Searches by year Versus Health Conditions',
                 xaxis: {
                     title: 'Years',
                     showgrid: false,
@@ -273,7 +271,6 @@ class HealthDashboard {
         const layout = {
             width: null,
             height: 500,
-            title: 'Correlations Among Health Conditions',
             plot_bgcolor: 'rgba(0,0,0,0)',
             paper_bgcolor: 'rgba(0,0,0,0)',
             margin: { t: 60, r: 120, b: 100, l: 100 },
@@ -320,7 +317,6 @@ class HealthDashboard {
             const layout = {
                 width: null,
                 height: 500,
-                title: 'Boxplot of Health Google Search 2004-2017',
                 xaxis: {
                     title: 'Condition',
                     showgrid: false,
@@ -439,7 +435,6 @@ class HealthDashboard {
             const layout = {
                 width: null,
                 height: 500,
-                title: 'Health Searches by States',
                 barmode: 'group',
                 bargap: 0.15,
                 bargroupgap: 0.1,
@@ -482,7 +477,6 @@ class HealthDashboard {
         }];
 
         const healthLayout = {
-            title: 'The Sum total Volume of Health Condition Searches from 2004- 2017',
             width: null,
             height: 500,
             polar: {
@@ -512,7 +506,6 @@ class HealthDashboard {
         }];
 
         const deathLayout = {
-            title: 'The Sum total Volume of 10 Leading Causes of Death Per 100,000 Population from 2004-2017',
             width: null,
             height: 500,
             polar: {
