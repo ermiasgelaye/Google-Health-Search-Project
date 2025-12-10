@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Comparison Dashboard - Compare Google Health Search Trends">
-
-    <title>Comparison Dashboard | Eagle Health Analytics</title>
+    <meta name="description" content="City Comparison Dashboard - Compare Google Health Search Trends across different US cities">
+    <meta name="keywords" content="health analytics, city comparison, health search trends, data visualization, correlation analysis">
+    
+    <title>City Comparison Dashboard | Eagle Health Analytics</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+          crossorigin="anonymous">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -24,132 +26,175 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
+
+
+    
     <!-- Enhanced Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar">
-        <a class="navbar-brand enhanced-navbar-brand" href="/Home">
-            <i class="fas fa-chart-line"></i>Eagle Health Analytics
-        </a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar"
+         role="navigation" 
+         aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand enhanced-navbar-brand" href="/Home" aria-label="Eagle Health Analytics Home">
+                <i class="fas fa-chart-line" aria-hidden="true"></i> Eagle Health Analytics
+            </a>
 
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto">
-                <!-- API Links Dropdown -->
-                <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle enhanced-nav-link"
-                        href="#"
-                        id="apiLinksDropdown"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <i class="fas fa-code mr-1"></i>API Links
-                    </a>
-                    <div class="dropdown-menu navbar-li-a" aria-labelledby="apiLinksDropdown">
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" target="_blank">Total Search by Year</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition" target="_blank">Total Search by Year and Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" target="_blank">Total Search by States</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" target="_blank">Total Search by City</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" target="_blank">Total Search by Year and States</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath" target="_blank">Leading Cases of Death</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" target="_blank">All Search Record List</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/location" target="_blank">Location</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/conditions" target="_blank">Search Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" target="_blank">Top Ten Searched States by Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" target="_blank">Sum of All Search Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" target="_blank">Sum Total of the Leading Causes of Death</a>
-                    </div>
-                </li>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <!-- API Links Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="apiLinksDropdown"
+                           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           aria-label="API Links Menu">
+                            <i class="fas fa-code mr-1" aria-hidden="true"></i>API Links
+                        </a>
+                        <div class="dropdown-menu navbar-li-a" aria-labelledby="apiLinksDropdown">
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" target="_blank"
+                               aria-label="Total Search by Year">Total Search by Year</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition" target="_blank"
+                               aria-label="Total Search by Year and Conditions">Total Search by Year and Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" target="_blank"
+                               aria-label="Total Search by States">Total Search by States</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" target="_blank"
+                               aria-label="Total Search by City">Total Search by City</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" target="_blank"
+                               aria-label="Total Search by Year and States">Total Search by Year and States</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath" target="_blank"
+                               aria-label="Leading Cases of Death">Leading Cases of Death</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" target="_blank"
+                               aria-label="All Search Record List">All Search Record List</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/location" target="_blank"
+                               aria-label="Location Data">Location</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/conditions" target="_blank"
+                               aria-label="Search Conditions">Search Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" target="_blank"
+                               aria-label="Top Ten Searched States by Conditions">Top Ten Searched States by Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" target="_blank"
+                               aria-label="Sum of All Search Conditions">Sum of All Search Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" target="_blank"
+                               aria-label="Sum Total of the Leading Causes of Death">Sum Total of the Leading Causes of Death</a>
+                        </div>
+                    </li>
 
-                <!-- Dashboards Dropdown -->
-                <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle enhanced-nav-link"
-                        href="#"
-                        id="dashboardsDropdown"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <i class="fas fa-tachometer-alt mr-1"></i>Dashboards
-                    </a>
-                    <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
-                        <a class="dropdown-item enhanced-dropdown-item" href="/Home">Home</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="main.html">Analytics</a>
-                        <a class="dropdown-item enhanced-dropdown-item active" href="comparison.html">Comparison</a>
-                    </div>
-                </li>
+                    <!-- Dashboards Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="dashboardsDropdown"
+                           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           aria-label="Dashboards Menu">
+                            <i class="fas fa-tachometer-alt mr-1" aria-hidden="true"></i>Dashboards
+                        </a>
+                        <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
+                            <a class="dropdown-item enhanced-dropdown-item" href="/Home" aria-label="Home Dashboard">Home</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="main.html" aria-label="Analytics Dashboard">Analytics</a>
+                            <a class="dropdown-item enhanced-dropdown-item active" href="comparison.html"
+                               aria-label="Comparison Dashboard" aria-current="page">Comparison</a>
+                        </div>
+                    </li>
 
-                <!-- About -->
-                <li class="nav-item">
-                    <a class="nav-link enhanced-nav-link" href="about.html">
-                        <i class="fas fa-users mr-1"></i>About Us
-                    </a>
-                </li>
-            </ul>
+                    <!-- About -->
+                    <li class="nav-item">
+                        <a class="nav-link enhanced-nav-link" href="about.html" aria-label="About Us">
+                            <i class="fas fa-users mr-1" aria-hidden="true"></i>About Us
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
     <!-- Dashboard Header -->
-    <div class="row">
-        <div class="col-md-12 jumbotron text-center dashboard-jumbotron">
-            <h1 id="head">City Comparison Dashboard</h1>
-            <hr>
-            <p>Compare health search trends across different US cities and explore condition correlations</p>
+    <header class="dashboard-jumbotron" role="banner" aria-labelledby="dashboard-title">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 id="dashboard-title">City Comparison Dashboard</h1>
+                    <hr aria-hidden="true">
+                    <p>Compare health search trends across different US cities and explore condition correlations</p>
+                </div>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Stats will be added here by JavaScript -->
+    <!-- Stats Overview (Will be added by JavaScript) -->
+    <div id="stats-container"></div>
 
-    <div class="container">
+    <main id="main-content" class="container" role="main">
         <!-- City Selection and Bar Charts Section -->
-        <section class="posts">
-            <article class="post">
-                <div class="chart-frame">
-                    <div class="showcase__section" id="bar">
-                        <div class="spacer --small"></div>
-                        <div id="barplots">
-                            <div class="barplots" data-num="0">
-                                <div class="control-row mb-4">
-                                    <h4 class="feature-title mb-3">Select City to Compare Health Search Trends</h4>
-                                    <select class="citydata form-control form-control-lg" style="max-width: 300px; margin: 0 auto;">
-                                        <option value="">Choose a city...</option>
-                                    </select>
-                                </div>
-                                <hr>
-                                
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="plot" id="comparison-1"></div>
+        <section class="city-comparison-section mb-5" role="region" aria-labelledby="city-selection-title">
+            <article class="chart-frame">
+                <div class="showcase__section" id="bar">
+                    <div class="spacer --small"></div>
+                    <div id="barplots">
+                        <div class="barplots" data-num="0">
+                            <h3 id="city-selection-title" class="text-center mb-4">Select City to Compare Health Search Trends</h3>
+                            
+                            <div class="control-row mb-4">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <label for="city-select" class="form-label h5">
+                                            <i class="fas fa-city mr-2" aria-hidden="true"></i>
+                                            Choose a City
+                                        </label>
+                                        <select id="city-select" class="citydata form-control form-control-lg" 
+                                                aria-label="Select a city to view health search trends">
+                                            <option value="">Select a city...</option>
+                                        </select>
+                                        <div class="form-text text-muted mt-2">
+                                            Compare health search patterns across 200+ US cities from 2004-2017
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Download Buttons -->
-                                <div class="chart-download-container mt-4">
-                                    <div class="download-buttons-wrapper">
-                                        <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="City_Health_Trends">
-                                            <i class="fas fa-download"></i> Download Chart
-                                        </button>
-                                        <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="City_Comparison_Data">
-                                            <i class="fas fa-file-csv"></i> Download CSV
-                                        </button>
+                            </div>
+                            
+                            <hr aria-hidden="true">
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="plot-container">
+                                        <div id="comparison-1" class="plot"
+                                             role="img"
+                                             aria-label="Stacked bar chart showing health search trends for selected city from 2004 to 2017"
+                                             aria-describedby="comparison-chart-description">
+                                            <div class="chart-loading">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading comparison chart...</span>
+                                                </div>
+                                                <p>Loading city comparison chart...</p>
+                                            </div>
+                                        </div>
+                                        <div id="comparison-chart-description" class="sr-only">
+                                            Stacked bar chart showing health search volume by year for the selected city.
+                                            Each bar represents a year from 2004 to 2017, divided into segments for different health conditions.
+                                            Hover over segments to see exact search volumes for each condition.
+                                        </div>
                                     </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Download Buttons -->
+                            <div class="chart-download-container mt-4">
+                                <div class="download-buttons-wrapper">
+                                    <button class="btn btn-outline-primary btn-sm download-chart-btn"
+                                            data-chart-name="City_Health_Trends"
+                                            aria-label="Download city comparison chart as PNG image">
+                                        <i class="fas fa-download" aria-hidden="true"></i> Download Chart
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2"
+                                            data-endpoint="/allsearchrecord"
+                                            data-chart-name="City_Comparison_Data"
+                                            aria-label="Download city comparison data as CSV">
+                                        <i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -159,139 +204,407 @@
         </section>
 
         <!-- Map and Gauge Section -->
-        <section class="posts">
-            <article class="post">
-                <div class="chart-frame">
-                    <h3>Geographic Context and Condition Analysis</h3>
-                    
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="plot" id="IntermapDiv" style="height: 400px;"></div>
-                            
-                            <!-- Download Buttons for Map -->
-                            <div class="chart-download-container mt-3">
-                                <div class="download-buttons-wrapper">
-                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="City_Location_Map">
-                                        <i class="fas fa-download"></i> Download Map
-                                    </button>
+        <section class="map-gauge-section mb-5" role="region" aria-labelledby="geographic-title">
+            <article class="chart-frame">
+                <h3 id="geographic-title" class="text-center mb-4">Geographic Context and Condition Analysis</h3>
+                
+                <div class="row mt-4">
+                    <!-- Map Column -->
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-map-marked-alt mr-2" aria-hidden="true"></i>
+                                    City Location Map
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Visualize the selected city's location within the United States
+                                </p>
+                                
+                                <div class="plot-container">
+                                    <div id="IntermapDiv" class="plot" style="height: 400px;"
+                                         role="img"
+                                         aria-label="Map showing selected city location in the United States"
+                                         aria-describedby="map-description-compare">
+                                        <div class="chart-loading">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading map...</span>
+                                            </div>
+                                            <p>Loading interactive map...</p>
+                                        </div>
+                                    </div>
+                                    <div id="map-description-compare" class="sr-only">
+                                        Interactive map showing the location of the selected city within the United States.
+                                        The selected state is highlighted for easy identification.
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <figure class="highcharts-figure">
-                                <div id="container"></div>
-                            </figure>
-                            
-                            <!-- Download Buttons for Gauge -->
-                            <div class="chart-download-container mt-3">
-                                <div class="download-buttons-wrapper">
-                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Condition_Percentage_Gauge">
-                                        <i class="fas fa-download"></i> Download Gauge
-                                    </button>
-                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="City_Condition_Data">
-                                        <i class="fas fa-file-csv"></i> Download CSV
-                                    </button>
+                                
+                                <!-- Download Buttons for Map -->
+                                <div class="chart-download-container mt-3">
+                                    <div class="download-buttons-wrapper">
+                                        <button class="btn btn-outline-primary btn-sm download-chart-btn"
+                                                data-chart-name="City_Location_Map"
+                                                aria-label="Download city location map as PNG image">
+                                            <i class="fas fa-download" aria-hidden="true"></i> Download Map
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Gauge Column -->
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-tachometer-alt mr-2" aria-hidden="true"></i>
+                                    Condition Search Distribution
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Percentage breakdown of strongly correlated conditions
+                                </p>
+                                
+                                <div class="plot-container">
+                                    <figure class="highcharts-figure" role="figure" aria-label="Condition percentage gauge chart">
+                                        <div id="container" style="min-height: 350px;"></div>
+                                    </figure>
+                                </div>
+                                
+                                <!-- Download Buttons for Gauge -->
+                                <div class="chart-download-container mt-3">
+                                    <div class="download-buttons-wrapper">
+                                        <button class="btn btn-outline-primary btn-sm download-chart-btn"
+                                                data-chart-name="Condition_Percentage_Gauge"
+                                                aria-label="Download gauge chart as PNG image">
+                                            <i class="fas fa-download" aria-hidden="true"></i> Download Gauge
+                                        </button>
+                                        <button class="btn btn-outline-success btn-sm download-csv-btn ms-2"
+                                                data-endpoint="/allsearchrecord"
+                                                data-chart-name="City_Condition_Data"
+                                                aria-label="Download city condition data as CSV">
+                                            <i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3" role="alert">
+                    <i class="fas fa-info-circle mr-2" aria-hidden="true"></i>
+                    <strong>Mobile Tip:</strong> On smaller screens, the map and gauge may appear stacked for better visibility.
+                    Use pinch gestures to zoom the map on touch devices.
                 </div>
             </article>
         </section>
 
         <!-- Scatter Plots Section -->
-        <section class="posts">
-            <article class="post">
-                <div class="chart-frame">
-                    <h3>Strongly Correlated Health Conditions Analysis</h3>
-                    <p class="mb-4">Explore relationships between conditions with high correlation coefficients</p>
+        <section class="scatter-plots-section mb-5" role="region" aria-labelledby="correlation-analysis-title">
+            <article class="chart-frame">
+                <h3 id="correlation-analysis-title" class="text-center mb-4">Strongly Correlated Health Conditions Analysis</h3>
+                <p class="text-center mb-4">Explore relationships between conditions with high correlation coefficients</p>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <div class="plot" id="scatter1" style="height: 400px;"></div>
-                            
-                            <!-- Download Buttons for Scatter 1 -->
-                            <div class="chart-download-container mt-3">
-                                <div class="download-buttons-wrapper">
-                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Diarrhea_Diabetes_Correlation">
-                                        <i class="fas fa-download"></i> Download Chart
-                                    </button>
-                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="Correlation_Data">
-                                        <i class="fas fa-file-csv"></i> Download CSV
-                                    </button>
+                <div class="row">
+                    <!-- Scatter Plot 1 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">
+                                    <i class="fas fa-chart-scatter mr-2" aria-hidden="true"></i>
+                                    Diarrhea vs. Diabetes
+                                </h6>
+                                
+                                <div class="plot-container">
+                                    <div id="scatter1" class="plot" style="height: 350px;"
+                                         role="img"
+                                         aria-label="Scatter plot showing correlation between diarrhea and diabetes searches"
+                                         aria-describedby="scatter1-description">
+                                        <div class="chart-loading">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading scatter plot...</span>
+                                            </div>
+                                            <p>Loading correlation visualization...</p>
+                                        </div>
+                                    </div>
+                                    <div id="scatter1-description" class="sr-only">
+                                        Scatter plot showing the relationship between diarrhea and diabetes search volumes.
+                                        Each point represents a year from 2004 to 2017. Points are colored blue.
+                                        A positive correlation is visible, showing that as diabetes searches increase, diarrhea searches also tend to increase.
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-4">
-                            <div class="plot" id="scatter2" style="height: 400px;"></div>
-                            
-                            <!-- Download Buttons for Scatter 2 -->
-                            <div class="chart-download-container mt-3">
-                                <div class="download-buttons-wrapper">
-                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Depression_Diabetes_Correlation">
-                                        <i class="fas fa-download"></i> Download Chart
-                                    </button>
-                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="Correlation_Data">
-                                        <i class="fas fa-file-csv"></i> Download CSV
-                                    </button>
+                                
+                                <!-- Download Buttons for Scatter 1 -->
+                                <div class="chart-download-container mt-3">
+                                    <div class="download-buttons-wrapper">
+                                        <button class="btn btn-outline-primary btn-sm download-chart-btn"
+                                                data-chart-name="Diarrhea_Diabetes_Correlation"
+                                                aria-label="Download diarrhea vs diabetes correlation chart as PNG image">
+                                            <i class="fas fa-download" aria-hidden="true"></i> Download Chart
+                                        </button>
+                                        <button class="btn btn-outline-success btn-sm download-csv-btn ms-2"
+                                                data-endpoint="/allsearchrecord"
+                                                data-chart-name="Correlation_Data"
+                                                aria-label="Download correlation data as CSV">
+                                            <i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <div class="plot" id="scatter3" style="height: 400px;"></div>
-                            
-                            <!-- Download Buttons for Scatter 3 -->
-                            <div class="chart-download-container mt-3">
-                                <div class="download-buttons-wrapper">
-                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Vaccine_Diabetes_Correlation">
-                                        <i class="fas fa-download"></i> Download Chart
-                                    </button>
-                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="Correlation_Data">
-                                        <i class="fas fa-file-csv"></i> Download CSV
-                                    </button>
+                    
+                    <!-- Scatter Plot 2 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">
+                                    <i class="fas fa-chart-scatter mr-2" aria-hidden="true"></i>
+                                    Depression vs. Diabetes
+                                </h6>
+                                
+                                <div class="plot-container">
+                                    <div id="scatter2" class="plot" style="height: 350px;"
+                                         role="img"
+                                         aria-label="Scatter plot showing correlation between depression and diabetes searches"
+                                         aria-describedby="scatter2-description">
+                                        <div class="chart-loading">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading scatter plot...</span>
+                                            </div>
+                                            <p>Loading correlation visualization...</p>
+                                        </div>
+                                    </div>
+                                    <div id="scatter2-description" class="sr-only">
+                                        Scatter plot showing the relationship between depression and diabetes search volumes.
+                                        Each point represents a year from 2004 to 2017. Points are colored red.
+                                        Shows a strong positive correlation, indicating that cities with higher diabetes searches also tend to have higher depression searches.
+                                    </div>
+                                </div>
+                                
+                                <!-- Download Buttons for Scatter 2 -->
+                                <div class="chart-download-container mt-3">
+                                    <div class="download-buttons-wrapper">
+                                        <button class="btn btn-outline-primary btn-sm download-chart-btn"
+                                                data-chart-name="Depression_Diabetes_Correlation"
+                                                aria-label="Download depression vs diabetes correlation chart as PNG image">
+                                            <i class="fas fa-download" aria-hidden="true"></i> Download Chart
+                                        </button>
+                                        <button class="btn btn-outline-success btn-sm download-csv-btn ms-2"
+                                                data-endpoint="/allsearchrecord"
+                                                data-chart-name="Correlation_Data"
+                                                aria-label="Download correlation data as CSV">
+                                            <i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="col-md-6 mb-4">
-                            <div class="plot" id="scatter4" style="height: 400px;"></div>
-                            
-                            <!-- Download Buttons for Scatter 4 -->
-                            <div class="chart-download-container mt-3">
-                                <div class="download-buttons-wrapper">
-                                    <button class="btn btn-outline-primary btn-sm download-chart-btn" data-chart-name="Depression_Vaccine_Correlation">
-                                        <i class="fas fa-download"></i> Download Chart
-                                    </button>
-                                    <button class="btn btn-outline-success btn-sm download-csv-btn ms-2" data-endpoint="/allsearchrecord" data-chart-name="Correlation_Data">
-                                        <i class="fas fa-file-csv"></i> Download CSV
-                                    </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Scatter Plot 3 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">
+                                    <i class="fas fa-chart-scatter mr-2" aria-hidden="true"></i>
+                                    Vaccine vs. Diabetes
+                                </h6>
+                                
+                                <div class="plot-container">
+                                    <div id="scatter3" class="plot" style="height: 350px;"
+                                         role="img"
+                                         aria-label="Scatter plot showing correlation between vaccine and diabetes searches"
+                                         aria-describedby="scatter3-description">
+                                        <div class="chart-loading">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading scatter plot...</span>
+                                            </div>
+                                            <p>Loading correlation visualization...</p>
+                                        </div>
+                                    </div>
+                                    <div id="scatter3-description" class="sr-only">
+                                        Scatter plot showing the relationship between vaccine and diabetes search volumes.
+                                        Each point represents a year from 2004 to 2017. Points are colored green.
+                                        Shows a moderate positive correlation between vaccine and diabetes search interest.
+                                    </div>
                                 </div>
+                                
+                                <!-- Download Buttons for Scatter 3 -->
+                                <div class="chart-download-container mt-3">
+                                    <div class="download-buttons-wrapper">
+                                        <button class="btn btn-outline-primary btn-sm download-chart-btn"
+                                                data-chart-name="Vaccine_Diabetes_Correlation"
+                                                aria-label="Download vaccine vs diabetes correlation chart as PNG image">
+                                            <i class="fas fa-download" aria-hidden="true"></i> Download Chart
+                                        </button>
+                                        <button class="btn btn-outline-success btn-sm download-csv-btn ms-2"
+                                                data-endpoint="/allsearchrecord"
+                                                data-chart-name="Correlation_Data"
+                                                aria-label="Download correlation data as CSV">
+                                            <i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Scatter Plot 4 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">
+                                    <i class="fas fa-chart-scatter mr-2" aria-hidden="true"></i>
+                                    Depression vs. Vaccine
+                                </h6>
+                                
+                                <div class="plot-container">
+                                    <div id="scatter4" class="plot" style="height: 350px;"
+                                         role="img"
+                                         aria-label="Scatter plot showing correlation between depression and vaccine searches"
+                                         aria-describedby="scatter4-description">
+                                        <div class="chart-loading">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading scatter plot...</span>
+                                            </div>
+                                            <p>Loading correlation visualization...</p>
+                                        </div>
+                                    </div>
+                                    <div id="scatter4-description" class="sr-only">
+                                        Scatter plot showing the relationship between depression and vaccine search volumes.
+                                        Each point represents a year from 2004 to 2017. Points are colored purple.
+                                        Shows the strongest correlation among all condition pairs, indicating a strong relationship between depression and vaccine search interest.
+                                    </div>
+                                </div>
+                                
+                                <!-- Download Buttons for Scatter 4 -->
+                                <div class="chart-download-container mt-3">
+                                    <div class="download-buttons-wrapper">
+                                        <button class="btn btn-outline-primary btn-sm download-chart-btn"
+                                                data-chart-name="Depression_Vaccine_Correlation"
+                                                aria-label="Download depression vs vaccine correlation chart as PNG image">
+                                            <i class="fas fa-download" aria-hidden="true"></i> Download Chart
+                                        </button>
+                                        <button class="btn btn-outline-success btn-sm download-csv-btn ms-2"
+                                                data-endpoint="/allsearchrecord"
+                                                data-chart-name="Correlation_Data"
+                                                aria-label="Download correlation data as CSV">
+                                            <i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="correlation-insights mt-4">
+                    <h5><i class="fas fa-lightbulb mr-2" aria-hidden="true"></i>Key Insights</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul>
+                                <li><strong>Strongest Correlation:</strong> Depression ↔ Vaccine (0.70)</li>
+                                <li><strong>Diabetes Connections:</strong> Strong links with Depression and Diarrhea</li>
+                                <li><strong>Public Health Patterns:</strong> Conditions often searched together may indicate comorbidities</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-warning" role="alert">
+                                <i class="fas fa-exclamation-triangle mr-2" aria-hidden="true"></i>
+                                <strong>Note:</strong> Correlation does not imply causation. These relationships show search pattern similarities, not medical causality.
                             </div>
                         </div>
                     </div>
                 </div>
             </article>
         </section>
-    </div>
+    </main>
 
     <!-- Enhanced Footer -->
-    <footer class="text-center enhanced-footer">
+    <footer class="text-center enhanced-footer" role="contentinfo">
         <div class="container">
-            <p class="mb-0">&copy; 2025 Eagle Health Analytics Ermias Gaga. All rights reserved.</p>
+            <p class="mb-0">&copy; 2025 Eagle Health Analytics by Ermias Gaga. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+            crossorigin="anonymous"></script>
+    
+    <!-- D3.js for data manipulation -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    
+    <!-- Custom JavaScript -->
     <script src="../js/comparison.js"></script>
+    <script src="../js/mobile-optimization.js"></script>
+    
+    <script>
+        // Mobile optimization for comparison page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup skip navigation
+            const skipLink = document.querySelector('.skip-nav');
+            if (skipLink) {
+                skipLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        target.setAttribute('tabindex', '-1');
+                        target.focus();
+                        setTimeout(() => target.removeAttribute('tabindex'), 1000);
+                    }
+                });
+            }
+            
+            // Add responsive behavior for mobile
+            function adjustLayoutForMobile() {
+                const isMobile = window.innerWidth < 992;
+                
+                if (isMobile) {
+                    // Ensure proper spacing on mobile
+                    document.querySelectorAll('.col-lg-6').forEach(col => {
+                        col.classList.add('mb-4');
+                    });
+                    
+                    // Adjust chart heights for mobile
+                    document.querySelectorAll('.plot').forEach(plot => {
+                        if (plot.id !== 'comparison-1') {
+                            plot.style.height = '300px';
+                        }
+                    });
+                }
+            }
+            
+            // Initial adjustment
+            adjustLayoutForMobile();
+            
+            // Adjust on resize
+            window.addEventListener('resize', adjustLayoutForMobile);
+            
+            // Add loading state
+            document.body.classList.add('comparison-loaded');
+            
+            // Accessibility improvements
+            document.querySelectorAll('[data-toggle="dropdown"]').forEach(dropdown => {
+                dropdown.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
