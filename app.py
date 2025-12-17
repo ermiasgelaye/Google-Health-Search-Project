@@ -81,7 +81,17 @@ def searchyearandcondition():
     df = df.to_json(orient='table')
     result = json.loads(df)
     return jsonify(result)
+@app.route("/dashboards/main")
+def main_dashboard():
+    return render_template("main.html")
 
+@app.route("/dashboards/comparison")
+def comparison_dashboard():
+    return render_template("comparison.html")
+
+@app.route("/dashboards/about")
+def about_page():
+    return render_template("about.html")
 @app.route('/searchbycity')
 def searchbycity():
     sqlStatement = """

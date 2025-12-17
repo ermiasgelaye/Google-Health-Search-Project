@@ -9,18 +9,45 @@ class HealthDashboard {
             states: []
         };
         
+        // Professional Color Palette
         this.colors = {
+            primary: {
+                navy: '#1a237e',
+                darkBlue: '#0d47a1',
+                steelBlue: '#1565c0',
+                slate: '#37474f',
+                charcoal: '#263238',
+                midnight: '#0a192f',
+                darkGray: '#424242'
+            },
+            accents: {
+                gold: '#ffb300',
+                bronze: '#cd7f32',
+                teal: '#00695c',
+                emerald: '#2e7d32',
+                crimson: '#c62828',
+                amber: '#ff8f00'
+            },
             conditions: {
-                cancer: 'rgba(255, 144, 14, 0.5)',
-                cardiovascular: 'rgba(44, 160, 101, 0.5)',
-                depression: 'rgba(255, 65, 54, 0.5)',
-                diabetes: 'rgba(207, 114, 255, 0.5)',
-                diarrhea: 'rgba(127, 96, 0, 0.5)',
-                obesity: 'rgba(255, 140, 184, 0.5)',
-                rehab: 'rgba(79, 90, 117, 0.5)',
-                stroke: 'rgba(222, 223, 0, 0.5)',
-                vaccine: 'rgba(222, 223, 0, 0.5)'
+                cancer: '#0d47a1',        // Dark Blue
+                cardiovascular: '#1565c0', // Steel Blue
+                depression: '#37474f',     // Slate
+                diabetes: '#1a237e',       // Navy
+                diarrhea: '#00695c',       // Teal
+                obesity: '#2e7d32',        // Emerald
+                rehab: '#263238',          // Charcoal
+                stroke: '#424242',         // Dark Gray
+                vaccine: '#ffb300'         // Gold
             }
+        };
+        
+        // Standard Font Settings for Visibility
+        this.fonts = {
+            title: { size: 20, family: 'Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif', weight: 'bold' },
+            axisTitle: { size: 14, family: 'Segoe UI, sans-serif', weight: '600' },
+            axisLabels: { size: 12, family: 'Segoe UI, sans-serif' },
+            legend: { size: 12, family: 'Segoe UI, sans-serif' },
+            tickLabels: { size: 11, family: 'Segoe UI, sans-serif' }
         };
         
         this.init();
@@ -28,49 +55,55 @@ class HealthDashboard {
 
     init() {
         console.log('🚀 Initializing Health Analytics Dashboard...');
-        this.setupLoadingStates();
+        this.applyProfessionalTheme();
         this.loadAllCharts();
         this.setupEventListeners();
         this.setupDownloadButtons();
     }
 
-    // Setup loading states
-    setupLoadingStates() {
-        const chartContainers = [
-            'line-chart', 'line-chart2', 'myDiv', 'boxDiv', 
-            'mymapDiv', 'bar-chart', 'radarmyDiv', 'radarmyDiv2', 'line-chart3'
-        ];
+    applyProfessionalTheme() {
+        // Apply professional styling to chart frames
+        document.querySelectorAll('.chart-frame').forEach(frame => {
+            frame.style.background = '#ffffff';
+            frame.style.border = 'none';
+            frame.style.borderRadius = '8px';
+            frame.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            frame.style.padding = '20px';
+            frame.style.marginBottom = '25px';
+        });
         
-        chartContainers.forEach(containerId => {
-            this.showLoading(containerId);
+        // Style chart titles
+        document.querySelectorAll('.chart-frame h2').forEach(title => {
+            title.style.color = '#1a237e';
+            title.style.fontSize = '20px';
+            title.style.fontWeight = '700';
+            title.style.borderBottom = '2px solid #1565c0';
+            title.style.paddingBottom = '10px';
+            title.style.marginBottom = '20px';
+        });
+        
+        // Style download buttons
+        document.querySelectorAll('.download-chart-btn, .download-csv-btn').forEach(btn => {
+            btn.style.fontSize = '14px';
+            btn.style.fontWeight = '600';
+            btn.style.padding = '8px 20px';
+            btn.style.borderRadius = '4px';
+            btn.style.transition = 'all 0.3s ease';
+        });
+        
+        // Style stat cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.style.background = 'linear-gradient(135deg, #1a237e, #0d47a1)';
+            card.style.color = 'white';
+            card.style.borderRadius = '10px';
+            card.style.boxShadow = '0 4px 8px rgba(26, 35, 126, 0.2)';
+            card.querySelector('h3').style.fontSize = '28px';
+            card.querySelector('h3').style.fontWeight = '800';
+            card.querySelector('p').style.fontSize = '14px';
+            card.querySelector('p').style.fontWeight = '500';
         });
     }
 
-    showLoading(containerId) {
-        const container = document.getElementById(containerId);
-        if (container) {
-            container.innerHTML = `
-                <div class="chart-loading">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading chart...</span>
-                    </div>
-                    <p>Loading visualization...</p>
-                </div>
-            `;
-        }
-    }
-
-    hideLoading(containerId) {
-        const container = document.getElementById(containerId);
-        if (container) {
-            const loadingElement = container.querySelector('.chart-loading');
-            if (loadingElement) {
-                loadingElement.style.display = 'none';
-            }
-        }
-    }
-
-    // Setup download button event listeners
     setupDownloadButtons() {
         // Set up chart download buttons
         document.querySelectorAll('.download-chart-btn').forEach(button => {
@@ -83,11 +116,11 @@ class HealthDashboard {
 
         // Set up CSV download buttons
         document.querySelectorAll('.download-csv-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
+            button.addEventListener('click', async (e) => {
                 const endpoint = e.target.dataset.endpoint;
                 const chartName = e.target.dataset.chartName || 'Health_Data';
                 if (endpoint) {
-                    this.downloadCSV(endpoint, chartName);
+                    await this.downloadCSV(endpoint, chartName);
                 }
             });
         });
@@ -128,7 +161,6 @@ class HealthDashboard {
         }
     }
 
-    // Chart loading methods (unchanged from your original)
     async loadTotalSearchesByYear() {
         Plotly.d3.json('/searchbyyear', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
@@ -140,36 +172,83 @@ class HealthDashboard {
             const totalvolume = {
                 x: allyear,
                 y: allsearches,
-                name: 'Total search volume',
+                name: 'Total Search Volume',
                 fill: 'tonexty',
                 type: 'scatter',
+                mode: 'lines',
                 line: {
-                    color: '#2E86AB',
-                    width: 3
-                }
+                    color: '#1a237e',
+                    width: 3,
+                    shape: 'spline'
+                },
+                fillcolor: 'rgba(26, 35, 126, 0.1)'
             };
 
             const layout = {
                 width: null,
                 height: 500,
                 xaxis: {
-                    title: 'Years',
-                    showgrid: false,
-                    zeroline: false
+                    title: {
+                        text: 'Year',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true,
+                    tickmode: 'linear',
+                    tick0: 2004,
+                    dtick: 1
                 },
                 yaxis: {
-                    title: 'Searches',
-                    showline: false
+                    title: {
+                        text: 'Search Volume',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickformat: ',',
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true
                 },
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                margin: { t: 60, r: 40, b: 80, l: 60 },
+                plot_bgcolor: '#ffffff',
+                paper_bgcolor: '#ffffff',
+                margin: { t: 0, r: 0, b: 0, l: 0 },
                 hovermode: 'closest',
-                autosize: true
+                autosize: true,
+                font: {
+                    family: this.fonts.title.family,
+                    color: this.colors.primary.slate
+                }
             };
 
             Plotly.newPlot('line-chart', [totalvolume], layout, this.getChartConfig());
-            this.hideLoading('line-chart');
         });
     }
 
@@ -190,44 +269,105 @@ class HealthDashboard {
                   vaccine = unpack(data, 'vaccine');
 
             const traces = [
-                { x: allyear, y: cancer, name: 'Cancer', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.cancer } },
-                { x: allyear, y: cardiovascular, name: 'Cardiovascular', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.cardiovascular } },
-                { x: allyear, y: depression, name: 'Depression', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.depression } },
-                { x: allyear, y: diabetes, name: 'Diabetes', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.diabetes } },
-                { x: allyear, y: diarrhea, name: 'Diarrhea', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.diarrhea } },
-                { x: allyear, y: obesity, name: 'Obesity', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.obesity } },
-                { x: allyear, y: rehab, name: 'Rehab', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.rehab } },
-                { x: allyear, y: stroke, name: 'Stroke', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.stroke } },
-                { x: allyear, y: vaccine, name: 'Vaccine', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: this.colors.conditions.vaccine } }
+                { x: allyear, y: cancer, name: 'Cancer', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.cancer } },
+                { x: allyear, y: cardiovascular, name: 'Cardiovascular', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.cardiovascular } },
+                { x: allyear, y: depression, name: 'Depression', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.depression } },
+                { x: allyear, y: diabetes, name: 'Diabetes', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.diabetes } },
+                { x: allyear, y: diarrhea, name: 'Diarrhea', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.diarrhea } },
+                { x: allyear, y: obesity, name: 'Obesity', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.obesity } },
+                { x: allyear, y: rehab, name: 'Rehab', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.rehab } },
+                { x: allyear, y: stroke, name: 'Stroke', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.stroke } },
+                { x: allyear, y: vaccine, name: 'Vaccine', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: this.colors.conditions.vaccine } }
             ];
 
             const layout = {
                 width: null,
                 height: 500,
                 xaxis: {
-                    title: 'Years',
-                    showgrid: false,
-                    zeroline: false
+                    title: {
+                        text: 'Year',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true,
+                    tickmode: 'linear',
+                    tick0: 2004,
+                    dtick: 1
                 },
                 yaxis: {
-                    title: 'Searches',
-                    showline: false
+                    title: {
+                        text: 'Search Volume',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickformat: ',',
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true
                 },
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                margin: { t: 60, r: 40, b: 100, l: 60 },
+                plot_bgcolor: '#ffffff',
+                paper_bgcolor: '#ffffff',
+                margin: { t: 0, r: 0, b: 0, l: 0 },
                 hovermode: 'closest',
                 legend: {
                     orientation: 'h',
-                    y: -0.3,
+                    y: -0.25,
                     x: 0.5,
-                    xanchor: 'center'
+                    xanchor: 'center',
+                    font: {
+                        size: this.fonts.legend.size,
+                        family: this.fonts.legend.family,
+                        color: this.colors.primary.slate
+                    },
+                    bgcolor: 'rgba(255, 255, 255, 0.9)',
+                    bordercolor: '#b0bec5',
+                    borderwidth: 1
                 },
-                autosize: true
+                autosize: true,
+                font: {
+                    family: this.fonts.title.family,
+                    color: this.colors.primary.slate
+                }
             };
 
             Plotly.newPlot('line-chart2', traces, layout, this.getChartConfig());
-            this.hideLoading('line-chart2');
         });
     }
 
@@ -248,6 +388,7 @@ class HealthDashboard {
 
         const colorscale = [
             [0, '#3D9970'],
+            [0.5, '#7BC8A4'],
             [1, '#001f3f']
         ];
 
@@ -259,32 +400,91 @@ class HealthDashboard {
             colorscale: colorscale,
             showscale: true,
             colorbar: {
-                title: 'Correlation',
+                title: {
+                    text: 'Correlation',
+                    font: {
+                        size: 12,
+                        family: this.fonts.title.family,
+                        color: this.colors.primary.slate
+                    }
+                },
                 titleside: 'right',
-                x: 1.02,
+                x: 1.05,
                 xanchor: 'left',
                 y: 0.5,
-                yanchor: 'middle'
+                yanchor: 'middle',
+                thickness: 15,
+                len: 0.8,
+                tickfont: {
+                    size: 10,
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
+                }
             }
         }];
 
         const layout = {
             width: null,
             height: 500,
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            margin: { t: 60, r: 120, b: 100, l: 100 },
+            title: {
+                text: '<b>Health Condition Correlation Matrix</b>',
+                font: {
+                    size: this.fonts.title.size,
+                    family: this.fonts.title.family,
+                    color: this.colors.primary.navy,
+                    weight: this.fonts.title.weight
+                },
+                x: 0.5,
+                xanchor: 'center',
+                y: 0.95
+            },
+            plot_bgcolor: '#ffffff',
+            paper_bgcolor: '#ffffff',
+            margin: { t: 80, r: 100, b: 80, l: 80 },
             xaxis: {
-                tickangle: -45
+                title: {
+                    text: 'Health Conditions',
+                    font: {
+                        size: this.fonts.axisTitle.size,
+                        family: this.fonts.axisTitle.family,
+                        color: this.colors.primary.slate,
+                        weight: this.fonts.axisTitle.weight
+                    }
+                },
+                tickangle: -45,
+                tickfont: {
+                    size: this.fonts.tickLabels.size,
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
+                },
+                automargin: true
             },
             yaxis: {
-                autorange: 'reversed'
+                title: {
+                    text: 'Health Conditions',
+                    font: {
+                        size: this.fonts.axisTitle.size,
+                        family: this.fonts.axisTitle.family,
+                        color: this.colors.primary.slate,
+                        weight: this.fonts.axisTitle.weight
+                    }
+                },
+                autorange: 'reversed',
+                tickfont: {
+                    size: this.fonts.tickLabels.size,
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
+                },
+                automargin: true
+            },
+            font: {
+                family: this.fonts.title.family,
+                color: this.colors.primary.slate
             },
             autosize: true
         };
 
         Plotly.newPlot('myDiv', data, layout, this.getChartConfig());
-        this.hideLoading('myDiv');
     }
 
     async loadBoxPlot() {
@@ -303,38 +503,108 @@ class HealthDashboard {
                   vaccine = unpack(data, 'vaccine');
 
             const traces = [
-                { y: cancer, type: 'box', name: 'Cancer', boxpoints: 'all', marker: { color: this.colors.conditions.cancer, size: 3 }, line: { width: 1 } },
-                { y: cardiovascular, type: 'box', name: 'Cardiovascular', boxpoints: 'all', marker: { color: this.colors.conditions.cardiovascular, size: 3 }, line: { width: 1 } },
-                { y: depression, type: 'box', name: 'Depression', boxpoints: 'all', marker: { color: this.colors.conditions.depression, size: 3 }, line: { width: 1 } },
-                { y: diabetes, type: 'box', name: 'Diabetes', boxpoints: 'all', marker: { color: this.colors.conditions.diabetes, size: 3 }, line: { width: 1 } },
-                { y: diarrhea, type: 'box', name: 'Diarrhea', boxpoints: 'all', marker: { color: this.colors.conditions.diarrhea, size: 3 }, line: { width: 1 } },
-                { y: obesity, type: 'box', name: 'Obesity', boxpoints: 'all', marker: { color: this.colors.conditions.obesity, size: 3 }, line: { width: 1 } },
-                { y: rehab, type: 'box', name: 'Rehab', boxpoints: 'all', marker: { color: this.colors.conditions.rehab, size: 3 }, line: { width: 1 } },
-                { y: stroke, type: 'box', name: 'Stroke', boxpoints: 'all', marker: { color: this.colors.conditions.stroke, size: 3 }, line: { width: 1 } },
-                { y: vaccine, type: 'box', name: 'Vaccine', boxpoints: 'all', marker: { color: this.colors.conditions.vaccine, size: 3 }, line: { width: 1 } }
+                { y: cancer, type: 'box', name: 'Cancer', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.cancer, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.cancer } },
+                { y: cardiovascular, type: 'box', name: 'Cardiovascular', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.cardiovascular, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.cardiovascular } },
+                { y: depression, type: 'box', name: 'Depression', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.depression, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.depression } },
+                { y: diabetes, type: 'box', name: 'Diabetes', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.diabetes, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.diabetes } },
+                { y: diarrhea, type: 'box', name: 'Diarrhea', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.diarrhea, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.diarrhea } },
+                { y: obesity, type: 'box', name: 'Obesity', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.obesity, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.obesity } },
+                { y: rehab, type: 'box', name: 'Rehab', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.rehab, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.rehab } },
+                { y: stroke, type: 'box', name: 'Stroke', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.stroke, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.stroke } },
+                { y: vaccine, type: 'box', name: 'Vaccine', boxpoints: 'outliers', 
+                  marker: { color: this.colors.conditions.vaccine, size: 4 }, 
+                  line: { width: 2, color: this.colors.conditions.vaccine } }
             ];
 
             const layout = {
                 width: null,
                 height: 500,
+                title: {
+                    font: {
+                        size: this.fonts.title.size,
+                        family: this.fonts.title.family,
+                        color: this.colors.primary.navy,
+                        weight: this.fonts.title.weight
+                    },
+                    x: 0.5,
+                    xanchor: 'center',
+                    y: 0.95
+                },
                 xaxis: {
-                    title: 'Condition',
-                    showgrid: false,
-                    zeroline: false
+                    title: {
+                        text: 'Health Conditions',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true
                 },
                 yaxis: {
-                    title: 'Search',
-                    showline: false
+                    title: {
+                        text: 'Search Volume',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickformat: ',',
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true
                 },
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                margin: { t: 60, r: 40, b: 80, l: 60 },
+                plot_bgcolor: '#ffffff',
+                paper_bgcolor: '#ffffff',
+                margin: { t: 0, r: 0, b: 0, l: 0 },
                 showlegend: false,
-                autosize: true
+                autosize: true,
+                font: {
+                    family: this.fonts.title.family,
+                    color: this.colors.primary.slate
+                }
             };
 
             Plotly.newPlot('boxDiv', traces, layout, this.getChartConfig());
-            this.hideLoading('boxDiv');
         });
     }
 
@@ -348,7 +618,7 @@ class HealthDashboard {
 
             const mapData = [{
                 type: "choroplethmapbox",
-                name: "Searches",
+                name: "Search Volume",
                 geojson: "https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/us-states.json",
                 locations: state,
                 z: searches,
@@ -358,18 +628,34 @@ class HealthDashboard {
                     y: 0.5,
                     yanchor: "middle",
                     len: 0.8,
-                    x: 1.02,
+                    x: 1.05,
                     xanchor: "left",
                     orientation: "v",
                     title: { 
                         text: "Search Volume", 
-                        side: "right" 
+                        side: "right",
+                        font: {
+                            size: 12,
+                            family: this.fonts.title.family,
+                            color: '#ffffff'
+                        }
                     },
                     thickness: 20,
-                    outlinewidth: 0
+                    outlinewidth: 1,
+                    outlinecolor: '#ffffff',
+                    tickfont: {
+                        size: 10,
+                        family: this.fonts.tickLabels.family,
+                        color: '#ffffff'
+                    },
+                    tickformat: ','
                 },
                 colorscale: [
                     [0, '#131f0c'],
+                    [0.2, '#2d4d1e'],
+                    [0.4, '#467c2f'],
+                    [0.6, '#5fab40'],
+                    [0.8, '#78da51'],
                     [1, '#bdfe88']
                 ],
                 autocolorscale: false,
@@ -383,10 +669,15 @@ class HealthDashboard {
                 },
                 width: null,
                 height: 500,
-                margin: { t: 40, b: 40, l: 40, r: 120 },
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                autosize: true
+    
+                margin: { t: 0, b: 0, l: 0, r: 0 },
+                plot_bgcolor: '#000000',
+                paper_bgcolor: '#000000',
+                autosize: true,
+                font: {
+                    family: this.fonts.title.family,
+                    color: '#ffffff'
+                }
             };
 
             const config = {
@@ -400,7 +691,6 @@ class HealthDashboard {
             };
 
             Plotly.newPlot('mymapDiv', mapData, layout, config);
-            this.hideLoading('mymapDiv');
         });
     }
 
@@ -421,15 +711,15 @@ class HealthDashboard {
                   vaccine = unpack(data, 'vaccine');
 
             const traces = [
-                { x: state, y: cancer, type: 'bar', marker: { color: '#448' }, name: 'Cancer' },
-                { x: state, y: cardiovascular, type: 'bar', marker: { color: '#88C' }, name: 'Cardiovascular' },
-                { x: state, y: depression, type: 'bar', marker: { color: '#CCF' }, name: 'Depression' },
-                { x: state, y: diabetes, type: 'bar', marker: { color: '#080' }, name: 'Diabetes' },
-                { x: state, y: diarrhea, type: 'bar', marker: { color: '#8c8' }, name: 'Diarrhea' },
-                { x: state, y: obesity, type: 'bar', marker: { color: '#CFC' }, name: 'Obesity' },
-                { x: state, y: rehab, type: 'bar', marker: { color: '#880' }, name: 'Rehab' },
-                { x: state, y: stroke, type: 'bar', marker: { color: '#CC8' }, name: 'Stroke' },
-                { x: state, y: vaccine, type: 'bar', marker: { color: '#FFC' }, name: 'Vaccine' }
+                { x: state, y: cancer, type: 'bar', marker: { color: this.colors.conditions.cancer }, name: 'Cancer' },
+                { x: state, y: cardiovascular, type: 'bar', marker: { color: this.colors.conditions.cardiovascular }, name: 'Cardiovascular' },
+                { x: state, y: depression, type: 'bar', marker: { color: this.colors.conditions.depression }, name: 'Depression' },
+                { x: state, y: diabetes, type: 'bar', marker: { color: this.colors.conditions.diabetes }, name: 'Diabetes' },
+                { x: state, y: diarrhea, type: 'bar', marker: { color: this.colors.conditions.diarrhea }, name: 'Diarrhea' },
+                { x: state, y: obesity, type: 'bar', marker: { color: this.colors.conditions.obesity }, name: 'Obesity' },
+                { x: state, y: rehab, type: 'bar', marker: { color: this.colors.conditions.rehab }, name: 'Rehab' },
+                { x: state, y: stroke, type: 'bar', marker: { color: this.colors.conditions.stroke }, name: 'Stroke' },
+                { x: state, y: vaccine, type: 'bar', marker: { color: this.colors.conditions.vaccine }, name: 'Vaccine' }
             ];
 
             const layout = {
@@ -439,41 +729,91 @@ class HealthDashboard {
                 bargap: 0.15,
                 bargroupgap: 0.1,
                 xaxis: {
-                    title: 'States',
-                    showgrid: false,
-                    zeroline: false,
-                    tickangle: -45
+                    title: {
+                        text: 'States',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickangle: -45,
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true
                 },
                 yaxis: {
-                    title: 'Searches',
-                    showline: false
+                    title: {
+                        text: 'Search Volume',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickformat: ',',
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true
                 },
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                margin: { t: 60, r: 40, b: 120, l: 60 },
+                plot_bgcolor: '#ffffff',
+                paper_bgcolor: '#ffffff',
+                margin: { t: 0, r: 0, b: 0, l: 0 },
                 legend: {
                     orientation: 'h',
-                    y: -0.4,
+                    y: -0.35,
                     x: 0.5,
-                    xanchor: 'center'
+                    xanchor: 'center',
+                    font: {
+                        size: this.fonts.legend.size,
+                        family: this.fonts.legend.family,
+                        color: this.colors.primary.slate
+                    },
+                    bgcolor: 'rgba(255, 255, 255, 0.9)',
+                    bordercolor: '#b0bec5',
+                    borderwidth: 1
                 },
-                autosize: true
+                autosize: true,
+                font: {
+                    family: this.fonts.title.family,
+                    color: this.colors.primary.slate
+                }
             };
 
             Plotly.newPlot('bar-chart', traces, layout, this.getChartConfig());
-            this.hideLoading('bar-chart');
         });
     }
 
     async loadRadarCharts() {
-        // Radar Chart 1
+        // Radar Chart 1 - Health Search Volume
         const healthData = [{
             type: 'scatterpolar',
-            r: [179192, 94220, 137010, 167778, 150355, 121874, 137974, 155732, 143489],
-            theta: ["Cancer", "Cardiovascular", "Depression", "Diabetes", "Diarrhea", "Obesity", "Rehab", "Stroke", "Vaccine"],
+            r: [179192, 94220, 167778, 143489, 137974, 155732, 137010, 150355, 121874],
+            theta: ["Cancer", "Cardiovascular", "Diabetes", "Vaccine", "Rehab", "Stroke", "Depression", "Diarrhea", "Obesity"],
             fill: 'toself',
-            line: { color: '#2E86AB' },
-            fillcolor: 'rgba(46, 134, 171, 0.3)'
+            line: { color: '#1a237e', width: 2 },
+            fillcolor: 'rgba(26, 35, 126, 0.2)',
+            name: 'Total Searches'
         }];
 
         const healthLayout = {
@@ -482,47 +822,104 @@ class HealthDashboard {
             polar: {
                 radialaxis: {
                     visible: true,
-                    range: [0, 179192]
-                }
+                    range: [0, 200000],
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    linecolor: '#b0bec5',
+                    linewidth: 1
+                },
+                angularaxis: {
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    linecolor: '#b0bec5',
+                    linewidth: 1
+                },
+                bgcolor: '#ffffff'
             },
             showlegend: false,
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            margin: { t: 60, r: 40, b: 80, l: 60 },
-            autosize: true
+            plot_bgcolor: '#ffffff',
+            paper_bgcolor: '#ffffff',
+            margin: { t: 0, r: 0, b: 0, l: 0 },
+            autosize: true,
+            font: {
+                family: this.fonts.title.family,
+                color: this.colors.primary.slate
+            }
         };
 
         Plotly.newPlot("radarmyDiv", healthData, healthLayout, this.getChartConfig());
-        this.hideLoading('radarmyDiv');
 
-        // Radar Chart 2
+        // Radar Chart 2 - Leading Causes of Death
         const deathData = [{
             type: 'scatterpolar',
-            r: [571, 357.3, 568.3, 308.5, 2574, 229.9, 2282.4, 196.8, 589.5, 171],
-            theta: ["Accidents", "Alzheimer ", "Cerebrovascular", "Diabetes", "Diseases of heart", "Influenza and Pneumonia", "Malignant Neoplasms(Tumor)", "Nephrosis ", "Respiratory", "Suicide"],
+            r: [2574, 2282.4, 589.5, 568.3, 571, 357.3, 308.5, 229.9, 196.8, 171],
+            theta: ["Diseases of Heart", "Malignant Neoplasms", "Respiratory", "Cerebrovascular", "Accidents", "Alzheimer", "Diabetes", "Influenza/Pneumonia", "Nephrosis", "Suicide"],
             fill: 'toself',
-            line: { color: '#F18F01' },
-            fillcolor: 'rgba(241, 143, 1, 0.3)'
+            line: { color: '#c62828', width: 2 },
+            fillcolor: 'rgba(198, 40, 40, 0.2)',
+            name: 'Deaths per 100,000'
         }];
 
         const deathLayout = {
             width: null,
             height: 500,
+            title: {
+                text: '<b>Leading Causes of Death (2004-2017)</b>',
+                font: {
+                    size: this.fonts.title.size,
+                    family: this.fonts.title.family,
+                    color: this.colors.primary.navy,
+                    weight: this.fonts.title.weight
+                },
+                x: 0.5,
+                xanchor: 'center',
+                y: 0.95
+            },
             polar: {
                 radialaxis: {
                     visible: true,
-                    range: [-2000, 2874]
-                }
+                    range: [0, 3000],
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    linecolor: '#b0bec5',
+                    linewidth: 1
+                },
+                angularaxis: {
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    linecolor: '#b0bec5',
+                    linewidth: 1
+                },
+                bgcolor: '#ffffff'
             },
             showlegend: false,
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            margin: { t: 60, r: 40, b: 80, l: 60 },
-            autosize: true
+            plot_bgcolor: '#ffffff',
+            paper_bgcolor: '#ffffff',
+            margin: { t: 80, r: 30, b: 80, l: 60 },
+            autosize: true,
+            font: {
+                family: this.fonts.title.family,
+                color: this.colors.primary.slate
+            }
         };
 
         Plotly.newPlot("radarmyDiv2", deathData, deathLayout, this.getChartConfig());
-        this.hideLoading('radarmyDiv2');
     }
 
     async loadLeadingCausesOfDeath() {
@@ -543,45 +940,119 @@ class HealthDashboard {
                   suicide = unpack(data, "Suicide");
 
             const traces = [
-                { x: year, y: accidents, name: 'Accidents', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#D32F2F' } },
-                { x: year, y: alzheimer, name: 'Alzheimer', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#1976D2' } },
-                { x: year, y: cerebrovascular, name: 'Cerebrovascular', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#7B1FA2' } },
-                { x: year, y: ddiabetes, name: 'Diabetes', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#F57C00' } },
-                { x: year, y: heart, name: 'Diseases of Heart', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#E65100' } },
-                { x: year, y: influenza, name: 'Influenza and Pneumonia', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#00796B' } },
-                { x: year, y: malignant, name: 'Malignant Neoplasms', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#5D4037' } },
-                { x: year, y: nephrosis, name: 'Nephrosis', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#455A64' } },
-                { x: year, y: respiratory, name: 'Respiratory', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#F57C00' } },
-                { x: year, y: suicide, name: 'Suicide', type: 'scatter', line: { shape: 'spline', smoothing: 0.5, color: '#616161' } }
+                { x: year, y: heart, name: 'Heart Disease', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#c62828' } },
+                { x: year, y: malignant, name: 'Cancer', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#1a237e' } },
+                { x: year, y: respiratory, name: 'Respiratory', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#1565c0' } },
+                { x: year, y: cerebrovascular, name: 'Stroke', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#00695c' } },
+                { x: year, y: accidents, name: 'Accidents', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#ff8f00' } },
+                { x: year, y: alzheimer, name: 'Alzheimer', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#37474f' } },
+                { x: year, y: ddiabetes, name: 'Diabetes', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#2e7d32' } },
+                { x: year, y: influenza, name: 'Influenza/Pneumonia', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#42a5f5' } },
+                { x: year, y: nephrosis, name: 'Kidney Disease', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#263238' } },
+                { x: year, y: suicide, name: 'Suicide', type: 'scatter', mode: 'lines',
+                  line: { shape: 'spline', smoothing: 0.5, width: 2, color: '#424242' } }
             ];
 
             const layout = {
                 width: null,
                 height: 500,
+                title: {
+                    text: '<b>Leading Causes of Death Trends (2004-2017)</b>',
+                    font: {
+                        size: this.fonts.title.size,
+                        family: this.fonts.title.family,
+                        color: this.colors.primary.navy,
+                        weight: this.fonts.title.weight
+                    },
+                    x: 0.5,
+                    xanchor: 'center',
+                    y: 0.95
+                },
                 xaxis: {
-                    title: 'Years',
-                    showgrid: false,
-                    zeroline: false
+                    title: {
+                        text: 'Year',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true,
+                    tickmode: 'linear',
+                    tick0: 2004,
+                    dtick: 1
                 },
                 yaxis: {
-                    title: 'Sum of number of death per 100,000',
-                    showline: false
+                    title: {
+                        text: 'Deaths per 100,000 Population',
+                        font: {
+                            size: this.fonts.axisTitle.size,
+                            family: this.fonts.axisTitle.family,
+                            color: this.colors.primary.slate,
+                            weight: this.fonts.axisTitle.weight
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)',
+                    gridwidth: 1,
+                    showline: true,
+                    linecolor: '#b0bec5',
+                    linewidth: 1,
+                    tickformat: ',',
+                    tickfont: {
+                        size: this.fonts.tickLabels.size,
+                        family: this.fonts.tickLabels.family,
+                        color: this.colors.primary.slate
+                    },
+                    automargin: true
                 },
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                margin: { t: 60, r: 40, b: 100, l: 60 },
+                plot_bgcolor: '#ffffff',
+                paper_bgcolor: '#ffffff',
+                margin: { t: 80, r: 30, b: 100, l: 70 },
                 hovermode: 'closest',
                 legend: {
                     orientation: 'h',
-                    y: -0.4,
+                    y: -0.35,
                     x: 0.5,
-                    xanchor: 'center'
+                    xanchor: 'center',
+                    font: {
+                        size: this.fonts.legend.size,
+                        family: this.fonts.legend.family,
+                        color: this.colors.primary.slate
+                    },
+                    bgcolor: 'rgba(255, 255, 255, 0.9)',
+                    bordercolor: '#b0bec5',
+                    borderwidth: 1
                 },
-                autosize: true
+                autosize: true,
+                font: {
+                    family: this.fonts.title.family,
+                    color: this.colors.primary.slate
+                }
             };
 
             Plotly.newPlot('line-chart3', traces, layout, this.getChartConfig());
-            this.hideLoading('line-chart3');
         });
     }
 
@@ -682,160 +1153,6 @@ class HealthDashboard {
         });
     }
 }
-
-// Add CSS for styling
-const dashboardStyles = `
-    .chart-loading {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 3rem;
-        color: #6c757d;
-    }
-    
-    .chart-download-container {
-        text-align: center;
-        margin-top: 1rem;
-        padding: 1rem;
-        background: #f8f9fa;
-        border-radius: 8px;
-        border: 1px solid #dee2e6;
-    }
-    
-    .download-buttons-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-    
-    .download-chart-btn, .download-csv-btn {
-        font-size: 0.875rem;
-        padding: 0.5rem 1rem;
-        min-width: 140px;
-    }
-    
-    .plot-container .plot {
-        border-radius: 8px;
-        margin-bottom: 0;
-        width: 100%;
-        overflow: hidden;
-    }
-    
-    /* Stats overview - fixed positioning */
-    .stats-overview-container {
-        display: flex;
-        justify-content: center;
-        align-items: stretch;
-        flex-wrap: wrap;
-        margin: 2rem 0 3rem 0;
-    }
-    
-    .stat-card {
-        background: linear-gradient(135deg, #2c3e50, #3498db);
-        color: white;
-        padding: 1.5rem 1rem;
-        border-radius: 10px;
-        margin: 0.5rem;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        min-height: 120px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-        flex: 1;
-        min-width: 180px;
-        max-width: 240px;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    }
-    
-    .stat-card h3 {
-        font-size: 2.2rem;
-        font-weight: bold;
-        color: white;
-        margin-bottom: 0.5rem;
-        line-height: 1;
-    }
-    
-    .stat-card p {
-        color: rgba(255,255,255,0.9);
-        margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.2;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    
-    /* Chart frame styling */
-    .chart-frame {
-        background: white;
-        border-radius: 10px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        border: 1px solid #eaeaea;
-    }
-    
-    .chart-frame h2, .chart-frame h3 {
-        color: #2c3e50;
-        margin-bottom: 1.5rem;
-        text-align: center;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .stat-card {
-            min-width: 140px;
-            padding: 1rem 0.5rem;
-        }
-        
-        .stat-card h3 {
-            font-size: 1.8rem;
-        }
-        
-        .download-buttons-wrapper {
-            flex-direction: column;
-        }
-        
-        .download-chart-btn, .download-csv-btn {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stats-overview-container {
-            justify-content: space-around;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .stat-card {
-            min-width: 45%;
-            margin: 0.25rem;
-        }
-        
-        .stat-card h3 {
-            font-size: 1.6rem;
-        }
-        
-        .stat-card p {
-            font-size: 0.8rem;
-        }
-    }
-`;
-
-// Inject styles
-const styleSheet = document.createElement('style');
-styleSheet.textContent = dashboardStyles;
-document.head.appendChild(styleSheet);
 
 // Initialize the dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
