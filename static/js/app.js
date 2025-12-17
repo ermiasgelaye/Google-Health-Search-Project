@@ -386,9 +386,8 @@ class HealthDashboard {
             [0.40, 0.50, 0.64, 0.74, 0.51, 0.69, 0.72, 0.61, 1]
         ];
 
-        const colorscale = [
+          const colorscale = [
             [0, '#3D9970'],
-            [0.5, '#7BC8A4'],
             [1, '#001f3f']
         ];
 
@@ -426,21 +425,9 @@ class HealthDashboard {
         const layout = {
             width: null,
             height: 500,
-            title: {
-                text: '<b>Health Condition Correlation Matrix</b>',
-                font: {
-                    size: this.fonts.title.size,
-                    family: this.fonts.title.family,
-                    color: this.colors.primary.navy,
-                    weight: this.fonts.title.weight
-                },
-                x: 0.5,
-                xanchor: 'center',
-                y: 0.95
-            },
             plot_bgcolor: '#ffffff',
             paper_bgcolor: '#ffffff',
-            margin: { t: 80, r: 100, b: 80, l: 80 },
+            margin: { t: 0, r: 0, b: 0, l: 0 },
             xaxis: {
                 title: {
                     text: 'Health Conditions',
@@ -803,124 +790,130 @@ class HealthDashboard {
             Plotly.newPlot('bar-chart', traces, layout, this.getChartConfig());
         });
     }
+async loadRadarCharts() {
+    // Radar Chart 1 - Health Search Volume
+    const healthData = [{
+        type: 'scatterpolar',
+        r: [179192, 94220, 167778, 143489, 137974, 155732, 137010, 150355, 121874],
+        theta: ["Cancer", "Cardiovascular", "Diabetes", "Vaccine", "Rehab", "Stroke", "Depression", "Diarrhea", "Obesity"],
+        fill: 'toself',
+        line: { color: '#1a237e', width: 2 },
+        fillcolor: 'rgba(26, 35, 126, 0.2)',
+        name: 'Total Searches',
+        hovertemplate: '%{theta}: %{r:,}<extra></extra>'
+    }];
 
-    async loadRadarCharts() {
-        // Radar Chart 1 - Health Search Volume
-        const healthData = [{
-            type: 'scatterpolar',
-            r: [179192, 94220, 167778, 143489, 137974, 155732, 137010, 150355, 121874],
-            theta: ["Cancer", "Cardiovascular", "Diabetes", "Vaccine", "Rehab", "Stroke", "Depression", "Diarrhea", "Obesity"],
-            fill: 'toself',
-            line: { color: '#1a237e', width: 2 },
-            fillcolor: 'rgba(26, 35, 126, 0.2)',
-            name: 'Total Searches'
-        }];
-
-        const healthLayout = {
-            width: null,
-            height: 500,
-            polar: {
-                radialaxis: {
-                    visible: true,
-                    range: [0, 200000],
-                    tickfont: {
-                        size: this.fonts.tickLabels.size,
-                        family: this.fonts.tickLabels.family,
-                        color: this.colors.primary.slate
-                    },
-                    gridcolor: 'rgba(0, 0, 0, 0.1)',
-                    linecolor: '#b0bec5',
-                    linewidth: 1
+    const healthLayout = {
+        width: null,
+        height: 500,
+        polar: {
+            radialaxis: {
+                visible: true,
+                range: [0, 200000],
+                tickfont: {
+                    size: this.fonts.tickLabels.size,
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
                 },
-                angularaxis: {
-                    tickfont: {
-                        size: this.fonts.tickLabels.size,
-                        family: this.fonts.tickLabels.family,
-                        color: this.colors.primary.slate
-                    },
-                    gridcolor: 'rgba(0, 0, 0, 0.1)',
-                    linecolor: '#b0bec5',
-                    linewidth: 1
-                },
-                bgcolor: '#ffffff'
+                gridcolor: 'rgba(0, 0, 0, 0.1)',
+                linecolor: '#b0bec5',
+                linewidth: 1,
+                tickformat: ',d'  // Format numbers with commas
             },
-            showlegend: false,
-            plot_bgcolor: '#ffffff',
-            paper_bgcolor: '#ffffff',
-            margin: { t: 0, r: 0, b: 0, l: 0 },
-            autosize: true,
-            font: {
-                family: this.fonts.title.family,
-                color: this.colors.primary.slate
+            angularaxis: {
+                tickfont: {
+                    size: Math.max(10, this.fonts.tickLabels.size), // Ensure minimum font size
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
+                },
+                gridcolor: 'rgba(0, 0, 0, 0.1)',
+                linecolor: '#b0bec5',
+                linewidth: 1,
+                layer: 'above traces', // Ensure labels are above the trace
+                rotation: 90, // Rotate labels for better readability
+                direction: 'clockwise'
+            },
+            bgcolor: '#ffffff',
+            domain: {
+                x: [0.1, 0.9], // Add padding on sides for labels
+                y: [0.1, 0.9]
             }
-        };
+        },
+        showlegend: false,
+        plot_bgcolor: '#ffffff',
+        paper_bgcolor: '#ffffff',
+        margin: { t: 40, r: 40, b: 40, l: 40 }, // Increased margins for labels
+        autosize: true,
+        font: {
+            family: this.fonts.title.family,
+            color: this.colors.primary.slate
+        }
+    };
 
-        Plotly.newPlot("radarmyDiv", healthData, healthLayout, this.getChartConfig());
+    Plotly.newPlot("radarmyDiv", healthData, healthLayout, this.getChartConfig());
 
-        // Radar Chart 2 - Leading Causes of Death
-        const deathData = [{
-            type: 'scatterpolar',
-            r: [2574, 2282.4, 589.5, 568.3, 571, 357.3, 308.5, 229.9, 196.8, 171],
-            theta: ["Diseases of Heart", "Malignant Neoplasms", "Respiratory", "Cerebrovascular", "Accidents", "Alzheimer", "Diabetes", "Influenza/Pneumonia", "Nephrosis", "Suicide"],
-            fill: 'toself',
-            line: { color: '#c62828', width: 2 },
-            fillcolor: 'rgba(198, 40, 40, 0.2)',
-            name: 'Deaths per 100,000'
-        }];
+    // Radar Chart 2 - Leading Causes of Death
+    const deathData = [{
+        type: 'scatterpolar',
+        r: [2574, 2282.4, 589.5, 568.3, 571, 357.3, 308.5, 229.9, 196.8, 171],
+        theta: ["Diseases of Heart", "Malignant Neoplasms", "Respiratory", "Cerebrovascular", "Accidents", "Alzheimer", "Diabetes", "Influenza/Pneumonia", "Nephrosis", "Suicide"],
+        fill: 'toself',
+        line: { color: '#c62828', width: 2 },
+        fillcolor: 'rgba(198, 40, 40, 0.2)',
+        name: 'Deaths per 100,000',
+        hovertemplate: '%{theta}: %{r:,.1f}<extra></extra>'
+    }];
 
-        const deathLayout = {
-            width: null,
-            height: 500,
-            title: {
-                text: '<b>Leading Causes of Death (2004-2017)</b>',
-                font: {
-                    size: this.fonts.title.size,
-                    family: this.fonts.title.family,
-                    color: this.colors.primary.navy,
-                    weight: this.fonts.title.weight
+    const deathLayout = {
+        width: null,
+        height: 500,
+        polar: {
+            radialaxis: {
+                visible: true,
+                range: [0, 3000],
+                tickfont: {
+                    size: this.fonts.tickLabels.size,
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
                 },
-                x: 0.5,
-                xanchor: 'center',
-                y: 0.95
+                gridcolor: 'rgba(0, 0, 0, 0.1)',
+                linecolor: '#b0bec5',
+                linewidth: 1,
+                tickformat: ',d'
             },
-            polar: {
-                radialaxis: {
-                    visible: true,
-                    range: [0, 3000],
-                    tickfont: {
-                        size: this.fonts.tickLabels.size,
-                        family: this.fonts.tickLabels.family,
-                        color: this.colors.primary.slate
-                    },
-                    gridcolor: 'rgba(0, 0, 0, 0.1)',
-                    linecolor: '#b0bec5',
-                    linewidth: 1
+            angularaxis: {
+                tickfont: {
+                    size: Math.max(10, this.fonts.tickLabels.size), // Ensure minimum font size
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
                 },
-                angularaxis: {
-                    tickfont: {
-                        size: this.fonts.tickLabels.size,
-                        family: this.fonts.tickLabels.family,
-                        color: this.colors.primary.slate
-                    },
-                    gridcolor: 'rgba(0, 0, 0, 0.1)',
-                    linecolor: '#b0bec5',
-                    linewidth: 1
-                },
-                bgcolor: '#ffffff'
+                gridcolor: 'rgba(0, 0, 0, 0.1)',
+                linecolor: '#b0bec5',
+                linewidth: 1,
+                layer: 'above traces', // Ensure labels are above the trace
+                rotation: 90, // Rotate labels for better readability
+                direction: 'clockwise'
             },
-            showlegend: false,
-            plot_bgcolor: '#ffffff',
-            paper_bgcolor: '#ffffff',
-            margin: { t: 80, r: 30, b: 80, l: 60 },
-            autosize: true,
-            font: {
-                family: this.fonts.title.family,
-                color: this.colors.primary.slate
+            bgcolor: '#ffffff',
+            domain: {
+                x: [0.1, 0.9], // Add padding on sides for labels
+                y: [0.1, 0.9]
             }
-        };
+        },
+        showlegend: false,
+        plot_bgcolor: '#ffffff',
+        paper_bgcolor: '#ffffff',
+        margin: { t: 40, r: 40, b: 40, l: 40 }, // Increased margins for labels
+        autosize: true,
+        font: {
+            family: this.fonts.title.family,
+            color: this.colors.primary.slate
+        }
+    };
 
-        Plotly.newPlot("radarmyDiv2", deathData, deathLayout, this.getChartConfig());
-    }
+    Plotly.newPlot("radarmyDiv2", deathData, deathLayout, this.getChartConfig());
+}
+
 
     async loadLeadingCausesOfDeath() {
         Plotly.d3.json('/casesleadingdeath', (rows) => {
@@ -965,18 +958,6 @@ class HealthDashboard {
             const layout = {
                 width: null,
                 height: 500,
-                title: {
-                    text: '<b>Leading Causes of Death Trends (2004-2017)</b>',
-                    font: {
-                        size: this.fonts.title.size,
-                        family: this.fonts.title.family,
-                        color: this.colors.primary.navy,
-                        weight: this.fonts.title.weight
-                    },
-                    x: 0.5,
-                    xanchor: 'center',
-                    y: 0.95
-                },
                 xaxis: {
                     title: {
                         text: 'Year',
@@ -1029,7 +1010,7 @@ class HealthDashboard {
                 },
                 plot_bgcolor: '#ffffff',
                 paper_bgcolor: '#ffffff',
-                margin: { t: 80, r: 30, b: 100, l: 70 },
+                margin: { t: 0, r: 0, b: 0, l: 0 },
                 hovermode: 'closest',
                 legend: {
                     orientation: 'h',
