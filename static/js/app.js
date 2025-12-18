@@ -44,10 +44,10 @@ class HealthDashboard {
         // Standard Font Settings for Visibility
         this.fonts = {
             title: { size: 20, family: 'Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif', weight: 'bold' },
-            axisTitle: { size: 14, family: 'Segoe UI, sans-serif', weight: '600' },
-            axisLabels: { size: 12, family: 'Segoe UI, sans-serif' },
-            legend: { size: 12, family: 'Segoe UI, sans-serif' },
-            tickLabels: { size: 11, family: 'Segoe UI, sans-serif' }
+            axisTitle: { size: 16, family: 'Segoe UI, sans-serif', weight: '600' },
+            axisLabels: { size: 16, family: 'Segoe UI, sans-serif' },
+            legend: { size: 16, family: 'Segoe UI, sans-serif' },
+            tickLabels: { size: 16, family: 'Segoe UI, sans-serif' }
         };
         
         this.init();

@@ -1,14 +1,14 @@
 /* static/css/style.css - Enhanced Professional Version */
 :root {
   /* Professional Color Scheme */
-  --primary-color: #2c3e50;
+  --primary-color: #000000;
   --secondary-color: #3498db;
   --accent-color: #e74c3c;
   --light-color: #f8f9fa;
-  --dark-color: #2c3e50;
+  --dark-color: #000000;
   --success-color: #27ae60;
-  --text-primary: #2c3e50;
-  --text-secondary: #5d6d7e;
+  --text-primary: #000000;
+  --text-secondary: #000000;
   --text-light: #7f8c8d;
   --border-color: #e0e0e0;
   
@@ -808,7 +808,7 @@ p, li, td, th {
     }
     
     .stat-card {
-        background: linear-gradient(135deg, #2c3e50, #3498db);
+        background: linear-gradient(135deg, #000000, #3498db);
         color: white;
         padding: 1.5rem 1rem;
         border-radius: 10px;
@@ -860,7 +860,7 @@ p, li, td, th {
     }
     
     .chart-frame h2, .chart-frame h3 {
-        color: #2c3e50;
+        color: #000000;
         margin-bottom: 1.5rem;
         text-align: center;
     }
