@@ -1,0 +1,68 @@
+<!-- templates/chatbot.html -->
+<!-- Chatbot Widget -->
+<div class="chatbot-wrapper">
+    <!-- Toggle Button -->
+    <button class="chatbot-toggle" id="chatbotToggle">
+        <i class="fas fa-robot"></i>
+        <span class="chatbot-notification" id="chatbotNotification"></span>
+    </button>
+    
+    <!-- Chat Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <i class="fas fa-robot"></i>
+                <div>
+                    <h5>Health Analytics Assistant</h5>
+                    <small class="text-muted">Ask about data, insights, or methodology</small>
+                </div>
+            </div>
+            <button class="chatbot-close" id="chatbotClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Body -->
+        <div class="chatbot-body" id="chatbotBody">
+            <!-- Messages will be inserted here -->
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="chatbot-quick-actions">
+            <button class="quick-action" data-question="What data sources are used?">
+                <i class="fas fa-database"></i> Data Sources
+            </button>
+            <button class="quick-action" data-question="What health conditions are analyzed?">
+                <i class="fas fa-heartbeat"></i> Conditions
+            </button>
+            <button class="quick-action" data-question="What is this project about?">
+                <i class="fas fa-info-circle"></i> Project
+            </button>
+            <button class="quick-action" data-question="How do I use the dashboard?">
+                <i class="fas fa-question-circle"></i> Help
+            </button>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="chatbot-input-area">
+            <form id="chatbotForm">
+                <div class="input-group">
+                    <input type="text" 
+                           class="form-control" 
+                           id="chatbotInput"
+                           placeholder="Ask about health analytics data..."
+                           autocomplete="off">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="chatbotSend">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <small class="form-text text-muted mt-2">
+                Try: "What data sources are used?" or "What health conditions are analyzed?"
+            </small>
+        </div>
+    </div>
+</div>
