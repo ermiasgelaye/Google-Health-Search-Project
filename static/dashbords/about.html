@@ -243,7 +243,7 @@
             </div>
         </div>
 
-    <!-- Contact Form Section -->
+<!-- Contact Form Section -->
 <section class="contact-section section mt-5">
     <div class="container">
         <div class="row">
@@ -260,19 +260,20 @@
                 <div class="contact-form-wrapper modern-card p-4">
                     <p class="text-center mb-4">Have questions about the project? Want to collaborate? Send us a message!</p>
                     
-                    <form id="contactForm">
+                    <!-- Updated form with Formspree action and proper field names -->
+                    <form id="contactForm" action="https://formspree.io/f/mzznoowb" method="POST">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="contactName">Full Name *</label>
-                                    <input type="text" class="form-control" id="contactName" required>
+                                    <input type="text" class="form-control" id="contactName" name="name" required>
                                     <div class="invalid-feedback">Please enter your name.</div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="contactEmail">Email Address *</label>
-                                    <input type="email" class="form-control" id="contactEmail" required>
+                                    <input type="email" class="form-control" id="contactEmail" name="email" required>
                                     <div class="invalid-feedback">Please enter a valid email.</div>
                                 </div>
                             </div>
@@ -280,13 +281,13 @@
                         
                         <div class="form-group mb-3">
                             <label for="contactSubject">Subject *</label>
-                            <input type="text" class="form-control" id="contactSubject" required>
+                            <input type="text" class="form-control" id="contactSubject" name="subject" required>
                             <div class="invalid-feedback">Please enter a subject.</div>
                         </div>
                         
                         <div class="form-group mb-4">
                             <label for="contactMessage">Message *</label>
-                            <textarea class="form-control" id="contactMessage" rows="5" required></textarea>
+                            <textarea class="form-control" id="contactMessage" name="message" rows="5" required></textarea>
                             <div class="invalid-feedback">Please enter your message.</div>
                         </div>
                         
@@ -304,7 +305,7 @@
     </div>
 </section>
 
-<!-- Add this JavaScript for the contact form -->
+<!-- Updated JavaScript for Formspree submission -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
@@ -338,27 +339,27 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             
             try {
-                // Send to backend
-                const response = await fetch('/api/contact', {
+                // Send to Formspree using FormData (required for Formspree)
+                const formData = new FormData(contactForm);
+                
+                const response = await fetch(contactForm.action, {
                     method: 'POST',
+                    body: formData,
                     headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name,
-                        email,
-                        subject,
-                        message
-                    })
+                        'Accept': 'application/json'
+                    }
                 });
                 
-                const data = await response.json();
-                
-                if (data.success) {
-                    showResponse(data.message, 'success');
+                if (response.ok) {
+                    showResponse('Thank you! Your message has been sent successfully.', 'success');
                     contactForm.reset();
                 } else {
-                    showResponse(data.error || 'Failed to send message. Please try again.', 'danger');
+                    const data = await response.json();
+                    if (data.errors) {
+                        showResponse(data.errors.map(error => error.message).join(', '), 'danger');
+                    } else {
+                        showResponse('Oops! There was a problem submitting your form. Please try again.', 'danger');
+                    }
                 }
             } catch (error) {
                 showResponse('Network error. Please try again.', 'danger');
@@ -396,6 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+</script>
     </main>
 
     <!-- Enhanced Footer -->
@@ -411,6 +413,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- Chatbot Scripts -->
     <!-- Chatbot Scripts -->
-     <script src="{{ url_for('static', filename='js/simple-chatbot.js') }}"></script>
+     <script src="../js/simple-chatbot.js"></script>
 </body>
 </html>
