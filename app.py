@@ -10,9 +10,10 @@ import pandas.io.sql as pdsql
 from flask import Flask, jsonify, render_template, abort, redirect
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+# Add these imports at the top of app.py
 import uuid
+import json
 from datetime import datetime
-from chatbot_backend import chatbot_instance
 
 #################################################
 # Database Setup
@@ -230,124 +231,60 @@ def totaldeathcase():
 if __name__ == '__main__':
     app.run(debug=False)
 
-# ============================================
-# CHATBOT API ENDPOINTS
-# ============================================
-
-@app.route('/api/chat', methods=['POST'])
-def chat():
-    """Handle chatbot messages"""
-    try:
-        data = request.json
-        question = data.get('question', '').strip()
-        session_id = data.get('session_id', str(uuid.uuid4()))
+# Chatbot class definition
+class HealthAnalyticsChatbot:
+    def __init__(self):
+        self.knowledge_base = {
+            'data_sources': {
+                'title': 'Data Sources',
+                'responses': [
+                    'This project uses two primary data sources: 1) Google Trends search volume data from 2004-2017 covering all US states and major cities, and 2) CDC (Centers for Disease Control and Prevention) official health statistics and leading causes of death data.',
+                    'We integrate data from Google Trends API (public search interest) with CDC public health datasets. The Google data shows what people search for, while CDC data shows actual health outcomes.',
+                    'Data Sources: Google Trends (search behavior patterns 2004-2017) + CDC Health Statistics (official health metrics). Combined dataset enables correlation analysis between public interest and actual health statistics.'
+                ],
+                'keywords': ['data', 'sources', 'google trends', 'cdc', 'data collection', 'where data', 'source']
+            },
+            'project_overview': {
+                'title': 'Project Overview',
+                'responses': [
+                    'Eagle Health Analytics analyzes 14 years of Google search trends (2004-2017) for 9 major health conditions across US states and cities, correlating search data with CDC health statistics.',
+                    'This dashboard visualizes health search patterns to understand public health interests and correlate them with actual health outcomes using interactive charts and maps.',
+                    'Our project examines how online search behavior for health conditions relates to real-world health statistics over a 14-year period.'
+                ],
+                'keywords': ['project', 'overview', 'dashboard', 'what is this', 'purpose']
+            },
+            'health_conditions': {
+                'title': 'Health Conditions',
+                'responses': [
+                    'We analyze 9 health conditions: Cancer, Cardiovascular, Depression, Diabetes, Diarrhea, Obesity, Stroke, Vaccine, and Rehab. Cancer consistently has the highest search volume.',
+                    'Tracked conditions: Cancer (most searched), Cardiovascular disease, Depression, Diabetes, Diarrhea, Obesity, Stroke, Vaccine-related searches, and Rehabilitation.',
+                    '9 conditions: 1. Cancer 2. Cardiovascular 3. Depression 4. Diabetes 5. Diarrhea 6. Obesity 7. Stroke 8. Vaccine 9. Rehab'
+                ],
+                'keywords': ['conditions', 'diseases', 'health issues', 'what conditions']
+            }
+        }
+    
+    def get_response(self, question):
+        question_lower = question.lower()
         
-        if not question:
-            return jsonify({
-                'error': 'No question provided',
-                'session_id': session_id
-            }), 400
+        # Check for data sources questions
+        if any(keyword in question_lower for keyword in ['data', 'source', 'google', 'cdc', 'where data']):
+            import random
+            return random.choice(self.knowledge_base['data_sources']['responses'])
         
-        # Process question
-        response = chatbot_instance.process_question(question, session_id)
+        # Check for project questions
+        elif any(keyword in question_lower for keyword in ['project', 'what is this', 'overview', 'dashboard']):
+            import random
+            return random.choice(self.knowledge_base['project_overview']['responses'])
         
-        return jsonify({
-            'success': True,
-            'response': response['response'],
-            'category': response['category'],
-            'suggested_questions': response['suggested_questions'],
-            'session_id': session_id,
-            'timestamp': response['timestamp']
-        })
+        # Check for conditions questions
+        elif any(keyword in question_lower for keyword in ['condition', 'disease', 'health issue', 'what conditions']):
+            import random
+            return random.choice(self.knowledge_base['health_conditions']['responses'])
         
-    except Exception as e:
-        return jsonify({
-            'error': str(e),
-            'success': False
-        }), 500
-
-@app.route('/api/contact', methods=['POST'])
-def contact():
-    """Handle contact form submissions (for About page)"""
-    try:
-        data = request.json
-        name = data.get('name', '').strip()
-        email = data.get('email', '').strip()
-        subject = data.get('subject', '').strip()
-        message = data.get('message', '').strip()
-        
-        # Basic validation
-        if not all([name, email, subject, message]):
-            return jsonify({
-                'error': 'All fields are required',
-                'success': False
-            }), 400
-        
-        if '@' not in email or '.' not in email:
-            return jsonify({
-                'error': 'Invalid email address',
-                'success': False
-            }), 400
-        
-        # Save to database
-        success = chatbot_instance.save_contact_form(name, email, subject, message)
-        
-        if success:
-            # You could also send email here if needed
-            return jsonify({
-                'success': True,
-                'message': 'Thank you for your message! We will get back to you soon.'
-            })
+        # Default response
         else:
-            return jsonify({
-                'error': 'Failed to save message',
-                'success': False
-            }), 500
-        
-    except Exception as e:
-        return jsonify({
-            'error': str(e),
-            'success': False
-        }), 500
+            return "I can help you with questions about data sources, health conditions, or the project overview. Try asking: 'What data sources are used?' or 'What health conditions are analyzed?'"
 
-@app.route('/api/chat/history', methods=['GET'])
-def chat_history():
-    """Get chat history for a session"""
-    try:
-        session_id = request.args.get('session_id')
-        if not session_id:
-            return jsonify({
-                'error': 'Session ID required',
-                'success': False
-            }), 400
-        
-        history = chatbot_instance.get_conversation_history(session_id)
-        
-        return jsonify({
-            'success': True,
-            'history': history,
-            'count': len(history)
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'error': str(e),
-            'success': False
-        }), 500
-
-@app.route('/api/chat/help', methods=['GET'])
-def chat_help():
-    """Get chatbot help information"""
-    return jsonify({
-        'success': True,
-        'help': chatbot_instance.get_help_response(),
-        'categories': list(chatbot_instance.knowledge_base.keys()),
-        'example_questions': [
-            "What is this project about?",
-            "What health conditions are analyzed?",
-            "How was the data collected?",
-            "What are the key findings?",
-            "How do I use the dashboard?",
-            "Who created this project?"
-        ]
-    })
+# Create chatbot instance
+chatbot = HealthAnalyticsChatbot()
