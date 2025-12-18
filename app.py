@@ -231,3 +231,60 @@ def totaldeathcase():
 if __name__ == '__main__':
     app.run(debug=False)
 
+# Chatbot class definition
+class HealthAnalyticsChatbot:
+    def __init__(self):
+        self.knowledge_base = {
+            'data_sources': {
+                'title': 'Data Sources',
+                'responses': [
+                    'This project uses two primary data sources: 1) Google Trends search volume data from 2004-2017 covering all US states and major cities, and 2) CDC (Centers for Disease Control and Prevention) official health statistics and leading causes of death data.',
+                    'We integrate data from Google Trends API (public search interest) with CDC public health datasets. The Google data shows what people search for, while CDC data shows actual health outcomes.',
+                    'Data Sources: Google Trends (search behavior patterns 2004-2017) + CDC Health Statistics (official health metrics). Combined dataset enables correlation analysis between public interest and actual health statistics.'
+                ],
+                'keywords': ['data', 'sources', 'google trends', 'cdc', 'data collection', 'where data', 'source']
+            },
+            'project_overview': {
+                'title': 'Project Overview',
+                'responses': [
+                    'Eagle Health Analytics analyzes 14 years of Google search trends (2004-2017) for 9 major health conditions across US states and cities, correlating search data with CDC health statistics.',
+                    'This dashboard visualizes health search patterns to understand public health interests and correlate them with actual health outcomes using interactive charts and maps.',
+                    'Our project examines how online search behavior for health conditions relates to real-world health statistics over a 14-year period.'
+                ],
+                'keywords': ['project', 'overview', 'dashboard', 'what is this', 'purpose']
+            },
+            'health_conditions': {
+                'title': 'Health Conditions',
+                'responses': [
+                    'We analyze 9 health conditions: Cancer, Cardiovascular, Depression, Diabetes, Diarrhea, Obesity, Stroke, Vaccine, and Rehab. Cancer consistently has the highest search volume.',
+                    'Tracked conditions: Cancer (most searched), Cardiovascular disease, Depression, Diabetes, Diarrhea, Obesity, Stroke, Vaccine-related searches, and Rehabilitation.',
+                    '9 conditions: 1. Cancer 2. Cardiovascular 3. Depression 4. Diabetes 5. Diarrhea 6. Obesity 7. Stroke 8. Vaccine 9. Rehab'
+                ],
+                'keywords': ['conditions', 'diseases', 'health issues', 'what conditions']
+            }
+        }
+    
+    def get_response(self, question):
+        question_lower = question.lower()
+        
+        # Check for data sources questions
+        if any(keyword in question_lower for keyword in ['data', 'source', 'google', 'cdc', 'where data']):
+            import random
+            return random.choice(self.knowledge_base['data_sources']['responses'])
+        
+        # Check for project questions
+        elif any(keyword in question_lower for keyword in ['project', 'what is this', 'overview', 'dashboard']):
+            import random
+            return random.choice(self.knowledge_base['project_overview']['responses'])
+        
+        # Check for conditions questions
+        elif any(keyword in question_lower for keyword in ['condition', 'disease', 'health issue', 'what conditions']):
+            import random
+            return random.choice(self.knowledge_base['health_conditions']['responses'])
+        
+        # Default response
+        else:
+            return "I can help you with questions about data sources, health conditions, or the project overview. Try asking: 'What data sources are used?' or 'What health conditions are analyzed?'"
+
+# Create chatbot instance
+chatbot = HealthAnalyticsChatbot()
