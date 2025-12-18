@@ -1107,3 +1107,88 @@ p, li, td, th {
     background: #f8f9fa;
     color: #1a237e;
 }
+
+
+/* Enhanced Chatbot Styles */
+.simple-chatbot-container {
+    z-index: 9999;
+}
+
+.simple-chatbot-body {
+    scroll-behavior: smooth;
+}
+
+.message-content ul {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.message-content li {
+    margin-bottom: 5px;
+}
+
+.message-content strong {
+    color: #1a237e;
+}
+
+/* Suggested questions animation */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.suggested-questions {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Print styles - hide chatbot */
+@media print {
+    .simple-chatbot-wrapper {
+        display: none !important;
+    }
+}
+
+/* Dark mode support for chatbot */
+@media (prefers-color-scheme: dark) {
+    .simple-chatbot-container {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+    
+    .simple-chatbot-body {
+        background: #1a202c;
+    }
+    
+    .simple-chatbot-input {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+    
+    .bot-message .message-content {
+        background: #4a5568;
+        color: #e2e8f0;
+        border-color: #4a5568;
+    }
+    
+    .suggested-questions {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+    
+    .suggestion-btn {
+        background: #4a5568;
+        color: #e2e8f0;
+        border-color: #4a5568;
+    }
+    
+    .suggestion-btn:hover {
+        background: #1a237e;
+        color: white;
+    }
+}

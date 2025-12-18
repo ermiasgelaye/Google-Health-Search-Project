@@ -11,6 +11,32 @@ class SimpleHealthChatbot {
         // Add welcome message
         this.addWelcomeMessage();
     }
+    addWelcomeMessage() {
+    const welcomeMsg = `
+    <div class="chat-message bot-message">
+        <div class="message-content">
+            <p><strong>🦅 Welcome to Eagle Health Analytics Assistant!</strong></p>
+            <p>I'm your intelligent guide to understanding our health analytics project.</p>
+            
+            <p><strong>I can help with:</strong></p>
+            <ul>
+                <li>📊 <strong>Project Details</strong>: Data sources, methodology, findings</li>
+                <li>🔍 <strong>Technical Concepts</strong>: Correlation analysis, time series, visualization techniques</li>
+                <li>👥 <strong>Team Information</strong>: Members, roles, contributions</li>
+                <li>📈 <strong>Analysis Insights</strong>: Key discoveries and patterns</li>
+            </ul>
+            
+            <p><em>Try asking:</em></p>
+            <p>• "What data sources are used?"<br>
+               • "Explain correlation analysis"<br>
+               • "Who worked on this project?"<br>
+               • "What are the key findings?"</p>
+        </div>
+    </div>
+    `;
+    
+    this.body.innerHTML = welcomeMsg;
+}
     
     createChatbotHTML() {
         const chatbotHTML = `
@@ -344,3 +370,4 @@ class SimpleHealthChatbot {
 document.addEventListener('DOMContentLoaded', function() {
     window.simpleHealthChatbot = new SimpleHealthChatbot();
 });
+
