@@ -242,6 +242,160 @@
                 </div>
             </div>
         </div>
+
+    <!-- Contact Form Section -->
+<section class="contact-section section mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="heading">
+                    <h3><b>Contact Us</b></h3>
+                    <h6 class="font-lite-black"><b>GET IN TOUCH WITH THE TEAM</b></h6>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="contact-form-wrapper modern-card p-4">
+                    <p class="text-center mb-4">Have questions about the project? Want to collaborate? Send us a message!</p>
+                    
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="contactName">Full Name *</label>
+                                    <input type="text" class="form-control" id="contactName" required>
+                                    <div class="invalid-feedback">Please enter your name.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="contactEmail">Email Address *</label>
+                                    <input type="email" class="form-control" id="contactEmail" required>
+                                    <div class="invalid-feedback">Please enter a valid email.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="contactSubject">Subject *</label>
+                            <input type="text" class="form-control" id="contactSubject" required>
+                            <div class="invalid-feedback">Please enter a subject.</div>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="contactMessage">Message *</label>
+                            <textarea class="form-control" id="contactMessage" rows="5" required></textarea>
+                            <div class="invalid-feedback">Please enter your message.</div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-paper-plane mr-2"></i> Send Message
+                            </button>
+                        </div>
+                        
+                        <div id="contactResponse" class="mt-4"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add this JavaScript for the contact form -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    const contactResponse = document.getElementById('contactResponse');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const subject = document.getElementById('contactSubject').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+            
+            // Validate
+            if (!name || !email || !subject || !message) {
+                showResponse('Please fill in all fields.', 'danger');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showResponse('Please enter a valid email address.', 'danger');
+                return;
+            }
+            
+            // Show loading
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Send to backend
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        subject,
+                        message
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showResponse(data.message, 'success');
+                    contactForm.reset();
+                } else {
+                    showResponse(data.error || 'Failed to send message. Please try again.', 'danger');
+                }
+            } catch (error) {
+                showResponse('Network error. Please try again.', 'danger');
+                console.error('Contact form error:', error);
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+    
+    function showResponse(message, type) {
+        contactResponse.innerHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        `;
+        
+        // Auto-remove alert after 10 seconds
+        setTimeout(() => {
+            const alert = contactResponse.querySelector('.alert');
+            if (alert) {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 10000);
+    }
+    
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+});
+</script>
     </main>
 
     <!-- Enhanced Footer -->
@@ -255,5 +409,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Chatbot Scripts -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 </body>
 </html>
