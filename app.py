@@ -511,16 +511,16 @@ class EnhancedHealthAnalyticsChatbot:
         condition_data = data.get('condition_stats', {})
         definition = condition_data.get('definition', {})
         
-        response = f"**{condition.title()} - Health Search Analysis**\n\n"
-        response += f"**Medical Definition:**\n{definition.get('definition', 'No definition available')}\n\n"
+        response = f"{condition.title()} - Health Search Analysis\n\n"
+        response += f"Medical Definition:\n{definition.get('definition', 'No definition available')}\n\n"
         
         if condition_data.get('total_searches', 0) > 0:
-            response += f"**Search Statistics (2004-2017):**\n"
+            response += f"Search Statistics (2004-2017):\n"
             response += f"• Total Searches: {condition_data['total_searches']:,.0f}\n"
         
         top_states = condition_data.get('top_states', [])
         if top_states:
-            response += f"• **Top States by Search Volume:**\n"
+            response += f"• Top States by Search Volume:\n"
             for i, state in enumerate(top_states[:3], 1):
                 response += f"  {i}. {state.get('state', 'Unknown')}: {state.get('search_volume', 0):,.0f} searches\n"
         
@@ -532,11 +532,11 @@ class EnhancedHealthAnalyticsChatbot:
                 growth = ((last - first) / first * 100)
                 response += f"• Growth Rate (2004-2017): {growth:.1f}%\n"
         
-        response += f"\n**Search Pattern:**\n{definition.get('search_pattern', 'Standard search pattern observed')}\n\n"
+        response += f"\nSearch Pattern:\n{definition.get('search_pattern', 'Standard search pattern observed')}\n\n"
         
         # Add correlations if available
         if condition.lower() == 'diabetes':
-            response += "**Notable Correlations:**\n• Strong correlation with Depression (r=0.74)\n• Moderate correlation with Obesity (r=0.65)\n"
+            response += "Notable Correlations:\n• Strong correlation with Depression (r=0.74)\n• Moderate correlation with Obesity (r=0.65)\n"
         
         return response
     
@@ -544,7 +544,7 @@ class EnhancedHealthAnalyticsChatbot:
         """Generate response for specific state"""
         state_data = data.get('state_stats', [])
         
-        response = f"**{state} - Health Search Analysis**\n\n"
+        response = f"{state} - Health Search Analysis\n\n"
         
         if not state_data:
             response += f"General information for {state}:\n"
@@ -561,7 +561,7 @@ class EnhancedHealthAnalyticsChatbot:
         total_searches = sum(item.get('search_volume', 0) for item in state_data)
         years_covered = len(state_data)
         
-        response += f"**Summary Statistics:**\n"
+        response += f"Summary Statistics:\n"
         response += f"• Total Searches ({years_covered} years): {total_searches:,.0f}\n"
         response += f"• Average per Year: {total_searches/years_covered:,.0f}\n"
         
@@ -572,7 +572,7 @@ class EnhancedHealthAnalyticsChatbot:
                 growth = ((last - first) / first * 100)
                 response += f"• Growth Rate: {growth:.1f}%\n"
         
-        response += "\n**Recent Search Volume (Last 3 years):**\n"
+        response += "\nRecent Search Volume (Last 3 years):\n"
         for year_data in state_data[-3:]:
             response += f"• {year_data.get('year', 'N/A')}: {year_data.get('search_volume', 0):,.0f} searches\n"
         
@@ -585,26 +585,26 @@ class EnhancedHealthAnalyticsChatbot:
         if not member_data:
             return f"Information for {member} is available on the 'About Us' page. Team members include Ermias Gaga, Amanda Qianyue Ma, Amos Johnson, Adedamola Atekoja, and Maria Lorena."
         
-        response = f"**{member} - Team Member Profile**\n\n"
-        response += f"**Role:** {member_data.get('role', 'Team Member')}\n\n"
+        response = f"{member} - Team Member Profile\n\n"
+        response += f"Role: {member_data.get('role', 'Team Member')}\n\n"
         
         expertise = member_data.get('expertise', [])
         if expertise:
-            response += "**Areas of Expertise:**\n"
+            response += "Areas of Expertise:\n"
             for exp in expertise[:3]:
                 response += f"• {exp}\n"
             response += "\n"
         
         tools = member_data.get('tools', [])
         if tools:
-            response += "**Technical Skills:**\n"
+            response += "Technical Skills:\n"
             for tool in tools[:3]:
                 response += f"• {tool}\n"
             response += "\n"
         
         contributions = member_data.get('contribution', [])
         if contributions:
-            response += "**Key Contributions:**\n"
+            response += "Key Contributions:\n"
             for i, contribution in enumerate(contributions[:2], 1):
                 response += f"{i}. {contribution}\n"
         
@@ -614,28 +614,28 @@ class EnhancedHealthAnalyticsChatbot:
         """Generate key findings response"""
         stats = data.get('health_stats', {})
         
-        response = "**📊 Key Findings & Insights**\n\n"
+        response = "📊 Key Findings & Insights\n\n"
         
         if stats:
             total = sum(stats.values())
-            response += f"**Overall Statistics:**\n"
+            response += f"Overall Statistics:\n"
             response += f"• Total Health Searches (2004-2017): {total:,.0f}\n"
             response += f"• Average Growth Rate: 15-20% per year\n"
             response += f"• Peak Search Year: 2017 (300% increase from 2004)\n\n"
         
-        response += "**Major Discoveries:**\n"
-        response += "1. **Cancer** is the most searched health condition (40% higher than others)\n"
-        response += "2. **Diabetes & Depression** show strong correlation (r=0.74)\n"
-        response += "3. **California, Texas, New York** have highest search volumes\n"
-        response += "4. Search interest increased **300%** from 2004-2017\n"
-        response += "5. Online trends often **precede CDC data** by 1-2 years\n\n"
+        response += "Major Discoveries:\n"
+        response += "1. Cancer is the most searched health condition (40% higher than others)\n"
+        response += "2. Diabetes & Depression show strong correlation (r=0.74)\n"
+        response += "3. California, Texas, New York have highest search volumes\n"
+        response += "4. Search interest increased 300% from 2004-2017\n"
+        response += "5. Online trends often precede CDC data by 1-2 years\n\n"
         
-        response += "**Geographic Patterns:**\n"
+        response += "Geographic Patterns:\n"
         response += "• Highest: California (18% of total searches)\n"
         response += "• Lowest: Wyoming (0.3% of total searches)\n"
         response += "• Urban areas show 3x higher search volume than rural areas\n\n"
         
-        response += "**Public Health Implications:**\n"
+        response += "Public Health Implications:\n"
         response += "• Search data can serve as early indicator of health trends\n"
         response += "• Awareness gaps exist for some conditions\n"
         response += "• Regional patterns inform targeted health campaigns\n"
@@ -644,90 +644,90 @@ class EnhancedHealthAnalyticsChatbot:
     
     def _generate_project_overview(self):
         """Generate project overview response"""
-        response = "**🏥 Eagle Health Analytics Project Overview**\n\n"
-        response += "**Project Scope:**\n"
+        response = "🏥 Eagle Health Analytics Project Overview\n\n"
+        response += "Project Scope:\n"
         response += "• 14 years of data (2004-2017)\n"
         response += "• 9 major health conditions\n"
         response += "• 50+ US states and territories\n"
         response += "• 200+ cities analyzed\n"
         response += "• 1M+ data points processed\n\n"
         
-        response += "**Primary Objectives:**\n"
+        response += "Primary Objectives:\n"
         response += "1. Compare Google search trends with CDC health statistics\n"
         response += "2. Identify regional health concerns and patterns\n"
         response += "3. Track changes in public health awareness over time\n"
         response += "4. Provide insights for public health planning\n\n"
         
-        response += "**Data Integration:**\n"
+        response += "Data Integration:\n"
         response += "• Google Trends API (search behavior)\n"
         response += "• CDC Public Health Data (actual outcomes)\n"
         response += "• Geographic Information Systems\n\n"
         
-        response += "**Methodology:** Statistical correlation, time-series analysis, geographic clustering\n"
+        response += "Methodology: Statistical correlation, time-series analysis, geographic clustering\n"
         
         return response
     
     def _generate_data_sources_response(self):
         """Generate data sources response"""
-        response = "**📊 Data Sources & Methodology**\n\n"
-        response += "**Primary Data Sources:**\n"
-        response += "1. **Google Trends API** (2004-2017)\n"
+        response = "📊 Data Sources & Methodology\n\n"
+        response += "Primary Data Sources:\n"
+        response += "1. Google Trends API (2004-2017)\n"
         response += "   • Search volume data for 9 health conditions\n"
         response += "   • Coverage: All 50 US states + DC\n"
         response += "   • Time Period: Monthly data 2004-2017\n\n"
         
-        response += "2. **CDC Public Datasets**\n"
+        response += "2. CDC Public Datasets\n"
         response += "   • Leading Causes of Death (2004-2017)\n"
         response += "   • Mortality Rates by State\n"
         response += "   • Disease Prevalence Data\n\n"
         
-        response += "3. **Geographic Data**\n"
+        response += "3. Geographic Data\n"
         response += "   • US Census Bureau data\n"
         response += "   • State and city coordinates\n"
         response += "   • Population statistics\n\n"
         
-        response += "**Data Processing:**\n"
+        response += "Data Processing:\n"
         response += "• ETL pipeline with Python\n"
         response += "• Data cleaning and normalization\n"
         response += "• Geographic integration\n"
         response += "• Statistical analysis\n\n"
         
-        response += "🔗 **12 API Endpoints Available** for data access"
+        response += "🔗 12 API Endpoints Available for data access"
         
         return response
     
     def _generate_methodology_response(self):
         """Generate methodology response"""
-        response = "**🔬 Project Methodology & Technical Approach**\n\n"
-        response += "**1. Data Collection:**\n"
+        response = "🔬 Project Methodology & Technical Approach\n\n"
+        response += "1. Data Collection:\n"
         response += "• Automated scripts for Google Trends API\n"
         response += "• Scheduled downloads of CDC datasets\n"
         response += "• Geographic data from US Census\n\n"
         
-        response += "**2. Data Processing:**\n"
+        response += "2. Data Processing:\n"
         response += "• Python (Pandas, SQLAlchemy) for ETL\n"
         response += "• Missing value imputation\n"
         response += "• Data normalization and cleaning\n"
         response += "• Database storage (PostgreSQL)\n\n"
         
-        response += "**3. Analysis Techniques:**\n"
+        response += "3. Analysis Techniques:\n"
         response += "• Correlation analysis (Pearson coefficients)\n"
         response += "• Time-series decomposition\n"
         response += "• Geographic clustering\n"
         response += "• Statistical significance testing\n\n"
         
-        response += "**4. Visualization:**\n"
+        response += "4. Visualization:\n"
         response += "• Interactive charts with D3.js and Plotly\n"
         response += "• Geographic maps with Leaflet\n"
         response += "• Responsive dashboard design\n\n"
         
-        response += "**Technical Stack:** Python, Flask, SQL, JavaScript, D3.js, Bootstrap"
+        response += "Technical Stack: Python, Flask, SQL, JavaScript, D3.js, Bootstrap"
         
         return response
     
     def _generate_general_response(self, question):
         """Generate general fallback response"""
-        return "I can help you understand various aspects of the Eagle Health Analytics project. Please ask about:\n\n• **Specific health conditions** (cancer, diabetes, depression, etc.)\n• **State analysis** (California, Texas, New York, etc.)\n• **Project methodology** and data sources\n• **Team members** and their roles\n• **Key findings** and insights\n• **Metrics and statistics**\n\nTry asking: 'What are the key findings for diabetes?' or 'How was the data collected?'"
+        return "I can help you understand various aspects of the Eagle Health Analytics project. Please ask about:\n\n• Specific health conditions (cancer, diabetes, depression, etc.)\n• State analysis (California, Texas, New York, etc.)\n• Project methodology and data sources\n• Team members and their roles\n• Key findings and insights\n• Metrics and statistics\n\nTry asking: 'What are the key findings for diabetes?' or 'How was the data collected?'"
     
     def _create_data_summary(self, data):
         """Create a summary of data used in response"""
