@@ -32,8 +32,6 @@
 </head>
 
 <body>
-
-
     
     <!-- Enhanced Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar"
@@ -156,26 +154,28 @@
                                 </div>
                             </div>
                             
-                            <hr aria-hidden="true">
+                            <!-- Explanation Card -->
+                            <div class="card mb-4 border-info">
+                                <div class="card-header bg-info text-white">
+                                    <i class="fas fa-info-circle mr-2"></i>Visual Explanation
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Stacked Bar Chart Visualization:</strong> This chart shows the yearly search volume for different health conditions in your selected city. Each bar represents a year (2004-2017), and the colored segments show the proportion of searches for each health condition.</p>
+                                    <ul>
+                                        <li><strong>X-axis:</strong> Years from 2004 to 2017</li>
+                                        <li><strong>Y-axis:</strong> Total search volume (number of searches)</li>
+                                        <li><strong>Color Legend:</strong> Each color represents a different health condition</li>
+                                        <li><strong>Hover Effect:</strong> Move your cursor over any segment to see exact search numbers</li>
+                                    </ul>
+                                </div>
+                            </div>
                             
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="plot-container">
                                         <div id="comparison-1" class="plot"
                                              role="img"
-                                             aria-label="Stacked bar chart showing health search trends for selected city from 2004 to 2017"
-                                             aria-describedby="comparison-chart-description">
-                                            <div class="chart-loading">
-                                                <div class="spinner-border text-primary" role="status">
-                                                    <span class="visually-hidden">Loading comparison chart...</span>
-                                                </div>
-                                                <p>Loading city comparison chart...</p>
-                                            </div>
-                                        </div>
-                                        <div id="comparison-chart-description" class="sr-only">
-                                            Stacked bar chart showing health search volume by year for the selected city.
-                                            Each bar represents a year from 2004 to 2017, divided into segments for different health conditions.
-                                            Hover over segments to see exact search volumes for each condition.
+                                             aria-label="Stacked bar chart showing health search trends for selected city from 2004 to 2017">
                                         </div>
                                     </div>
                                 </div>
@@ -208,6 +208,25 @@
             <article class="chart-frame">
                 <h3 id="geographic-title" class="text-center mb-4">Geographic Context and Condition Analysis</h3>
                 
+                <!-- Explanation Card -->
+                <div class="card mb-4 border-success">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-map-marker-alt mr-2"></i>Geographic Analysis Explanation
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-map mr-2"></i>Interactive Map:</h6>
+                                <p>Shows the exact location of your selected city in the United States. The bubble size represents total search volume - larger bubbles indicate higher search activity. The highlighted state shows the city's geographical context.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-chart-pie mr-2"></i>Condition Distribution Gauge:</h6>
+                                <p>Displays the percentage distribution of three key health conditions (Diabetes, Depression, Diarrhea) in your selected city. Each concentric ring shows what percentage of total searches belong to that condition.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="row mt-4">
                     <!-- Map Column -->
                     <div class="col-lg-6 col-md-12 mb-4">
@@ -224,18 +243,7 @@
                                 <div class="plot-container">
                                     <div id="IntermapDiv" class="plot" style="height: 400px;"
                                          role="img"
-                                         aria-label="Map showing selected city location in the United States"
-                                         aria-describedby="map-description-compare">
-                                        <div class="chart-loading">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading map...</span>
-                                            </div>
-                                            <p>Loading interactive map...</p>
-                                        </div>
-                                    </div>
-                                    <div id="map-description-compare" class="sr-only">
-                                        Interactive map showing the location of the selected city within the United States.
-                                        The selected state is highlighted for easy identification.
+                                         aria-label="Map showing selected city location in the United States">
                                     </div>
                                 </div>
                                 
@@ -258,17 +266,34 @@
                         <div class="card h-100">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <i class="fas fa-tachometer-alt mr-2" aria-hidden="true"></i>
+                                    <i class="fas fa-chart-pie mr-2" aria-hidden="true"></i>
                                     Condition Search Distribution
                                 </h5>
                                 <p class="card-text text-muted">
-                                    Percentage breakdown of strongly correlated conditions
+                                    Percentage breakdown of key health conditions
                                 </p>
                                 
                                 <div class="plot-container">
-                                    <figure class="highcharts-figure" role="figure" aria-label="Condition percentage gauge chart">
-                                        <div id="container" style="min-height: 350px;"></div>
-                                    </figure>
+                                    <div id="container" style="min-height: 350px;" role="figure" aria-label="Condition percentage gauge chart">
+                                    </div>
+                                </div>
+                                
+                                <!-- Gauge Legend -->
+                                <div class="gauge-legend mt-3 text-center">
+                                    <div class="d-flex justify-content-center flex-wrap">
+                                        <div class="mx-2 mb-2">
+                                            <span class="legend-color" style="background-color: #1a237e; width: 15px; height: 15px; display: inline-block; margin-right: 5px; border-radius: 2px;"></span>
+                                            <span>Diabetes</span>
+                                        </div>
+                                        <div class="mx-2 mb-2">
+                                            <span class="legend-color" style="background-color: #37474f; width: 15px; height: 15px; display: inline-block; margin-right: 5px; border-radius: 2px;"></span>
+                                            <span>Depression</span>
+                                        </div>
+                                        <div class="mx-2 mb-2">
+                                            <span class="legend-color" style="background-color: #00695c; width: 15px; height: 15px; display: inline-block; margin-right: 5px; border-radius: 2px;"></span>
+                                            <span>Diarrhea</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 
                                 <!-- Download Buttons for Gauge -->
@@ -291,12 +316,6 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="alert alert-info mt-3" role="alert">
-                    <i class="fas fa-info-circle mr-2" aria-hidden="true"></i>
-                    <strong>Mobile Tip:</strong> On smaller screens, the map and gauge may appear stacked for better visibility.
-                    Use pinch gestures to zoom the map on touch devices.
-                </div>
             </article>
         </section>
 
@@ -304,8 +323,24 @@
         <section class="scatter-plots-section mb-5" role="region" aria-labelledby="correlation-analysis-title">
             <article class="chart-frame">
                 <h3 id="correlation-analysis-title" class="text-center mb-4">Strongly Correlated Health Conditions Analysis</h3>
-                <p class="text-center mb-4">Explore relationships between conditions with high correlation coefficients</p>
-
+                
+                <!-- Explanation Card -->
+                <div class="card mb-4 border-warning">
+                    <div class="card-header bg-warning text-white">
+                        <i class="fas fa-chart-line mr-2"></i>Correlation Analysis Explanation
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Scatter Plot Visualization:</strong> These charts show relationships between pairs of health conditions in your selected city. Each point represents one year (2004-2017). The position shows search volumes for both conditions that year.</p>
+                        <ul>
+                            <li><strong>Trend Line:</strong> Dashed line shows the overall relationship pattern</li>
+                            <li><strong>Positive Correlation:</strong> Points moving up-right (both conditions increase together)</li>
+                            <li><strong>Negative Correlation:</strong> Points moving down-right (one increases while other decreases)</li>
+                            <li><strong>No Correlation:</strong> Points scattered randomly</li>
+                        </ul>
+                        <p class="mb-0"><em>Note: Correlation ≠ Causation. These patterns show search behavior relationships, not medical causality.</em></p>
+                    </div>
+                </div>
+                
                 <div class="row">
                     <!-- Scatter Plot 1 -->
                     <div class="col-md-6 mb-4">
@@ -315,19 +350,14 @@
                                     <i class="fas fa-chart-scatter mr-2" aria-hidden="true"></i>
                                     Diarrhea vs. Diabetes Correlation
                                 </h6>
+                                <p class="card-text small text-muted text-center mb-3">
+                                    Shows relationship between diarrhea and diabetes search patterns
+                                </p>
                                 
                                 <div class="plot-container">
                                     <div id="scatter1" class="plot" style="height: 350px;"
                                          role="img"
-                                         aria-label="Scatter plot showing correlation between diarrhea and diabetes searches"
-                                         aria-describedby="scatter1-description">
-                                        <div class="chart-loading">
-                                        </div>
-                                    </div>
-                                    <div id="scatter1-description" class="sr-only">
-                                        Scatter plot showing the relationship between diarrhea and diabetes search volumes.
-                                        Each point represents a year from 2004 to 2017. Points are colored blue.
-                                        A positive correlation is visible, showing that as diabetes searches increase, diarrhea searches also tend to increase.
+                                         aria-label="Scatter plot showing correlation between diarrhea and diabetes searches">
                                     </div>
                                 </div>
                                 
@@ -359,18 +389,14 @@
                                     <i class="fas fa-chart-scatter mr-2" aria-hidden="true"></i>
                                     Depression vs. Diabetes Correlation
                                 </h6>
+                                <p class="card-text small text-muted text-center mb-3">
+                                    Shows relationship between depression and diabetes search patterns
+                                </p>
                                 
                                 <div class="plot-container">
                                     <div id="scatter2" class="plot" style="height: 350px;"
                                          role="img"
-                                         aria-label="Scatter plot showing correlation between depression and diabetes searches"
-                                         aria-describedby="scatter2-description">
-                                        </div>
-                                    </div>
-                                    <div id="scatter2-description" class="sr-only">
-                                        Scatter plot showing the relationship between depression and diabetes search volumes.
-                                        Each point represents a year from 2004 to 2017. Points are colored red.
-                                        Shows a strong positive correlation, indicating that cities with higher diabetes searches also tend to have higher depression searches.
+                                         aria-label="Scatter plot showing correlation between depression and diabetes searches">
                                     </div>
                                 </div>
                                 
@@ -404,19 +430,14 @@
                                     <i class="fas fa-chart-scatter mr-2" aria-hidden="true"></i>
                                     Vaccine vs. Diabetes Correlation
                                 </h6>
+                                <p class="card-text small text-muted text-center mb-3">
+                                    Shows relationship between vaccine and diabetes search patterns
+                                </p>
                                 
                                 <div class="plot-container">
                                     <div id="scatter3" class="plot" style="height: 350px;"
                                          role="img"
-                                         aria-label="Scatter plot showing correlation between vaccine and diabetes searches"
-                                         aria-describedby="scatter3-description">
-                                        <div class="chart-loading">
-                                        </div>
-                                    </div>
-                                    <div id="scatter3-description" class="sr-only">
-                                        Scatter plot showing the relationship between vaccine and diabetes search volumes.
-                                        Each point represents a year from 2004 to 2017. Points are colored green.
-                                        Shows a moderate positive correlation between vaccine and diabetes search interest.
+                                         aria-label="Scatter plot showing correlation between vaccine and diabetes searches">
                                     </div>
                                 </div>
                                 
@@ -448,19 +469,14 @@
                                     <i class="fas fa-chart-scatter mr-2" aria-hidden="true"></i>
                                     Depression vs. Vaccine Correlation
                                 </h6>
+                                <p class="card-text small text-muted text-center mb-3">
+                                    Shows relationship between depression and vaccine search patterns
+                                </p>
                                 
                                 <div class="plot-container">
                                     <div id="scatter4" class="plot" style="height: 350px;"
                                          role="img"
-                                         aria-label="Scatter plot showing correlation between depression and vaccine searches"
-                                         aria-describedby="scatter4-description">
-                                        <div class="chart-loading">
-                                        </div>
-                                    </div>
-                                    <div id="scatter4-description" class="sr-only">
-                                        Scatter plot showing the relationship between depression and vaccine search volumes.
-                                        Each point represents a year from 2004 to 2017. Points are colored purple.
-                                        Shows the strongest correlation among all condition pairs, indicating a strong relationship between depression and vaccine search interest.
+                                         aria-label="Scatter plot showing correlation between depression and vaccine searches">
                                     </div>
                                 </div>
                                 
@@ -530,55 +546,13 @@
     
     <!-- Custom JavaScript -->
     <script src="../js/comparison.js"></script>
-    <script src="../js/mobile-optimization.js"></script>
     
     <script>
-        // Mobile optimization for comparison page
+        // Remove loading classes immediately
         document.addEventListener('DOMContentLoaded', function() {
-            // Setup skip navigation
-            const skipLink = document.querySelector('.skip-nav');
-            if (skipLink) {
-                skipLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const target = document.querySelector(targetId);
-                    if (target) {
-                        target.setAttribute('tabindex', '-1');
-                        target.focus();
-                        setTimeout(() => target.removeAttribute('tabindex'), 1000);
-                    }
-                });
-            }
+            document.querySelectorAll('.chart-loading, .spinner-border').forEach(el => el.remove());
             
-            // Add responsive behavior for mobile
-            function adjustLayoutForMobile() {
-                const isMobile = window.innerWidth < 992;
-                
-                if (isMobile) {
-                    // Ensure proper spacing on mobile
-                    document.querySelectorAll('.col-lg-6').forEach(col => {
-                        col.classList.add('mb-4');
-                    });
-                    
-                    // Adjust chart heights for mobile
-                    document.querySelectorAll('.plot').forEach(plot => {
-                        if (plot.id !== 'comparison-1') {
-                            plot.style.height = '300px';
-                        }
-                    });
-                }
-            }
-            
-            // Initial adjustment
-            adjustLayoutForMobile();
-            
-            // Adjust on resize
-            window.addEventListener('resize', adjustLayoutForMobile);
-            
-            // Add loading state
-            document.body.classList.add('comparison-loaded');
-            
-            // Accessibility improvements
+            // Add accessibility improvements
             document.querySelectorAll('[data-toggle="dropdown"]').forEach(dropdown => {
                 dropdown.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
