@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Health Analytics - Google Health Search Trends Analysis">
     <title>Eagle Health Analytics </title>
-    
+
     <!-- Bootstrap 4 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    
+
     <style>
         /* Additional inline styles */
         .hero-section {
@@ -22,9 +24,10 @@
             padding: 120px 0 80px;
             position: relative;
             overflow: hidden;
-            margin-top: 70px; /* Offset for fixed navbar */
+            margin-top: 70px;
+            /* Offset for fixed navbar */
         }
-        
+
         .hero-section::before {
             content: '';
             position: absolute;
@@ -34,12 +37,12 @@
             bottom: 0;
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle fill="%23ffffff" fill-opacity="0.05" cx="200" cy="200" r="100"/><circle fill="%23ffffff" fill-opacity="0.05" cx="800" cy="300" r="150"/></svg>');
         }
-        
+
         .hero-content {
             position: relative;
             z-index: 2;
         }
-        
+
         .hero-stats {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -47,12 +50,12 @@
             padding: 2rem;
             margin-top: 2rem;
         }
-        
+
         .stat-item {
             text-align: center;
             padding: 1rem;
         }
-        
+
         .stat-number {
             font-size: 2.5rem;
             font-weight: 700;
@@ -61,28 +64,28 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         .stat-label {
             font-size: 0.9rem;
             opacity: 0.8;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         /* Feature Cards */
         .feature-card {
             background: white;
             border-radius: 15px;
             padding: 2.5rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border: none;
             transition: all 0.3s ease;
             height: 100%;
             position: relative;
             overflow: hidden;
         }
-        
+
         .feature-card::before {
             content: '';
             position: absolute;
@@ -92,12 +95,12 @@
             height: 4px;
             background: linear-gradient(45deg, #3498db, #e74c3c);
         }
-        
+
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
-        
+
         .feature-icon {
             width: 70px;
             height: 70px;
@@ -110,7 +113,7 @@
             color: white;
             font-size: 1.8rem;
         }
-        
+
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
@@ -119,7 +122,7 @@
             margin: 4rem 0;
             border-radius: 20px;
         }
-        
+
         .btn-primary-custom {
             background: linear-gradient(45deg, #3498db, #1a237e);
             border: none;
@@ -130,13 +133,13 @@
             transition: all 0.3s ease;
             box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
         }
-        
+
         .btn-primary-custom:hover {
             transform: translateY(-2px);
             box-shadow: 0 15px 35px rgba(52, 152, 219, 0.4);
             color: white;
         }
-        
+
         /* Health Conditions */
         .health-tag {
             display: inline-block;
@@ -149,37 +152,45 @@
             transition: all 0.3s ease;
             color: #424949;
         }
-        
+
         .health-tag:hover {
             background: rgba(52, 152, 219, 0.2);
             transform: scale(1.05);
         }
-        
+
         /* Floating Animation */
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
-        
+
         .floating {
             animation: float 3s ease-in-out infinite;
         }
-        
+
         .hero-image {
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             transition: transform 0.5s ease, box-shadow 0.5s ease;
             max-height: 400px;
             object-fit: cover;
             width: 100%;
         }
-        
+
         .hero-image:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
+
 <body>
     <!-- Enhanced Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar fixed-top">
@@ -196,40 +207,55 @@
                 <ul class="navbar-nav ml-auto">
                     <!-- API Links Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="apiLinksDropdown" role="button" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="apiLinksDropdown"
+                            role="button" data-toggle="dropdown">
                             <i class="fas fa-code mr-1"></i>API Links
                         </a>
                         <div class="dropdown-menu navbar-li-a" aria-labelledby="apiLinksDropdown">
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear">Total Search by Year</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition">Total Search by Year and Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate">Total Search by States</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity">Total Search by City</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear">Total Search by Year and States</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath">Leading Cases of Death</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord">All Search Record List</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear">Total Search by
+                                Year</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition">Total Search
+                                by Year and Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate">Total Search by
+                                States</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity">Total Search by
+                                City</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear">Total Search by Year
+                                and States</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath">Leading Cases of
+                                Death</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord">All Search Record
+                                List</a>
                             <a class="dropdown-item enhanced-dropdown-item" href="/location">Location</a>
                             <a class="dropdown-item enhanced-dropdown-item" href="/conditions">Search Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached">Top Ten Searched States by Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition">Sum of All Search Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase">Sum Total of the Leading Causes of Death</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached">Top Ten Searched
+                                States by Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition">Sum of All Search
+                                Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase">Sum Total of the
+                                Leading Causes of Death</a>
                         </div>
                     </li>
 
                     <!-- Dashboards Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="dashboardsDropdown" role="button" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle enhanced-nav-link" href="#" id="dashboardsDropdown"
+                            role="button" data-toggle="dropdown">
                             <i class="fas fa-tachometer-alt mr-1"></i>Dashboards
                         </a>
                         <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
                             <a class="dropdown-item enhanced-dropdown-item active" href="/Home">Home</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="{{ url_for('static', filename='dashbords/main.html') }}">Analytics</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="{{ url_for('static', filename='dashbords/comparison.html') }}">Comparison</a>
+                            <a class="dropdown-item enhanced-dropdown-item"
+                                href="{{ url_for('static', filename='dashbords/main.html') }}">Analytics</a>
+                            <a class="dropdown-item enhanced-dropdown-item"
+                                href="{{ url_for('static', filename='dashbords/comparison.html') }}">Comparison</a>
                         </div>
                     </li>
 
                     <!-- About -->
                     <li class="nav-item">
-                        <a class="nav-link enhanced-nav-link" href="{{ url_for('static', filename='dashbords/about.html') }}">
+                        <a class="nav-link enhanced-nav-link"
+                            href="{{ url_for('static', filename='dashbords/about.html') }}">
                             <i class="fas fa-users mr-1"></i>About Us
                         </a>
                     </li>
@@ -247,9 +273,10 @@
                         Discover Health Insights Through Search Data
                     </h1>
                     <p class="lead mb-4">
-                        Analyze 14 years of Google search trends across 9 major health conditions in the United States. Uncover patterns, correlations, and public health interests.
+                        Analyze 14 years of Google search trends across 9 major health conditions in the United States.
+                        Uncover patterns, correlations, and public health interests.
                     </p>
-                    
+
                     <div class="hero-stats">
                         <div class="row text-center">
                             <div class="col-4">
@@ -275,10 +302,8 @@
                 </div>
                 <div class="col-lg-6 text-center">
                     <div class="floating">
-                        <img src="{{ url_for('static', filename='img/main.gif') }}" 
-                             alt="Health Analytics" 
-                             class="hero-image"
-                             style="max-height: 400px;">
+                        <img src="{{ url_for('static', filename='img/main.gif') }}" alt="Health Analytics"
+                            class="hero-image" style="max-height: 400px;">
                     </div>
                 </div>
             </div>
@@ -291,9 +316,10 @@
         <div class="row mb-5">
             <div class="col-12 text-center mb-5">
                 <h2 class="display-5 font-weight-bold mb-3">Why Health Search Analytics?</h2>
-                <p class="lead text-muted">Google search data reveals public health concerns before they become statistics</p>
+                <p class="lead text-muted">Google search data reveals public health concerns before they become
+                    statistics</p>
             </div>
-            
+
             <div class="col-lg-4 mb-4">
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -301,11 +327,12 @@
                     </div>
                     <h4 class="font-weight-bold mb-3">Early Detection</h4>
                     <p class="text-muted">
-                        Identify emerging health concerns through search pattern analysis before they appear in official health statistics.
+                        Identify emerging health concerns through search pattern analysis before they appear in official
+                        health statistics.
                     </p>
                 </div>
             </div>
-            
+
             <div class="col-lg-4 mb-4">
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -313,11 +340,12 @@
                     </div>
                     <h4 class="font-weight-bold mb-3">Geographic Insights</h4>
                     <p class="text-muted">
-                        Discover regional health patterns and concerns across all 50 states with interactive mapping and analysis.
+                        Discover regional health patterns and concerns across all 50 states with interactive mapping and
+                        analysis.
                     </p>
                 </div>
             </div>
-            
+
             <div class="col-lg-4 mb-4">
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -325,7 +353,8 @@
                     </div>
                     <h4 class="font-weight-bold mb-3">Trend Analysis</h4>
                     <p class="text-muted">
-                        Track how public interest in health conditions evolves over time with comprehensive analytics and visualization.
+                        Track how public interest in health conditions evolves over time with comprehensive analytics
+                        and visualization.
                     </p>
                 </div>
             </div>
@@ -357,23 +386,27 @@
         <div class="row mb-5">
             <div class="col-md-6 mb-4">
                 <div class="feature-card">
-                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;">
+                    <div class="feature-icon"
+                        style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;">
                         <i class="fab fa-google"></i>
                     </div>
                     <h4 class="font-weight-bold mb-3">Google Trends Data</h4>
                     <p class="text-muted">
-                        Comprehensive search data from 2004-2017 across all US states and major cities, providing insights into public health interests.
+                        Comprehensive search data from 2004-2017 across all US states and major cities, providing
+                        insights into public health interests.
                     </p>
                 </div>
             </div>
             <div class="col-md-6 mb-4">
                 <div class="feature-card">
-                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;">
+                    <div class="feature-icon"
+                        style="width: 60px; height: 60px; font-size: 1.5rem; margin: 0 0 1.5rem 0;">
                         <i class="fas fa-hospital"></i>
                     </div>
                     <h4 class="font-weight-bold mb-3">CDC Statistics</h4>
                     <p class="text-muted">
-                        Official health statistics from the Centers for Disease Control and Prevention for correlation analysis and validation.
+                        Official health statistics from the Centers for Disease Control and Prevention for correlation
+                        analysis and validation.
                     </p>
                 </div>
             </div>
@@ -386,12 +419,15 @@
             <div class="row justify-content-center text-center">
                 <div class="col-lg-8">
                     <h2 class="display-5 font-weight-bold mb-4">Ready to Explore Health Insights?</h2>
-                    <p class="lead mb-5">Join researchers and healthcare professionals using data to understand public health trends</p>
+                    <p class="lead mb-5">Join researchers and healthcare professionals using data to understand public
+                        health trends</p>
                     <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                        <a href="{{ url_for('static', filename='dashbords/main.html') }}" class="btn btn-primary-custom btn-lg">
+                        <a href="{{ url_for('static', filename='dashbords/main.html') }}"
+                            class="btn btn-primary-custom btn-lg">
                             <i class="fas fa-chart-bar mr-2"></i>Explore Dashboard
                         </a>
-                        <a href="{{ url_for('static', filename='dashbords/about.html') }}" class="btn btn-outline-light btn-lg">
+                        <a href="{{ url_for('static', filename='dashbords/about.html') }}"
+                            class="btn btn-outline-light btn-lg">
                             <i class="fas fa-users mr-2"></i>Meet Our Team
                         </a>
                     </div>
@@ -415,15 +451,21 @@
     </footer>
 
     <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
     <script>
         // Simple animation on scroll
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const featureCards = document.querySelectorAll('.feature-card');
-            
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -432,7 +474,7 @@
                     }
                 });
             }, { threshold: 0.1 });
-            
+
             featureCards.forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
@@ -443,22 +485,24 @@
     </script>
     <script src="../static/js/simple-chatbot.js"></script>
     <!-- Add these dependencies -->
-     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-     <script src="{{ url_for('static', filename='js/chatbot-interactive.js') }}"></script>
-     <script src="../static/js/chatbot-interactive.js"></script>
-     <!-- Add dark mode toggle button (optional) -->
-    <button id="darkModeToggle" class="btn btn-secondary" style="position: fixed; bottom: 100px; right: 20px; z-index: 9999;">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='js/chatbot-interactive.js') }}"></script>
+    <script src="../static/js/chatbot-interactive.js"></script>
+    <!-- Add dark mode toggle button (optional) -->
+    <button id="darkModeToggle" class="btn btn-secondary"
+        style="position: fixed; bottom: 100px; right: 20px; z-index: 9999;">
         <i class="fas fa-moon"></i>
     </button>
     <script>
-    // Dark mode toggle
+        // Dark mode toggle
 
-    document.getElementById('darkModeToggle')?.addEventListener('click', function() {
-    document.body.classList.toggle('dark-mode');
-    this.innerHTML = document.body.classList.contains('dark-mode') ? 
-        '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        document.getElementById('darkModeToggle')?.addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+            this.innerHTML = document.body.classList.contains('dark-mode') ?
+                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
         });
-        </script>
+    </script>
 </body>
+
 </html>

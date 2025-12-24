@@ -7,7 +7,7 @@ class ComparisonDashboard {
         this.cityList = [];
         this.cityCoordinates = {};
         this.isLoading = false;
-        
+
         // City location data from your CSV
         this.cityLocations = {
             'Abilene-Sweetwater': { state: 'TX', latitude: 32.4106903, longitude: -99.7653019 },
@@ -221,7 +221,7 @@ class ComparisonDashboard {
             'Yuma AZ-El Centro': { state: 'CA', latitude: 32.7001663, longitude: -114.5258431 },
             'Zanesville': { state: 'OH', latitude: 39.9403453, longitude: -82.0131924 }
         };
-        
+
         // PROFESSIONAL COLOR PALETTE (MATCHING app.js)
         this.colors = {
             primary: {
@@ -253,7 +253,7 @@ class ComparisonDashboard {
                 vaccine: '#ffb300'         // Gold
             }
         };
-        
+
         // STANDARD FONT SETTINGS (MATCHING app.js)
         this.fonts = {
             title: { size: 20, family: 'Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif', weight: 'bold' },
@@ -262,16 +262,16 @@ class ComparisonDashboard {
             legend: { size: 16, family: 'Segoe UI, sans-serif' },
             tickLabels: { size: 16, family: 'Segoe UI, sans-serif' }
         };
-        
+
         this.init();
     }
 
     init() {
         console.log('🚀 Initializing Health Comparison Dashboard...');
-        
+
         // Clear any existing content from chart containers
         this.clearChartContainers();
-        
+
         this.applyProfessionalTheme();
         this.addStatsOverview();
         this.loadData();
@@ -303,7 +303,7 @@ class ComparisonDashboard {
                 frame.style.marginBottom = '25px';
             });
         }
-        
+
         // Style chart titles (Matching app.js)
         const chartTitles = document.querySelectorAll('.chart-frame h2, .chart-frame h3');
         if (chartTitles.length > 0) {
@@ -316,7 +316,7 @@ class ComparisonDashboard {
                 title.style.marginBottom = '20px';
             });
         }
-        
+
         // Style download buttons (Matching app.js)
         const downloadButtons = document.querySelectorAll('.download-chart-btn, .download-csv-btn');
         if (downloadButtons.length > 0) {
@@ -326,20 +326,20 @@ class ComparisonDashboard {
                 btn.style.padding = '8px 20px';
                 btn.style.borderRadius = '4px';
                 btn.style.transition = 'all 0.3s ease';
-                
+
                 // Add hover effects
-                btn.addEventListener('mouseenter', function() {
+                btn.addEventListener('mouseenter', function () {
                     this.style.transform = 'translateY(-2px)';
                     this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
                 });
-                
-                btn.addEventListener('mouseleave', function() {
+
+                btn.addEventListener('mouseleave', function () {
                     this.style.transform = 'translateY(0)';
                     this.style.boxShadow = 'none';
                 });
             });
         }
-        
+
         // Style stat cards (Matching app.js)
         const statCards = document.querySelectorAll('.stat-card');
         if (statCards.length > 0) {
@@ -352,7 +352,7 @@ class ComparisonDashboard {
                 card.style.minWidth = '150px';
                 card.style.textAlign = 'center';
                 card.style.margin = '10px';
-                
+
                 const h3 = card.querySelector('h3');
                 if (h3) {
                     h3.style.fontSize = '28px';
@@ -368,7 +368,7 @@ class ComparisonDashboard {
                 }
             });
         }
-        
+
         // Style dropdown
         const citySelect = document.getElementById('city-select');
         if (citySelect) {
@@ -378,13 +378,13 @@ class ComparisonDashboard {
             citySelect.style.borderRadius = '4px';
             citySelect.style.backgroundColor = '#ffffff';
             citySelect.style.transition = 'all 0.3s ease';
-            
-            citySelect.addEventListener('focus', function() {
+
+            citySelect.addEventListener('focus', function () {
                 this.style.borderColor = '#1565c0';
                 this.style.boxShadow = '0 0 0 0.2rem rgba(21, 101, 192, 0.25)';
             });
-            
-            citySelect.addEventListener('blur', function() {
+
+            citySelect.addEventListener('blur', function () {
                 this.style.borderColor = '#b0bec5';
                 this.style.boxShadow = 'none';
             });
@@ -416,18 +416,18 @@ class ComparisonDashboard {
                 </div>
             </div>
         `;
-        
-        const dashboardHeader = document.querySelector('.dashboard-header') || 
-                              document.querySelector('.dashboard-jumbotron');
+
+        const dashboardHeader = document.querySelector('.dashboard-header') ||
+            document.querySelector('.dashboard-jumbotron');
         if (dashboardHeader) {
             // Remove existing stats if any
             const existingStats = document.getElementById('stats-container');
             if (existingStats) {
                 existingStats.remove();
             }
-            
+
             dashboardHeader.insertAdjacentHTML('afterend', statsHTML);
-            
+
             // Re-apply styles to the newly created stat cards
             setTimeout(() => {
                 this.applyProfessionalTheme();
@@ -441,10 +441,10 @@ class ComparisonDashboard {
             button.addEventListener('click', (e) => {
                 const chartFrame = e.target.closest('.chart-frame');
                 if (!chartFrame) return;
-                
+
                 const chartElement = chartFrame.querySelector('.plot');
                 if (!chartElement) return;
-                
+
                 const chartId = chartElement.id;
                 const chartName = e.target.dataset.chartName || this.getDefaultChartName(chartId);
                 this.downloadChart(chartId, chartName);
@@ -501,7 +501,7 @@ class ComparisonDashboard {
                         Plotly.Plots.resize(id);
                     }
                 });
-                
+
                 // Also resize gauge if needed
                 const gauge = document.getElementById('container');
                 if (gauge && Highcharts.charts.length > 0) {
@@ -513,7 +513,7 @@ class ComparisonDashboard {
                 }
             }, 250);
         });
-        
+
         // Add keyboard navigation for dropdown
         if (citySelect) {
             citySelect.addEventListener('keydown', (e) => {
@@ -526,13 +526,13 @@ class ComparisonDashboard {
 
     async loadData() {
         if (this.isLoading) return;
-        
+
         this.isLoading = true;
         console.log('📥 Loading comparison data...');
-        
+
         // Show loading state
         this.showLoadingState();
-        
+
         try {
             const response = await fetch('/allsearchrecord');
             if (!response.ok) {
@@ -541,18 +541,18 @@ class ComparisonDashboard {
             const rows = await response.json();
             this.statsData = rows.data;
             console.log(`Data loaded: ${this.statsData.length} records`);
-            
+
             this.processData();
             this.setupCitySelector();
-            
+
             // Force load Austin data
             console.log(`Setting initial chart for: ${this.currentCity}`);
             this.setBarPlot(this.currentCity);
-            
+
         } catch (error) {
             console.error('Error loading data:', error);
             this.showErrorMessage('Failed to load data. Please refresh the page.');
-            
+
             // Show placeholder data for Austin even if API fails
             this.showPlaceholderData();
         } finally {
@@ -579,7 +579,7 @@ class ComparisonDashboard {
             { city: 'Austin', year: 2016, Cancer: 2100, cardiovascular: 1800, depression: 1500, diabetes: 3000, diarrhea: 1200, obesity: 1700, rehab: 1000, stroke: 1300, vaccine: 2500 },
             { city: 'Austin', year: 2017, Cancer: 2150, cardiovascular: 1850, depression: 1550, diabetes: 3100, diarrhea: 1250, obesity: 1750, rehab: 1050, stroke: 1350, vaccine: 2600 }
         ];
-        
+
         this.statsData = placeholderData;
         this.processData();
         this.setupCitySelector();
@@ -614,7 +614,7 @@ class ComparisonDashboard {
         const citySelector = document.getElementById('city-select');
         if (citySelector && this.cityList) {
             citySelector.innerHTML = '<option value="">Select a city...</option>';
-            
+
             this.cityList.forEach(city => {
                 const option = document.createElement('option');
                 option.value = city;
@@ -631,7 +631,7 @@ class ComparisonDashboard {
 
     setBarPlot(chosenCity) {
         console.log(`Setting bar plot for city: ${chosenCity}`);
-        
+
         if (!this.statsData || !chosenCity) {
             console.error('No data or city selected');
             return;
@@ -639,7 +639,7 @@ class ComparisonDashboard {
 
         const cityData = this.statsData.filter(row => row.city === chosenCity);
         console.log(`Found ${cityData.length} records for ${chosenCity}`);
-        
+
         if (cityData.length === 0) {
             this.showErrorMessage(`No data available for ${chosenCity}`);
             return;
@@ -647,7 +647,7 @@ class ComparisonDashboard {
 
         // Sort data by year
         cityData.sort((a, b) => a.year - b.year);
-        
+
         const searchedYears = cityData.map(row => row.year);
         const cancerSearch = cityData.map(row => row.Cancer || 0);
         const cardiovascularSearch = cityData.map(row => row.cardiovascular || 0);
@@ -658,38 +658,56 @@ class ComparisonDashboard {
         const rehabSearch = cityData.map(row => row.rehab || 0);
         const strokeSearch = cityData.map(row => row.stroke || 0);
         const vaccineSearch = cityData.map(row => row.vaccine || 0);
-        
+
         // Store state for map
         this.currentState = cityData[0]?.postal || cityData[0]?.state || '';
 
         const traces = [
-            { x: searchedYears, y: cancerSearch, name: 'Cancer', type: 'bar', 
-              marker: { color: this.colors.conditions.cancer },
-              hovertemplate: '<b>Cancer</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' },
-            { x: searchedYears, y: cardiovascularSearch, name: 'Cardiovascular', type: 'bar', 
-              marker: { color: this.colors.conditions.cardiovascular },
-              hovertemplate: '<b>Cardiovascular</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' },
-            { x: searchedYears, y: depressionSearch, name: 'Depression', type: 'bar', 
-              marker: { color: this.colors.conditions.depression },
-              hovertemplate: '<b>Depression</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' },
-            { x: searchedYears, y: diabetesSearch, name: 'Diabetes', type: 'bar', 
-              marker: { color: this.colors.conditions.diabetes },
-              hovertemplate: '<b>Diabetes</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' },
-            { x: searchedYears, y: diarrheaSearch, name: 'Diarrhea', type: 'bar', 
-              marker: { color: this.colors.conditions.diarrhea },
-              hovertemplate: '<b>Diarrhea</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' },
-            { x: searchedYears, y: obesitySearch, name: 'Obesity', type: 'bar', 
-              marker: { color: this.colors.conditions.obesity },
-              hovertemplate: '<b>Obesity</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' },
-            { x: searchedYears, y: rehabSearch, name: 'Rehab', type: 'bar', 
-              marker: { color: this.colors.conditions.rehab },
-              hovertemplate: '<b>Rehab</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' },
-            { x: searchedYears, y: strokeSearch, name: 'Stroke', type: 'bar', 
-              marker: { color: this.colors.conditions.stroke },
-              hovertemplate: '<b>Stroke</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' },
-            { x: searchedYears, y: vaccineSearch, name: 'Vaccine', type: 'bar', 
-              marker: { color: this.colors.conditions.vaccine },
-              hovertemplate: '<b>Vaccine</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>' }
+            {
+                x: searchedYears, y: cancerSearch, name: 'Cancer', type: 'bar',
+                marker: { color: this.colors.conditions.cancer },
+                hovertemplate: '<b>Cancer</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            },
+            {
+                x: searchedYears, y: cardiovascularSearch, name: 'Cardiovascular', type: 'bar',
+                marker: { color: this.colors.conditions.cardiovascular },
+                hovertemplate: '<b>Cardiovascular</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            },
+            {
+                x: searchedYears, y: depressionSearch, name: 'Depression', type: 'bar',
+                marker: { color: this.colors.conditions.depression },
+                hovertemplate: '<b>Depression</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            },
+            {
+                x: searchedYears, y: diabetesSearch, name: 'Diabetes', type: 'bar',
+                marker: { color: this.colors.conditions.diabetes },
+                hovertemplate: '<b>Diabetes</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            },
+            {
+                x: searchedYears, y: diarrheaSearch, name: 'Diarrhea', type: 'bar',
+                marker: { color: this.colors.conditions.diarrhea },
+                hovertemplate: '<b>Diarrhea</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            },
+            {
+                x: searchedYears, y: obesitySearch, name: 'Obesity', type: 'bar',
+                marker: { color: this.colors.conditions.obesity },
+                hovertemplate: '<b>Obesity</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            },
+            {
+                x: searchedYears, y: rehabSearch, name: 'Rehab', type: 'bar',
+                marker: { color: this.colors.conditions.rehab },
+                hovertemplate: '<b>Rehab</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            },
+            {
+                x: searchedYears, y: strokeSearch, name: 'Stroke', type: 'bar',
+                marker: { color: this.colors.conditions.stroke },
+                hovertemplate: '<b>Stroke</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            },
+            {
+                x: searchedYears, y: vaccineSearch, name: 'Vaccine', type: 'bar',
+                marker: { color: this.colors.conditions.vaccine },
+                hovertemplate: '<b>Vaccine</b><br>Year: %{x}<br>Searches: %{y:,}<extra></extra>'
+            }
         ];
 
         const layout = {
@@ -805,28 +823,28 @@ class ComparisonDashboard {
 
         console.log('Creating bar plot...');
         Plotly.newPlot('comparison-1', traces, layout, this.getChartConfig());
-        
+
         // Calculate total search volume for the city
         const totalSearchVolume = cityData.reduce((sum, row) => {
             return sum + (
-                (row.Cancer || 0) + (row.cardiovascular || 0) + (row.depression || 0) + 
-                (row.diabetes || 0) + (row.diarrhea || 0) + (row.obesity || 0) + 
+                (row.Cancer || 0) + (row.cardiovascular || 0) + (row.depression || 0) +
+                (row.diabetes || 0) + (row.diarrhea || 0) + (row.obesity || 0) +
                 (row.rehab || 0) + (row.stroke || 0) + (row.vaccine || 0)
             );
         }, 0);
-        
+
         // Get location data for the city
         const locationData = this.getCityLocationData(chosenCity);
         const stateCode = locationData.state;
         const latitude = locationData.latitude;
         const longitude = locationData.longitude;
-        
+
         // Update map with exact coordinates
         this.updateEnhancedCityMap(latitude, longitude, chosenCity, totalSearchVolume, stateCode);
-        
+
         // Update scatter plots with location tag
         this.updateScatterPlots(cityData, searchedYears, chosenCity);
-        
+
         // Update gauge
         this.updateGauge(cityData, chosenCity);
     }
@@ -836,14 +854,14 @@ class ComparisonDashboard {
         if (this.cityLocations[cityName]) {
             return this.cityLocations[cityName];
         }
-        
+
         // Try to find a partial match
         for (const [key, data] of Object.entries(this.cityLocations)) {
             if (key.includes(cityName) || cityName.includes(key)) {
                 return data;
             }
         }
-        
+
         // Default fallback coordinates (center of US)
         return {
             state: 'US',
@@ -854,7 +872,7 @@ class ComparisonDashboard {
 
     updateEnhancedCityMap(lat, lon, cityName, searchVolume, stateCode) {
         console.log(`Updating map for ${cityName} at ${lat}, ${lon}`);
-        
+
         const mapContainer = document.getElementById('IntermapDiv');
         if (mapContainer) {
             mapContainer.innerHTML = '';
@@ -865,18 +883,18 @@ class ComparisonDashboard {
         const maxSize = 80;
         const minSearch = 50000;
         const maxSearch = 2000000;
-        
+
         // Calculate bubble size
         const sizeScale = Math.log10(Math.max(searchVolume, minSearch)) / Math.log10(maxSearch);
         const bubbleSize = minSize + (sizeScale * (maxSize - minSize));
-        
+
         // Color intensity based on search volume
         const intensity = Math.min(searchVolume / maxSearch, 1);
         const hue = 120 - (intensity * 30);
         const saturation = 80 + (intensity * 20);
         const lightness = 40 + (intensity * 30);
         const markerColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        
+
         // Glow effect for higher search volumes
         const glowSize = bubbleSize * 1.5;
         const glowOpacity = 0.3 * intensity;
@@ -1016,7 +1034,7 @@ class ComparisonDashboard {
 
     updateScatterPlots(cityData, years, cityName) {
         console.log(`Updating scatter plots for ${cityName}`);
-        
+
         const diabetesSearch = cityData.map(row => row.diabetes || 0);
         const diarrheaSearch = cityData.map(row => row.diarrhea || 0);
         const depressionSearch = cityData.map(row => row.depression || 0);
@@ -1066,13 +1084,13 @@ class ComparisonDashboard {
             if (container) {
                 container.innerHTML = '';
             }
-            
+
             const scatter = {
                 x: config.x,
                 y: config.y,
                 mode: 'markers',
                 type: 'scatter',
-                marker: { 
+                marker: {
                     size: 14,
                     color: config.color,
                     opacity: 0.8,
@@ -1196,11 +1214,11 @@ class ComparisonDashboard {
 
     updateGauge(cityData, cityName) {
         console.log(`Updating gauge for ${cityName}`);
-        
+
         const totalSearches = cityData.reduce((sum, row) => {
             return sum + (
-                (row.Cancer || 0) + (row.cardiovascular || 0) + (row.depression || 0) + 
-                (row.diabetes || 0) + (row.diarrhea || 0) + (row.obesity || 0) + 
+                (row.Cancer || 0) + (row.cardiovascular || 0) + (row.depression || 0) +
+                (row.diabetes || 0) + (row.diarrhea || 0) + (row.obesity || 0) +
                 (row.rehab || 0) + (row.stroke || 0) + (row.vaccine || 0)
             );
         }, 0);
@@ -1221,10 +1239,10 @@ class ComparisonDashboard {
         if (gaugeContainer) {
             gaugeContainer.innerHTML = '';
         }
-        
+
         console.log('Creating gauge chart...');
         console.log(`Diabetes: ${diabetesPercent}%, Depression: ${depressionPercent}%, Diarrhea: ${diarrheaPercent}%`);
-        
+
         Highcharts.chart('container', {
             chart: {
                 type: 'solidgauge',
@@ -1242,17 +1260,17 @@ class ComparisonDashboard {
             pane: {
                 startAngle: 0,
                 endAngle: 360,
-                background: [{ 
+                background: [{
                     outerRadius: '112%',
                     innerRadius: '88%',
                     backgroundColor: Highcharts.color(this.colors.conditions.diabetes).setOpacity(0.1).get(),
                     borderWidth: 0
-                }, { 
+                }, {
                     outerRadius: '87%',
                     innerRadius: '63%',
                     backgroundColor: Highcharts.color(this.colors.conditions.depression).setOpacity(0.1).get(),
                     borderWidth: 0
-                }, { 
+                }, {
                     outerRadius: '62%',
                     innerRadius: '38%',
                     backgroundColor: Highcharts.color(this.colors.conditions.diarrhea).setOpacity(0.1).get(),
@@ -1369,7 +1387,7 @@ class ComparisonDashboard {
 
     downloadChart(chartId, chartName) {
         const cleanName = this.cleanFileName(chartName);
-        
+
         if (chartId === 'container') {
             const chart = Highcharts.charts.find(ch => ch && ch.renderTo.id === chartId);
             if (chart) {
@@ -1393,7 +1411,7 @@ class ComparisonDashboard {
         try {
             const response = await fetch(endpoint);
             const data = await response.json();
-            
+
             const cleanName = this.cleanFileName(chartName);
             this.convertToCSVAndDownload(data.data, cleanName);
         } catch (error) {
@@ -1409,9 +1427,9 @@ class ComparisonDashboard {
         }
 
         const headers = Object.keys(data[0]);
-        
+
         let csvContent = headers.join(',') + '\n';
-        
+
         data.forEach(row => {
             const values = headers.map(header => {
                 const value = row[header];
@@ -1428,11 +1446,11 @@ class ComparisonDashboard {
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
-        
+
         link.setAttribute('href', url);
         link.setAttribute('download', `${filename}.csv`);
         link.style.visibility = 'hidden';
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -1459,7 +1477,7 @@ class ComparisonDashboard {
             </button>
         `;
         document.body.appendChild(errorDiv);
-        
+
         // Auto-remove after 5 seconds
         setTimeout(() => {
             if (errorDiv.parentNode) {
@@ -1470,12 +1488,12 @@ class ComparisonDashboard {
 }
 
 // Initialize the dashboard when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM Content Loaded - Initializing Comparison Dashboard');
-    
+
     // Remove loading classes immediately
     document.querySelectorAll('.chart-loading, .spinner-border').forEach(el => el.remove());
-    
+
     // Clear all chart containers
     const chartIds = ['comparison-1', 'IntermapDiv', 'scatter1', 'scatter2', 'scatter3', 'scatter4', 'container'];
     chartIds.forEach(id => {
@@ -1484,20 +1502,20 @@ document.addEventListener('DOMContentLoaded', function() {
             container.innerHTML = '';
         }
     });
-    
+
     // Initialize dashboard
     window.comparisonDashboard = new ComparisonDashboard();
-    
+
     // Add accessibility improvements
     document.querySelectorAll('[data-toggle="dropdown"]').forEach(dropdown => {
-        dropdown.addEventListener('keydown', function(e) {
+        dropdown.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 this.click();
             }
         });
     });
-    
+
     // Force a resize after a short delay to ensure charts render properly
     setTimeout(() => {
         window.dispatchEvent(new Event('resize'));

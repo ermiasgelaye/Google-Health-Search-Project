@@ -9,18 +9,18 @@ class UltraHealthAnalyticsChatbot {
             showEmojiReactions: true,
             enableDarkMode: false
         };
-        
+
         // Create chatbot HTML
         this.createChatbotHTML();
         this.setupEventListeners();
-        
+
         // Add enhanced welcome message
         this.addWelcomeMessage();
-        
+
         // Load user preferences
         this.loadPreferences();
     }
-    
+
     createChatbotHTML() {
         const chatbotHTML = `
         <style>
@@ -746,9 +746,9 @@ class UltraHealthAnalyticsChatbot {
             </div>
         </div>
         `;
-        
+
         document.body.insertAdjacentHTML('beforeend', chatbotHTML);
-        
+
         // Add copy success element
         const copySuccess = document.createElement('div');
         copySuccess.className = 'copy-success';
@@ -756,7 +756,7 @@ class UltraHealthAnalyticsChatbot {
         copySuccess.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Copied to clipboard!';
         document.body.appendChild(copySuccess);
     }
-    
+
     setupEventListeners() {
         this.toggleBtn = document.getElementById('simpleChatbotToggle');
         this.closeBtn = document.getElementById('simpleChatbotClose');
@@ -764,11 +764,11 @@ class UltraHealthAnalyticsChatbot {
         this.body = document.getElementById('simpleChatbotBody');
         this.input = document.getElementById('simpleChatbotInput');
         this.sendBtn = document.getElementById('simpleChatbotSend');
-        
+
         // Toggle chatbot with animation
         this.toggleBtn.addEventListener('click', () => this.toggleChatbot());
         this.closeBtn.addEventListener('click', () => this.closeChatbot());
-        
+
         // Send message with enhanced features
         this.sendBtn.addEventListener('click', () => this.sendMessage());
         this.input.addEventListener('keypress', (e) => {
@@ -776,18 +776,18 @@ class UltraHealthAnalyticsChatbot {
                 this.sendMessage();
             }
         });
-        
+
         // Quick actions with enhanced styling
         document.querySelectorAll('.quick-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const question = e.target.dataset.question || 
-                                e.target.closest('.quick-btn').dataset.question;
+                const question = e.target.dataset.question ||
+                    e.target.closest('.quick-btn').dataset.question;
                 this.input.value = question;
                 this.input.focus();
                 this.sendMessage();
             });
         });
-        
+
         // Add toggle animation periodically
         setInterval(() => {
             if (!this.isOpen) {
@@ -797,11 +797,11 @@ class UltraHealthAnalyticsChatbot {
                 }, 2000);
             }
         }, 30000); // Every 30 seconds
-        
+
         // Add input auto-suggest
         this.setupAutoSuggest();
     }
-    
+
     setupAutoSuggest() {
         const suggestions = [
             "Show me interactive cancer statistics",
@@ -815,14 +815,14 @@ class UltraHealthAnalyticsChatbot {
             "Show geographic health trends",
             "How has search volume changed over time?"
         ];
-        
+
         this.input.addEventListener('input', (e) => {
             const value = e.target.value.toLowerCase();
             if (value.length > 2) {
-                const matches = suggestions.filter(s => 
+                const matches = suggestions.filter(s =>
                     s.toLowerCase().includes(value)
                 ).slice(0, 3);
-                
+
                 // Could implement a dropdown here
                 // For now, just log for debugging
                 if (matches.length > 0 && this.isOpen) {
@@ -831,7 +831,7 @@ class UltraHealthAnalyticsChatbot {
             }
         });
     }
-    
+
     loadPreferences() {
         const saved = localStorage.getItem('health_chatbot_prefs');
         if (saved) {
@@ -845,11 +845,11 @@ class UltraHealthAnalyticsChatbot {
             }
         }
     }
-    
+
     savePreferences() {
         localStorage.setItem('health_chatbot_prefs', JSON.stringify(this.userPreferences));
     }
-    
+
     toggleChatbot() {
         this.container.classList.toggle('active');
         this.isOpen = !this.isOpen;
@@ -862,32 +862,32 @@ class UltraHealthAnalyticsChatbot {
             this.toggleBtn.style.background = 'linear-gradient(135deg, #1a237e, #1565c0)';
         }
     }
-    
+
     closeChatbot() {
         this.container.classList.remove('active');
         this.isOpen = false;
         this.toggleBtn.innerHTML = '<i class="fas fa-brain"></i>';
         this.toggleBtn.style.background = 'linear-gradient(135deg, #1a237e, #1565c0)';
     }
-    
+
     async sendMessage() {
         const question = this.input.value.trim();
         if (!question) return;
-        
+
         // Add to conversation context
         this.conversationContext.push({
             role: 'user',
             content: question,
             timestamp: new Date()
         });
-        
+
         // Add user message with enhanced styling
         this.addEnhancedMessage(question, 'user');
         this.input.value = '';
-        
+
         // Show enhanced typing indicator
         this.showEnhancedTyping();
-        
+
         try {
             // Send to backend with context
             const response = await fetch('/api/chat', {
@@ -901,23 +901,23 @@ class UltraHealthAnalyticsChatbot {
                     context: this.conversationContext.slice(-5) // Last 5 messages
                 })
             });
-            
+
             const data = await response.json();
-            
+
             // Remove typing indicator
             this.removeTyping();
-            
+
             if (data.success) {
                 // Add bot response with all enhancements
                 this.addEnhancedBotResponse(data);
-                
+
                 // Add to conversation context
                 this.conversationContext.push({
                     role: 'bot',
                     content: data.response,
                     timestamp: new Date()
                 });
-                
+
                 // Keep context manageable
                 if (this.conversationContext.length > 10) {
                     this.conversationContext = this.conversationContext.slice(-10);
@@ -933,25 +933,25 @@ class UltraHealthAnalyticsChatbot {
                     { text: "See key findings", question: "What are the key findings?" }
                 ]);
             }
-            
+
         } catch (error) {
             this.removeTyping();
             console.error('Chatbot error:', error);
-            
+
             // Enhanced error handling
             this.handleEnhancedError(question);
         }
     }
-    
+
     addEnhancedMessage(content, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message ${sender}-message`;
-        
-        const timestamp = new Date().toLocaleTimeString([], { 
-            hour: '2-digit', 
-            minute: '2-digit' 
+
+        const timestamp = new Date().toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
         });
-        
+
         let actionsHTML = '';
         if (sender === 'bot') {
             actionsHTML = `
@@ -968,7 +968,7 @@ class UltraHealthAnalyticsChatbot {
                 </div>
             `;
         }
-        
+
         messageDiv.innerHTML = `
             <div class="message-content">
                 ${this.formatMessageContent(content, sender)}
@@ -978,9 +978,9 @@ class UltraHealthAnalyticsChatbot {
                 ${actionsHTML}
             </div>
         `;
-        
+
         this.body.appendChild(messageDiv);
-        
+
         // Add event listeners for action buttons
         if (sender === 'bot') {
             const copyBtn = messageDiv.querySelector('.copy-btn');
@@ -990,7 +990,7 @@ class UltraHealthAnalyticsChatbot {
                 });
             }
         }
-        
+
         // Scroll to bottom with smooth behavior
         setTimeout(() => {
             this.body.scrollTo({
@@ -998,15 +998,15 @@ class UltraHealthAnalyticsChatbot {
                 behavior: 'smooth'
             });
         }, 100);
-        
+
         return messageDiv;
     }
-    
+
     formatMessageContent(content, sender) {
         if (sender === 'user') {
             return content;
         }
-        
+
         // Enhanced Markdown/HTML parsing for bot messages
         let formatted = content
             // Headers
@@ -1028,24 +1028,24 @@ class UltraHealthAnalyticsChatbot {
             .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
             // Line breaks
             .replace(/\n/g, '<br>');
-        
+
         // Wrap lists in ul tags
         formatted = formatted.replace(/(<li>.*?<\/li>)/g, '<ul>$1</ul>');
-        
+
         // Add syntax highlighting for code blocks
         formatted = formatted.replace(/<pre><code>([\s\S]*?)<\/code><\/pre>/g, (match, code) => {
             return `<pre><code class="language-python">${this.escapeHtml(code)}</code></pre>`;
         });
-        
+
         return formatted;
     }
-    
+
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
-    
+
     showEnhancedTyping() {
         const typingDiv = document.createElement('div');
         typingDiv.className = 'chat-message bot-message';
@@ -1068,17 +1068,17 @@ class UltraHealthAnalyticsChatbot {
         this.body.appendChild(typingDiv);
         this.body.scrollTop = this.body.scrollHeight;
     }
-    
+
     removeTyping() {
         const indicator = document.getElementById('typing-indicator');
         if (indicator) {
             indicator.remove();
         }
     }
-    
+
     addEnhancedBotResponse(data) {
         const messageDiv = this.addEnhancedMessage(data.response, 'bot');
-        
+
         // Add reading time estimate
         const wordCount = data.response.split(/\s+/).length;
         const readingTime = Math.ceil(wordCount / 200); // 200 words per minute
@@ -1091,7 +1091,7 @@ class UltraHealthAnalyticsChatbot {
                 messageDiv.querySelector('.message-content').firstChild
             );
         }
-        
+
         // Add context awareness badge if applicable
         if (data.entities && Object.values(data.entities).some(v => v)) {
             const contextEl = document.createElement('div');
@@ -1106,12 +1106,12 @@ class UltraHealthAnalyticsChatbot {
                 messageDiv.querySelector('.message-content').firstChild
             );
         }
-        
+
         // Add data visualization if available
         if (data.data_available && data.data_points) {
             this.addDataVisualization(messageDiv, data.data_points);
         }
-        
+
         // Add quick chips for follow-up questions
         if (data.suggested_questions && data.suggested_questions.length > 0) {
             this.addQuickChips(data.suggested_questions.map(q => ({
@@ -1119,10 +1119,10 @@ class UltraHealthAnalyticsChatbot {
                 question: q.question
             })));
         }
-        
+
         // Add response rating
         this.addResponseRating(messageDiv);
-        
+
         // Highlight code blocks with Prism (if available)
         if (typeof Prism !== 'undefined') {
             setTimeout(() => {
@@ -1132,11 +1132,11 @@ class UltraHealthAnalyticsChatbot {
             }, 100);
         }
     }
-    
+
     addDataVisualization(messageDiv, dataPoints) {
         const vizDiv = document.createElement('div');
         vizDiv.className = 'data-visualization';
-        
+
         let vizHTML = `
             <div class="visualization-header">
                 <div class="visualization-title">
@@ -1153,7 +1153,7 @@ class UltraHealthAnalyticsChatbot {
             </div>
             <div class="viz-content">
         `;
-        
+
         Object.entries(dataPoints).forEach(([key, value]) => {
             vizHTML += `
                 <div class="data-row" style="margin: 8px 0; padding: 8px; background: #f8f9fa; border-radius: 6px;">
@@ -1164,12 +1164,12 @@ class UltraHealthAnalyticsChatbot {
                 </div>
             `;
         });
-        
+
         vizHTML += `</div>`;
         vizDiv.innerHTML = vizHTML;
-        
+
         messageDiv.querySelector('.message-content').appendChild(vizDiv);
-        
+
         // Add event listeners for viz buttons
         vizDiv.querySelector('.copy-data-btn').addEventListener('click', () => {
             const dataText = Object.entries(dataPoints)
@@ -1177,17 +1177,17 @@ class UltraHealthAnalyticsChatbot {
                 .join('\n');
             this.copyToClipboard(dataText);
         });
-        
+
         vizDiv.querySelector('.expand-btn').addEventListener('click', () => {
             // Could implement modal view here
             alert('Expanded view would show here. Data points: ' + JSON.stringify(dataPoints));
         });
     }
-    
+
     addQuickChips(chips) {
         const chipsContainer = document.createElement('div');
         chipsContainer.className = 'quick-chips';
-        
+
         chips.forEach(chip => {
             const chipEl = document.createElement('div');
             chipEl.className = 'chip';
@@ -1198,11 +1198,11 @@ class UltraHealthAnalyticsChatbot {
             });
             chipsContainer.appendChild(chipEl);
         });
-        
+
         this.body.appendChild(chipsContainer);
         this.body.scrollTop = this.body.scrollHeight;
     }
-    
+
     addResponseRating(messageDiv) {
         const ratingDiv = document.createElement('div');
         ratingDiv.className = 'response-rating';
@@ -1215,24 +1215,24 @@ class UltraHealthAnalyticsChatbot {
                 <i class="fas fa-thumbs-up"></i>
             </button>
         `;
-        
+
         messageDiv.appendChild(ratingDiv);
-        
+
         ratingDiv.querySelectorAll('.rating-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const rating = e.currentTarget.dataset.rating;
                 e.currentTarget.classList.add('active');
-                
+
                 // Send feedback to server (could be implemented)
                 console.log(`User rated response: ${rating}`);
-                
+
                 // Show thank you message
                 const thankYou = document.createElement('div');
                 thankYou.className = 'reading-time';
                 thankYou.innerHTML = `<i class="fas fa-heart"></i> Thanks for your feedback!`;
                 thankYou.style.marginTop = '8px';
                 ratingDiv.appendChild(thankYou);
-                
+
                 // Remove buttons after rating
                 setTimeout(() => {
                     ratingDiv.querySelectorAll('.rating-btn').forEach(b => b.remove());
@@ -1240,7 +1240,7 @@ class UltraHealthAnalyticsChatbot {
             });
         });
     }
-    
+
     copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
             this.showCopySuccess();
@@ -1248,7 +1248,7 @@ class UltraHealthAnalyticsChatbot {
             console.error('Failed to copy:', err);
         });
     }
-    
+
     showCopySuccess() {
         const successEl = document.querySelector('.copy-success');
         successEl.style.display = 'block';
@@ -1256,19 +1256,19 @@ class UltraHealthAnalyticsChatbot {
             successEl.style.display = 'none';
         }, 2500);
     }
-    
+
     handleEnhancedError(question) {
         // Analyze the question for better fallback
         const analysis = this.analyzeQuestion(question);
-        
+
         let fallbackResponse = this.generateSmartFallback(analysis);
-        
+
         // Add enhanced error message
         const errorDiv = this.addEnhancedMessage(fallbackResponse, 'bot');
-        
+
         // Add helpful suggestions based on question type
         this.addContextualSuggestions(errorDiv, analysis);
-        
+
         // Add troubleshooting tips
         const tipsDiv = document.createElement('div');
         tipsDiv.className = 'data-visualization';
@@ -1294,26 +1294,26 @@ class UltraHealthAnalyticsChatbot {
                 </div>
             </div>
         `;
-        
+
         errorDiv.querySelector('.message-content').appendChild(tipsDiv);
-        
+
         // Add emergency quick actions
         this.addQuickChips([
-            { 
-                text: "🔄 Try again", 
-                question: question 
+            {
+                text: "🔄 Try again",
+                question: question
             },
-            { 
-                text: "📊 View project overview", 
-                question: "What is this project about?" 
+            {
+                text: "📊 View project overview",
+                question: "What is this project about?"
             },
-            { 
-                text: "🔧 See methodology", 
-                question: "Explain the methodology" 
+            {
+                text: "🔧 See methodology",
+                question: "Explain the methodology"
             }
         ]);
     }
-    
+
     analyzeQuestion(question) {
         const analysis = {
             type: 'general',
@@ -1321,9 +1321,9 @@ class UltraHealthAnalyticsChatbot {
             complexity: 'simple',
             keywords: []
         };
-        
+
         const lowerQ = question.toLowerCase();
-        
+
         // Detect question type
         if (lowerQ.includes('how') || lowerQ.includes('method') || lowerQ.includes('process')) {
             analysis.type = 'methodology';
@@ -1334,24 +1334,24 @@ class UltraHealthAnalyticsChatbot {
         } else if (lowerQ.includes('compare') || lowerQ.includes('difference')) {
             analysis.type = 'comparison';
         }
-        
+
         // Extract keywords
-        const keywords = ['cancer', 'diabetes', 'depression', 'obesity', 'cardiovascular', 
-                         'stroke', 'vaccine', 'rehab', 'diarrhea', 'california', 'texas', 
-                         'new york', 'data', 'source', 'trend', 'statistic', 'correlation'];
-        
-        analysis.keywords = keywords.filter(keyword => 
+        const keywords = ['cancer', 'diabetes', 'depression', 'obesity', 'cardiovascular',
+            'stroke', 'vaccine', 'rehab', 'diarrhea', 'california', 'texas',
+            'new york', 'data', 'source', 'trend', 'statistic', 'correlation'];
+
+        analysis.keywords = keywords.filter(keyword =>
             lowerQ.includes(keyword)
         );
-        
+
         // Assess complexity
         const wordCount = question.split(/\s+/).length;
-        analysis.complexity = wordCount > 15 ? 'complex' : 
-                             wordCount > 8 ? 'moderate' : 'simple';
-        
+        analysis.complexity = wordCount > 15 ? 'complex' :
+            wordCount > 8 ? 'moderate' : 'simple';
+
         return analysis;
     }
-    
+
     generateSmartFallback(analysis) {
         const templates = {
             methodology: `**🔍 Methodology Inquiry**\n\nI notice you're asking about our methodology. Here's a detailed breakdown:\n\n`,
@@ -1360,11 +1360,11 @@ class UltraHealthAnalyticsChatbot {
             comparison: `**⚖️ Comparison Request**\n\nI understand you want to compare different aspects. Here's what I can share:\n\n`,
             general: `**🤖 Health Analytics Assistant**\n\nI can provide detailed insights about our health analytics project. Here's what I know:\n\n`
         };
-        
+
         const base = templates[analysis.type] || templates.general;
-        
+
         let response = base;
-        
+
         // Add context-specific information
         if (analysis.keywords.includes('cancer')) {
             response += `• **Cancer**: Most searched health condition across all states\n`;
@@ -1375,44 +1375,44 @@ class UltraHealthAnalyticsChatbot {
         if (analysis.keywords.includes('california')) {
             response += `• **California**: Highest search volume state (18% of total)\n`;
         }
-        
+
         response += `\n**Try asking more specifically:**\n`;
         response += `• "Show me cancer statistics with charts"\n`;
         response += `• "Compare diabetes searches in California vs Texas"\n`;
         response += `• "Explain the correlation analysis methodology"\n`;
-        
+
         return response;
     }
-    
+
     addContextualSuggestions(messageDiv, analysis) {
         const suggestions = [];
-        
+
         if (analysis.keywords.includes('cancer')) {
             suggestions.push({
                 text: "📈 View cancer statistics",
                 question: "Show detailed cancer statistics with charts"
             });
         }
-        
+
         if (analysis.keywords.includes('diabetes')) {
             suggestions.push({
                 text: "🔗 Diabetes correlations",
                 question: "Show correlations between diabetes and other conditions"
             });
         }
-        
+
         if (analysis.type === 'methodology') {
             suggestions.push({
                 text: "🔬 Detailed methodology",
                 question: "Explain the full methodology with technical details"
             });
         }
-        
+
         if (suggestions.length > 0) {
             this.addQuickChips(suggestions);
         }
     }
-    
+
     addWelcomeMessage() {
         const welcomeMsg = `
         <div class="chat-message bot-message">
@@ -1482,9 +1482,9 @@ class UltraHealthAnalyticsChatbot {
             </div>
         </div>
         `;
-        
+
         this.body.innerHTML = welcomeMsg;
-        
+
         // Add event listeners to welcome chips
         this.body.querySelectorAll('.chip').forEach(chip => {
             chip.addEventListener('click', (e) => {
@@ -1497,19 +1497,19 @@ class UltraHealthAnalyticsChatbot {
 }
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     window.healthAnalyticsAI = new UltraHealthAnalyticsChatbot();
-    
+
     // Load Prism.js for syntax highlighting
     const prismCSS = document.createElement('link');
     prismCSS.rel = 'stylesheet';
     prismCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css';
     document.head.appendChild(prismCSS);
-    
+
     const prismJS = document.createElement('script');
     prismJS.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js';
     document.head.appendChild(prismJS);
-    
+
     const prismPython = document.createElement('script');
     prismPython.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js';
     document.head.appendChild(prismPython);
