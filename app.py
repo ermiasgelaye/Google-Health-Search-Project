@@ -1,15 +1,11 @@
 # app.py - COMPLETE PRODUCTION-READY HEALTH ANALYTICS CHATBOT
-import pandas as pd
 import os
 import json
 import re
 import uuid
 import math
-import numpy as np
 from datetime import datetime
-from difflib import get_close_matches
 from textblob import TextBlob
-from collections import Counter
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
@@ -686,7 +682,7 @@ class AIHealthAnalyticsChatbot:
         elif response_type == 'health_conditions':
             return self._generate_conditions_list_response()
         else:
-            return self._generate_general_response(question_analysis)
+            return self._generate_general_response()
     
     def _generate_help_response(self):
         """Generate help response"""
@@ -1081,7 +1077,7 @@ How can I assist you today?"""
         
         return response
     
-    def _generate_general_response(self, question_analysis):
+    def _generate_general_response(self):
         """Generate general fallback response"""
         response = "**🤖 Health Analytics Assistant** 🦅\n\n"
         response += "I can help you understand various aspects of the Eagle Health Analytics project:\n\n"
