@@ -458,20 +458,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="{{ url_for('static', filename='js/chatbot-interactive.js') }}"></script>
     <script src="../js/chatbot-interactive.js"></script>
-    <!-- Add dark mode toggle button (optional) -->
-    <button id="darkModeToggle" class="btn btn-secondary"
-        style="position: fixed; bottom: 100px; right: 20px; z-index: 9999;">
-        <i class="fas fa-moon"></i>
-    </button>
-    <script>
-        // Dark mode toggle
 
-        document.getElementById('darkModeToggle')?.addEventListener('click', function () {
-            document.body.classList.toggle('dark-mode');
-            this.innerHTML = document.body.classList.contains('dark-mode') ?
-                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        });
-    </script>
 </body>
 
 </html>
