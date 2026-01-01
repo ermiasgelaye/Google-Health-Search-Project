@@ -1032,185 +1032,210 @@ class ComparisonDashboard {
         Plotly.newPlot('IntermapDiv', [stateHighlight, glowMarker, cityMarker], layout, config);
     }
 
-    updateScatterPlots(cityData, years, cityName) {
-        console.log(`Updating scatter plots for ${cityName}`);
+updateScatterPlots(cityData, years, cityName) {
+    console.log(`Updating scatter plots for ${cityName}`);
 
-        const diabetesSearch = cityData.map(row => row.diabetes || 0);
-        const diarrheaSearch = cityData.map(row => row.diarrhea || 0);
-        const depressionSearch = cityData.map(row => row.depression || 0);
-        const vaccineSearch = cityData.map(row => row.vaccine || 0);
+    const diabetesSearch = cityData.map(row => row.diabetes || 0);
+    const diarrheaSearch = cityData.map(row => row.diarrhea || 0);
+    const depressionSearch = cityData.map(row => row.depression || 0);
+    const vaccineSearch = cityData.map(row => row.vaccine || 0);
 
-        const scatterConfigs = [
-            {
-                id: 'scatter1',
-                title: 'Diabetes vs Diarrhea Correlation',
-                x: diabetesSearch,
-                y: diarrheaSearch,
-                xLabel: 'Diabetes Searches',
-                yLabel: 'Diarrhea Searches',
-                color: this.colors.conditions.diabetes
-            },
-            {
-                id: 'scatter2',
-                title: 'Diabetes vs Depression Correlation',
-                x: diabetesSearch,
-                y: depressionSearch,
-                xLabel: 'Diabetes Searches',
-                yLabel: 'Depression Searches',
-                color: this.colors.conditions.depression
-            },
-            {
-                id: 'scatter3',
-                title: 'Diabetes vs Vaccine Correlation',
-                x: diabetesSearch,
-                y: vaccineSearch,
-                xLabel: 'Diabetes Searches',
-                yLabel: 'Vaccine Searches',
-                color: this.colors.conditions.vaccine
-            },
-            {
-                id: 'scatter4',
-                title: 'Depression vs Vaccine Correlation',
-                x: depressionSearch,
-                y: vaccineSearch,
-                xLabel: 'Depression Searches',
-                yLabel: 'Vaccine Searches',
-                color: this.colors.conditions.diarrhea
-            }
-        ];
+    const scatterConfigs = [
+        {
+            id: 'scatter1',
+            title: 'Diabetes vs Diarrhea Correlation',
+            x: diabetesSearch,
+            y: diarrheaSearch,
+            xLabel: 'Diabetes Searches',
+            yLabel: 'Diarrhea Searches',
+            color: this.colors.conditions.diabetes
+        },
+        {
+            id: 'scatter2',
+            title: 'Diabetes vs Depression Correlation',
+            x: diabetesSearch,
+            y: depressionSearch,
+            xLabel: 'Diabetes Searches',
+            yLabel: 'Depression Searches',
+            color: this.colors.conditions.depression
+        },
+        {
+            id: 'scatter3',
+            title: 'Diabetes vs Vaccine Correlation',
+            x: diabetesSearch,
+            y: vaccineSearch,
+            xLabel: 'Diabetes Searches',
+            yLabel: 'Vaccine Searches',
+            color: this.colors.conditions.vaccine
+        },
+        {
+            id: 'scatter4',
+            title: 'Depression vs Vaccine Correlation',
+            x: depressionSearch,
+            y: vaccineSearch,
+            xLabel: 'Depression Searches',
+            yLabel: 'Vaccine Searches',
+            color: this.colors.conditions.diarrhea
+        }
+    ];
 
-        scatterConfigs.forEach(config => {
-            const container = document.getElementById(config.id);
-            if (container) {
-                container.innerHTML = '';
-            }
+    scatterConfigs.forEach(config => {
+        const container = document.getElementById(config.id);
+        if (container) {
+            container.innerHTML = '';
+        }
 
-            const scatter = {
-                x: config.x,
-                y: config.y,
-                mode: 'markers',
-                type: 'scatter',
-                marker: {
-                    size: 14,
-                    color: config.color,
-                    opacity: 0.8,
-                    line: {
-                        color: '#ffffff',
-                        width: 2
-                    }
-                },
-                name: config.title,
-                text: years.map(year => `Year: ${year}`),
-                hovertemplate: `<b>📍 ${cityName}</b><br>Year: %{text}<br>X: %{x:,}<br>Y: %{y:,}<extra></extra>`
-            };
-
-            // Add trend line
-            const trendLine = {
-                x: config.x,
-                y: config.y,
-                mode: 'lines',
-                type: 'scatter',
+        const scatter = {
+            x: config.x,
+            y: config.y,
+            mode: 'markers',
+            type: 'scatter',
+            marker: {
+                size: 14,
+                color: config.color,
+                opacity: 0.8,
                 line: {
-                    color: config.color,
-                    width: 2,
-                    dash: 'dash'
-                },
-                name: 'Trend',
-                showlegend: false
-            };
+                    color: '#ffffff',
+                    width: 2
+                }
+            },
+            name: config.title,
+            text: years.map(year => `Year: ${year}`),
+            hovertemplate: `<b>📍 ${cityName}</b><br>Year: %{text}<br>X: %{x:,}<br>Y: %{y:,}<extra></extra>`
+        };
 
-            const layout = {
-                width: null,
-                height: 400,
-                xaxis: {
-                    title: {
-                        text: config.xLabel,
-                        font: {
-                            size: this.fonts.axisTitle.size - 2,
-                            family: this.fonts.axisTitle.family,
-                            color: this.colors.primary.slate,
-                            weight: this.fonts.axisTitle.weight
-                        },
-                        standoff: 15
+        // Add trend line
+        const trendLine = {
+            x: config.x,
+            y: config.y,
+            mode: 'lines',
+            type: 'scatter',
+            line: {
+                color: config.color,
+                width: 2,
+                dash: 'dash'
+            },
+            name: 'Trend',
+            showlegend: false
+        };
+
+        const layout = {
+            width: null,
+            height: 400,
+            xaxis: {
+                title: {
+                    text: config.xLabel,
+                    font: {
+                        size: this.fonts.axisTitle.size - 2,
+                        family: this.fonts.axisTitle.family,
+                        color: this.colors.primary.slate,
+                        weight: this.fonts.axisTitle.weight
                     },
-                    showgrid: true,
-                    gridcolor: 'rgba(0, 0, 0, 0.1)',
-                    gridwidth: 1,
-                    tickfont: {
-                        size: 14,
-                        family: this.fonts.tickLabels.family,
-                        color: this.colors.primary.slate
-                    },
-                    automargin: true,
-                    showline: true,
-                    linecolor: '#b0bec5',
-                    linewidth: 1,
-                    tickangle: 0
+                    standoff: 15
                 },
-                yaxis: {
-                    title: {
-                        text: config.yLabel,
-                        font: {
-                            size: this.fonts.axisTitle.size - 2,
-                            family: this.fonts.axisTitle.family,
-                            color: this.colors.primary.slate,
-                            weight: this.fonts.axisTitle.weight
-                        },
-                        standoff: 15
-                    },
-                    showgrid: true,
-                    gridcolor: 'rgba(0, 0, 0, 0.1)',
-                    gridwidth: 1,
-                    tickfont: {
-                        size: 14,
-                        family: this.fonts.tickLabels.family,
-                        color: this.colors.primary.slate
-                    },
-                    automargin: true,
-                    showline: true,
-                    linecolor: '#b0bec5',
-                    linewidth: 1,
-                    tickangle: 0
+                visible: true,
+                showline: true,
+                linecolor: '#b0bec5',
+                linewidth: 2,
+                mirror: true,
+                showgrid: true,
+                gridcolor: 'rgba(0, 0, 0, 0.1)',
+                gridwidth: 1,
+                zeroline: true,
+                zerolinecolor: '#b0bec5',
+                zerolinewidth: 1,
+                tickfont: {
+                    size: 14,
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
                 },
-                plot_bgcolor: '#ffffff',
-                paper_bgcolor: '#ffffff',
-                margin: { t: 60, r: 40, b: 60, l: 70 },
-                showlegend: false,
-                autosize: true,
+                automargin: true,
+                tickangle: 0,
+                tickmode: 'auto',
+                nticks: 8,
+                tickformat: ',',
+                showticklabels: true
+            },
+            yaxis: {
+                title: {
+                    text: config.yLabel,
+                    font: {
+                        size: this.fonts.axisTitle.size - 2,
+                        family: this.fonts.axisTitle.family,
+                        color: this.colors.primary.slate,
+                        weight: this.fonts.axisTitle.weight
+                    },
+                    standoff: 15
+                },
+                visible: true,
+                showline: true,
+                linecolor: '#b0bec5',
+                linewidth: 2,
+                mirror: true,
+                showgrid: true,
+                gridcolor: 'rgba(0, 0, 0, 0.1)',
+                gridwidth: 1,
+                zeroline: true,
+                zerolinecolor: '#b0bec5',
+                zerolinewidth: 1,
+                tickfont: {
+                    size: 14,
+                    family: this.fonts.tickLabels.family,
+                    color: this.colors.primary.slate
+                },
+                automargin: true,
+                tickangle: 0,
+                tickmode: 'auto',
+                nticks: 8,
+                tickformat: ',',
+                showticklabels: true
+            },
+            plot_bgcolor: '#ffffff',
+            paper_bgcolor: '#ffffff',
+            // INCREASE TOP MARGIN to make room for the city name
+            margin: { t: 80, r: 40, b: 60, l: 70 },
+            showlegend: false,
+            autosize: true,
+            font: {
+                family: this.fonts.title.family,
+                color: this.colors.primary.slate
+            },
+            // MOVE THE ANNOTATION FURTHER UP AND OUTSIDE
+            annotations: [{
+                text: `📍 ${cityName}`,
+                x: 0.02,
+                y: 1.15, // Moved further up (was 1.05)
+                xref: 'paper',
+                yref: 'paper',
+                showarrow: false,
                 font: {
+                    size: 16,
+                    color: this.colors.primary.navy,
+                    weight: 'bold'
+                },
+                align: 'left',
+                yanchor: 'top',
+                // Add background to make it stand out
+                bgcolor: 'rgba(255, 255, 255, 0.8)',
+                borderpad: 8,
+                borderwidth: 1,
+                bordercolor: this.colors.primary.navy
+            }],
+            hoverlabel: {
+                bgcolor: 'rgba(255, 255, 255, 0.9)',
+                font: {
+                    size: 14,
                     family: this.fonts.title.family,
                     color: this.colors.primary.slate
                 },
-                annotations: [{
-                    text: `📍 ${cityName}`,
-                    x: 0.02,
-                    y: 1.05,
-                    xref: 'paper',
-                    yref: 'paper',
-                    showarrow: false,
-                    font: {
-                        size: 16,
-                        color: this.colors.primary.navy,
-                        weight: 'bold'
-                    },
-                    align: 'left',
-                    yanchor: 'top'
-                }],
-                hoverlabel: {
-                    bgcolor: 'rgba(255, 255, 255, 0.9)',
-                    font: {
-                        size: 14,
-                        family: this.fonts.title.family,
-                        color: this.colors.primary.slate
-                    },
-                    bordercolor: this.colors.primary.slate
-                }
-            };
+                bordercolor: this.colors.primary.slate
+            }
+        };
 
-            console.log(`Creating scatter plot: ${config.id}`);
-            Plotly.newPlot(config.id, [scatter, trendLine], layout, this.getChartConfig());
-        });
-    }
+        console.log(`Creating scatter plot: ${config.id}`);
+        Plotly.newPlot(config.id, [scatter, trendLine], layout, this.getChartConfig());
+    });
+}
 
     updateGauge(cityData, cityName) {
         console.log(`Updating gauge for ${cityName}`);
