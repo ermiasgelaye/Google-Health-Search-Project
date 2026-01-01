@@ -2,7 +2,7 @@
 
 class ComparisonDashboard {
     constructor() {
-        this.currentCity = 'Austin';
+        this.currentCity = 'Abilene-Sweetwater';
         this.statsData = null;
         this.cityList = [];
         this.cityCoordinates = {};
