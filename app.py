@@ -1512,5 +1512,15 @@ def totalcondition():
     result = json.loads(df)
     return jsonify(result)
 
+#if __name__ == '__main__':
+#    app.run(debug=True, port=5000)
+
+
+# Remove or comment this line:
+# if __name__ == '__main__':
+#     app.run(debug=True, port=5000)
+
+# Instead, add this at the end:
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # This only runs when executed directly (not as a module)
+    app.run(debug=True)
