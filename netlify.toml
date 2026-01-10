@@ -17,6 +17,6 @@
   PYTHON_VERSION = "3.9"
   FLASK_ENV = "production"
 
-# Build plugins (optional but helpful)
-[[plugins]]
-  package = "netlify-plugin-python"
+# REMOVE or COMMENT OUT this section:
+# [[plugins]]
+#   package = "netlify-plugin-python"
