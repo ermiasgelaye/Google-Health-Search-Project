@@ -1,9 +1,5 @@
 {
-  "name": "google-health-search",
+  "name": "health-analytics",
   "version": "1.0.0",
-  "description": "Health Analytics Dashboard",
-  "scripts": {
-    "build": "echo 'Building Python Flask app'"
-  },
-  "dependencies": {}
+  "private": true
 }
