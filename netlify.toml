@@ -1,22 +1,17 @@
 [build]
-  command = "echo 'Building Flask app for Netlify'"
+  command = "echo 'Building static site'"
   publish = "public"
   functions = "netlify/functions"
 
 [build.environment]
   PYTHON_VERSION = "3.9"
-  NODE_VERSION = "18"
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "/.netlify/functions/api/:splat"
   status = 200
 
-[[redirects]]
-  from = "/dashboards/*"
-  to = "/index.html"
-  status = 200
-
+# Catch-all for SPA behavior
 [[redirects]]
   from = "/*"
   to = "/index.html"
