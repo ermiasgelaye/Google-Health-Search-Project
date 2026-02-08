@@ -1,46 +1,46 @@
 state,postal,searches
-Minnesota,MN,20884.0
-Maryland,MD,18444.0
-North Carolina,NC,31417.0
-Montana,MT,32212.0
 Nebraska,NE,23859.0
-Tennessee,TN,31771.0
 Connecticut,CT,6568.0
-Wisconsin,WI,37555.0
-Nevada,NV,10720.0
-Indiana,IN,37994.0
 North Dakota,ND,12587.0
+Washington,WA,17104.0
+Mississippi,MS,40802.0
+South Dakota,SD,13050.0
+Colorado,CO,16895.0
+Missouri,MO,39160.0
+Montana,MT,32212.0
+Nevada,NV,10720.0
+Louisiana,LA,36367.0
+Pennsylvania,PA,39719.0
+South Carolina,SC,24643.0
+Ohio,OH,55656.0
+Oregon,OR,22755.0
+Kansas,KS,17978.0
+Tennessee,TN,31771.0
 Virginia,VA,37967.0
-Wyoming,WY,6028.0
 Illinois,IL,37390.0
 Massachusetts,MA,18807.0
-Louisiana,LA,36367.0
-Washington,WA,17104.0
 Iowa,IA,25804.0
-Mississippi,MS,40802.0
 New Mexico,NM,6009.0
-Pennsylvania,PA,39719.0
-California,CA,64598.0
 Kentucky,KY,20093.0
-South Carolina,SC,24643.0
 Oklahoma,OK,24128.0
 Idaho,ID,18444.0
 Maine,ME,20752.0
 Alaska,AK,15823.0
-Ohio,OH,55656.0
 Alabama,AL,25755.0
-Utah,UT,5742.0
-South Dakota,SD,13050.0
-Texas,TX,98134.0
-Colorado,CO,16895.0
-Oregon,OR,22755.0
 Arkansas,AR,26217.0
-Kansas,KS,17978.0
-Missouri,MO,39160.0
-Michigan,MI,44093.0
 Arizona,AZ,11807.0
 Florida,FL,53592.0
 Georgia,GA,43646.0
-Hawaii,HI,5555.0
 West Virginia,WV,27302.0
 New York,NY,61798.0
+Minnesota,MN,20884.0
+Maryland,MD,18444.0
+North Carolina,NC,31417.0
+Wisconsin,WI,37555.0
+Indiana,IN,37994.0
+Wyoming,WY,6028.0
+California,CA,64598.0
+Utah,UT,5742.0
+Texas,TX,98134.0
+Michigan,MI,44093.0
+Hawaii,HI,5555.0
