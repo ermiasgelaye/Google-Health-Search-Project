@@ -1,10 +1,8 @@
-"""Optional local/legacy server for Eagle Health Analytics.
+"""Optional local/legacy server for Google Health Search Trends.
 
-The site is fully static: data endpoints are pre-built JSON files in static/data/ (see
-tools/build_static.py) and the chat assistant runs in the browser (static/js/chat-engine.js).
-GitHub Pages hosts it with no server at all. This tiny Flask app only exists so the old URLs
-(/searchbyyear, /dashboards/main, ...) keep working if you run it locally or on another host.
-It needs no database.
+The site is fully static (index.html, data.html, assets/, static/data/) and is hosted on GitHub
+Pages with no server. This tiny Flask app only exists so you can run it locally and so the old
+Flask URLs (/searchbyyear, /dashboards/main, ...) keep working on any other host. No database.
 
     python3 app.py        # then open http://localhost:5000
 """
@@ -15,8 +13,10 @@ from flask import Flask, abort, redirect, send_from_directory
 
 ROOT = pathlib.Path(__file__).resolve().parent
 DATA = ROOT / "static" / "data"
+WEB_TYPES = {".html", ".js", ".css", ".json", ".csv", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico"}
+DASHBOARDS = {"main": "/#explore", "comparison": "/#correlations", "about": "/#team"}
 
-app = Flask(__name__, static_folder="static")
+app = Flask(__name__, static_folder=None)
 
 
 @app.route("/")
@@ -27,15 +27,18 @@ def index():
 
 @app.route("/dashboards/<name>")
 def dashboard(name):
-    return redirect(f"/static/dashbords/{name}.html")
+    return redirect(DASHBOARDS.get(name, "/"))
 
 
-@app.route("/<endpoint>")
-def data_endpoint(endpoint):
-    """Old API URLs, e.g. /searchbyyear -> static/data/searchbyyear.json."""
-    if not (DATA / f"{endpoint}.json").is_file():
-        abort(404)
-    return send_from_directory(DATA, f"{endpoint}.json", mimetype="application/json")
+@app.route("/<path:path>")
+def files(path):
+    """Site files, plus the old API URLs (e.g. /searchbyyear -> static/data/searchbyyear.json)."""
+    if "/" not in path and (DATA / f"{path}.json").is_file():
+        return send_from_directory(DATA, f"{path}.json", mimetype="application/json")
+    target = (ROOT / path).resolve()
+    if ROOT in target.parents and target.is_file() and target.suffix.lower() in WEB_TYPES:
+        return send_from_directory(ROOT, path)
+    abort(404)
 
 
 if __name__ == "__main__":
