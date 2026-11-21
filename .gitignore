@@ -140,3 +140,12 @@ config.py
 .sixth/
 .vscode/
 .DS_Store
+# OS
+Thumbs.db
+# Python
+*.pyc
+.ipynb_checkpoints/
+.venv/
+# Node
+node_modules/
+# Secrets

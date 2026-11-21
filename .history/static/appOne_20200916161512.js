@@ -1,1 +1,0 @@
-https://www.searching-for-health.com/static/js/app.js
