@@ -19,9 +19,9 @@
                 subjectPattern: /\b(this|the) (project|study|analysis|data|dataset|chart|map|dashboard|api)\b|\b(project|study|dataset|searches|search interest)\b/,
                 subjectTopics: ['project'],
                 welcome: "Hi! \ud83d\udc4b I'm the **Health Search assistant**.\n\nAsk me where people search most for a condition, what a state or city searches for, which conditions go together, how CDC death rates changed, how to use the API, or how to read Google Trends scores.",
-                greeting: "Hello! \ud83d\udc4b Ask me about this health search project \u2014 conditions, states, cities, findings, API or methods.",
+                greeting: "Hello! \ud83d\udc4b Ask me about this health search project: conditions, states, cities, findings, API or methods.",
                 starters: ['Where is diabetes searched most?', 'What does Texas search for?', 'What does Austin search for?', 'Which conditions are searched together?', 'How did death rates change?', 'How do I use the API?'],
-                helpText: (n) => "I'm the assistant for this project ({n}+ topics). Ask about:\n\n- **A condition** \u2014 e.g. \"where is obesity searched most?\"\n- **A state or city** \u2014 e.g. \"what does Ohio search for?\"\n- **Correlations** between conditions\n- **CDC** death-rate trends\n- **The API** endpoints\n- **How to read** the data, and the corrections made".replace('{n}', n),
+                helpText: (n) => "I'm the assistant for this project ({n}+ topics). Ask about:\n\n- **A condition**: e.g. \"where is obesity searched most?\"\n- **A state or city**: e.g. \"what does Ohio search for?\"\n- **Correlations** between conditions\n- **CDC** death-rate trends\n- **The API** endpoints\n- **How to read** the data, and the corrections made".replace('{n}', n),
                 unknownTail: "\n\nI can explain this project's data, methods and findings, or general data-science concepts. For anything else, Ermias's contact details are on the main portfolio page."
             }
         };
@@ -88,7 +88,7 @@
                 <div class="section-head reveal"><p class="kicker">Neighbours in search space</p><h2 id="similarT">Where it is, and who searches alike</h2><p>The metro areas whose pattern across all nine topics is closest to this one (distance between their standardised search profiles).</p></div>
                 <div class="explore-grid reveal">
                     <div class="card explorer"><div class="map-box" id="cityMap" data-needs-data></div><div class="legend-dots"><span><i style="background:#dc2626"></i>Selected</span><span><i style="background:#1e3a8a"></i>Most similar</span><span><i style="background:rgba(234,88,12,.68)"></i>Other metro areas (click to switch)</span></div></div>
-                    <div class="card explorer"><h3 class="panel-title">Most similar metro areas</h3><ol class="sim-list" id="simList"></ol><p class="chart-note">Similar profiles often sit far apart on the map   health-search habits follow demographics and market size as much as geography.</p></div>
+                    <div class="card explorer"><h3 class="panel-title">Most similar metro areas</h3><ol class="sim-list" id="simList"></ol><p class="chart-note">Similar profiles often sit far apart on the map: health-search habits follow demographics and market size as much as geography.</p></div>
                 </div>
             </div>
         </section>

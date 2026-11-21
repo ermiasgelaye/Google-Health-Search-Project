@@ -109,7 +109,7 @@ const Health = (() => {
     }
 
     /* ---------- Shared UI ---------- */
-    const failAll = (msg) => document.querySelectorAll('[data-needs-data]').forEach((e) => { e.innerHTML = `<div class="alert err">${msg || 'The dataset couldn\'t be loaded — please refresh the page.'}</div>`; });
+    const failAll = (msg) => document.querySelectorAll('[data-needs-data]').forEach((e) => { e.innerHTML = `<div class="alert err">${msg || 'The dataset couldn\'t be loaded: please refresh the page.'}</div>`; });
     const shade = (t) => `color-mix(in srgb, var(--brand) ${Math.round(10 + t * 90)}%, var(--surface))`;
     const divColor = (v, m) => `color-mix(in srgb, ${v >= 0 ? '#ea580c' : 'var(--brand)'} ${Math.round(8 + (Math.min(1, Math.abs(v) / (m || 1))) * 80)}%, var(--surface))`;
     const heatColor = (r) => `color-mix(in srgb, var(${r >= 0 ? '--brand' : '--danger'}) ${Math.round(Math.abs(r) * 85)}%, var(--surface))`;
@@ -160,7 +160,7 @@ const Health = (() => {
     function renderMap(box, opts) {
         const U = window.US_MAP;
         if (!box) return;
-        if (!U) { box.innerHTML = '<div class="alert err">The map couldn\'t be loaded — please refresh the page.</div>'; return; }
+        if (!U) { box.innerHTML = '<div class="alert err">The map couldn\'t be loaded: please refresh the page.</div>'; return; }
         const M = load();
         const vals = opts.values || {};
         const vs = nn(Object.values(vals)), lo = Math.min(...vs), hi = Math.max(...vs);
@@ -278,12 +278,12 @@ const Health = (() => {
                 const share = (s) => (vals[s] / sum(M.states.map((x) => vals[x]))) * 100;
                 const avgRank = (s) => M.states.filter((x) => M.stateScore(x, ci, yi) != null).sort((a, b) => M.stateScore(b, ci, yi) - M.stateScore(a, ci, yi)).indexOf(s) + 1;
                 setText('explorerNote', `<strong>Total</strong>: every metro area's scores are added up${yi == null ? ' over all years' : ''}${ci === ALL ? ' across all nine conditions' : ''}. Highest: ${best.slice(0, 3).map((s) => `<strong>${esc(STATE_NAMES[s])}</strong> (${share(s).toFixed(1)}%, ${M.metrosByState[s].length} metro areas)`).join(', ')}. ` +
-                    `Totals mostly reflect <em>how many</em> metro areas a state has, not how much people search — e.g. ${esc(STATE_NAMES[best[0]])} ranks #${avgRank(best[0])} on the average. Use "Average (mean)" or "Median" for a like-for-like comparison.`);
+                    `Totals mostly reflect <em>how many</em> metro areas a state has, not how much people search: e.g. ${esc(STATE_NAMES[best[0]])} ranks #${avgRank(best[0])} on the average. Use "Average (mean)" or "Median" for a like-for-like comparison.`);
                 return;
             }
             const kind = median ? 'median' : 'average';
             setText('explorerNote', `Highest state ${kind}: <strong>${esc(STATE_NAMES[best[0]])}</strong> (${vals[best[0]].toFixed(1)}); lowest: <strong>${esc(STATE_NAMES[best[best.length - 1]])}</strong> (${vals[best[best.length - 1]].toFixed(1)}). ` +
-                (median ? 'Median = the middle value, so a few unusually high or low years or metro areas don\'t pull it. ' : ci === ALL ? 'All conditions = the average of each metro area\'s relative interest across the nine conditions — overall health-search intensity. ' : '') +
+                (median ? 'Median = the middle value, so a few unusually high or low years or metro areas don\'t pull it. ' : ci === ALL ? 'All conditions = the average of each metro area\'s relative interest across the nine conditions: overall health-search intensity. ' : '') +
                 `States are shaded by the ${kind} score of their metro areas; dots are the ${D.metros.length} Google metro areas at their real locations (bigger = higher). Click a state or dot to filter the list and open its profile. Hatched: no metro area of its own (NH, NJ, DE) or not enough data.`);
         }
         render();
@@ -305,7 +305,7 @@ const Health = (() => {
                 'Where people search more for health topics, CDC surveys find more diabetes, depression, cancer and heart disease. The link is mostly about health in general rather than each specific disease.',
                 `Correlation r = ${AN.overall.r.toFixed(2)} across ${AN.overall.n} states (0 = no link, 1 = perfect); individual conditions r = ${v.cardiovascular.r.toFixed(2)}–${v.Cancer.r.toFixed(2)}.`]);
             items.push(['weight-scale', 'Obesity is the exception',
-                'The states with the most obesity don\'t search more about obesity — allowing for how much they search about health overall, they search less. People seem to search for the consequences instead: diabetes and diarrhea searches follow obesity rates more closely.',
+                'The states with the most obesity don\'t search more about obesity: allowing for how much they search about health overall, they search less. People seem to search for the consequences instead: diabetes and diarrhea searches follow obesity rates more closely.',
                 `Obesity searches vs obesity prevalence r = ${v.obesity.r.toFixed(2)}; r = ${v.obesity.partial.toFixed(2)} after controlling for overall search intensity.`]);
             items.push(['compass', 'The South and the North search for different things',
                 'Southern metro areas lean toward rehab, heart disease and diarrhea; northern ones toward depression, vaccines and obesity.',
@@ -350,7 +350,7 @@ const Health = (() => {
         let M;
         try { M = load(); } catch { failAll(); return; }
         const AN = A();
-        if (!AN) { failAll('The analysis results couldn\'t be loaded — please refresh the page.'); return; }
+        if (!AN) { failAll('The analysis results couldn\'t be loaded: please refresh the page.'); return; }
         const { C, D } = M;
 
         // ---- 1. Validation table + overall card ----
@@ -369,7 +369,7 @@ const Health = (() => {
         const keepTxt = keepV.length ? `${esc(keep.join(' and '))} keep a weak, borderline signal (partial r ${Math.min(...keepV.map((v) => v.partial)).toFixed(2)}–${Math.max(...keepV.map((v) => v.partial)).toFixed(2)}, p ${Math.min(...keepV.map((v) => v.partialP)).toFixed(3)}–${Math.max(...keepV.map((v) => v.partialP)).toFixed(3)})` : 'no condition keeps a specific signal';
         setText('validNote', `Search interest matches where the condition is actually more common for <strong>${esc(sig.join(', '))}</strong> (r ${Math.min(...vs.filter((v) => v.p < 0.05).map((v) => v.r)).toFixed(2)}–${vs[0].r.toFixed(2)}). ` +
             `But most of that match is <em>general</em>: after controlling for each state's overall health-search intensity, only ${keepTxt}. ` +
-            `<strong>Obesity is the exception</strong> — raw r = ${ob.r.toFixed(2)}, and r = ${ob.partial.toFixed(2)} (p ${fmtP(ob.partialP)}) after the control: states with more obesity search <em>relatively less</em> about it.`);
+            `<strong>Obesity is the exception</strong>: raw r = ${ob.r.toFixed(2)}, and r = ${ob.partial.toFixed(2)} (p ${fmtP(ob.partialP)}) after the control: states with more obesity search <em>relatively less</em> about it.`);
         const ui = { c: 'diabetes' };
         chips(document.getElementById('validChips'), AN.validation.map((v) => [v.condition, label(v.condition), ICONS[v.condition]]), ui.c, (k) => { ui.c = k; drawValid(); });
 
@@ -382,12 +382,12 @@ const Health = (() => {
                 return `<td class="${diag ? 'on' : ''}" style="background:${heatColor(r)};color:${Math.abs(r) > 0.55 ? '#fff' : 'var(--ink)'}" title="${esc(label(c))} searches vs ${esc(mx.labels[j])}: r = ${r.toFixed(2)}">${r.toFixed(2)}</td>`;
             }).join('')}</tr>`).join('')}</tbody></table>`;
         const r_ = (c, m) => mx.r[mx.conditions.indexOf(c)][mx.measures.indexOf(m)];
-        setText('matrixNote', `Outlined cells pair each search with its own condition. Obesity prevalence is tracked better by searches for <strong>diarrhea</strong> (r = ${r_('diarrhea', 'obesity').toFixed(2)}) and <strong>diabetes</strong> (r = ${r_('diabetes', 'obesity').toFixed(2)}) than by obesity searches (r = ${r_('obesity', 'obesity').toFixed(2)}) — people search for the consequences, not the condition. ` +
+        setText('matrixNote', `Outlined cells pair each search with its own condition. Obesity prevalence is tracked better by searches for <strong>diarrhea</strong> (r = ${r_('diarrhea', 'obesity').toFixed(2)}) and <strong>diabetes</strong> (r = ${r_('diabetes', 'obesity').toFixed(2)}) than by obesity searches (r = ${r_('obesity', 'obesity').toFixed(2)}): people search for the consequences, not the condition. ` +
             `Depression searches are specific: they track depression (r = ${r_('depression', 'depression').toFixed(2)}) but not diabetes prevalence (r = ${r_('depression', 'diabetes').toFixed(2)}).`);
 
         // ---- 2. Structure (PCA) ----
         const P = AN.pca, ex = P.explained;
-        setText('pcaNote', `<strong>PC1 (${(ex[0] * 100).toFixed(0)}% of variance)</strong> — every condition loads positively: it is overall health-search intensity. It is highest in smaller Southern and Midwestern metros and lowest in large coastal ones, where health is a smaller share of everything searched; at state level it tracks overall disease burden (r = ${o.r.toFixed(2)}). ` +
+        setText('pcaNote', `<strong>PC1 (${(ex[0] * 100).toFixed(0)}% of variance)</strong>: every condition loads positively: it is overall health-search intensity. It is highest in smaller Southern and Midwestern metros and lowest in large coastal ones, where health is a smaller share of everything searched; at state level it tracks overall disease burden (r = ${o.r.toFixed(2)}). ` +
             `<strong>PC2 (${(ex[1] * 100).toFixed(0)}%)</strong> contrasts rehab, cardiovascular and diarrhea (+) with vaccine, depression and obesity (−), and runs north–south (correlation with latitude r = ${P.latR[1].toFixed(2)}). ` +
             `Metros don't fall into distinct groups (best k-means silhouette = ${Math.max(...Object.values(P.silhouette)).toFixed(2)}, well below the ~0.5 that indicates real clusters), so they are described by these two continuous dimensions.`);
         const pcVals = Object.fromEntries(M.states.map((st) => { const xs = nn(M.metrosByState[st].map((i) => P.scores[i][1])); return [st, xs.length ? mean(xs) : null]; }));
@@ -421,10 +421,10 @@ const Health = (() => {
         const ri = (a, b) => M.corr[C.indexOf(a)][C.indexOf(b)];
         const rows = [
             ['Health searching grew by about 120% from 2004 to 2017.', `Not supported. Each year is rescaled so the top metro scores 100; the typical score rose from ${M.medians[0]} to ${M.medians[M.medians.length - 1]} because more small metros crossed Google's reporting threshold (zero scores fell from ${M.zeros[0]} to ${M.zeros[M.zeros.length - 1]}).`],
-            ['Cancer is the most searched condition; stroke out-searches cardiovascular disease.', 'Can\'t be tested with this data — every condition is scaled 0–100 on its own. A higher total only means interest is spread more evenly across metros.'],
+            ['Cancer is the most searched condition; stroke out-searches cardiovascular disease.', 'Can\'t be tested with this data: every condition is scaled 0–100 on its own. A higher total only means interest is spread more evenly across metros.'],
             [`${byTotal.join(', ')} have the highest search volume.`, `Their totals reflect how many metro areas they have (${M.metrosByState.TX.length}, ${M.metrosByState.CA.length}, ${M.metrosByState.NY.length}). Per metro, ${byAvg.join(', ')} rank highest.`],
             ['Diabetes correlates strongly with depression and obesity (r up to 0.74).', `Partly confirmed across metro areas: diabetes–obesity r = ${ri('diabetes', 'obesity').toFixed(2)}, diabetes–depression r = ${ri('depression', 'diabetes').toFixed(2)}. The strongest pair is ${label(C[M.pairs[0].a])}–${label(C[M.pairs[0].b])} (r = ${M.pairs[0].r.toFixed(2)}).`],
-            ['Goal: compare searches with the actual location of occurrences.', `Now tested against CDC state prevalence: searches track disease burden (r = ${o.r.toFixed(2)} overall), mostly through general health-search intensity — see section 1.`]
+            ['Goal: compare searches with the actual location of occurrences.', `Now tested against CDC state prevalence: searches track disease burden (r = ${o.r.toFixed(2)} overall), mostly through general health-search intensity, see section 1.`]
         ];
         const rt = document.getElementById('revisitedRows');
         if (rt) rt.innerHTML = rows.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join('');
@@ -469,7 +469,7 @@ const Health = (() => {
         box.innerHTML = `<table class="heat"><caption class="visually-hidden">Correlation between search interest in each pair of conditions across metro areas</caption>
             <thead><tr><td></td>${C.map((c) => `<th scope="col">${esc(label(c))}</th>`).join('')}</tr></thead>
             <tbody>${C.map((a, ai) => `<tr><th scope="row">${esc(label(a))}</th>${C.map((b, bi) => {
-                if (ai === bi) return '<td class="self">—</td>';
+                if (ai === bi) return '<td class="self">n/a</td>';
                 const r = M.corr[ai][bi], lo = Math.min(ai, bi), hi = Math.max(ai, bi);
                 return `<td class="${lo === first.a && hi === first.b ? 'on' : ''}" style="background:${heatColor(r)};color:${Math.abs(r) > 0.55 ? '#fff' : 'var(--ink)'}"><button type="button" data-a="${lo}" data-b="${hi}" aria-label="${esc(label(a))} and ${esc(label(b))}: r = ${r.toFixed(2)}">${r.toFixed(2)}</button></td>`;
             }).join('')}</tr>`).join('')}</tbody></table>`;
@@ -612,7 +612,7 @@ const Health = (() => {
                 const res = await fetch(`static/data/${t.dataset.try}.json`);
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const j = await res.json();
-                out.textContent = `// ${j.data.length} records — fields: ${j.schema.fields.map((f) => f.name).join(', ')}\n${JSON.stringify(j.data.slice(0, 3), null, 2)}${j.data.length > 3 ? '\n…' : ''}`;
+                out.textContent = `// ${j.data.length} records, fields: ${j.schema.fields.map((f) => f.name).join(', ')}\n${JSON.stringify(j.data.slice(0, 3), null, 2)}${j.data.length > 3 ? '\n…' : ''}`;
             } catch (err) {
                 out.textContent = location.protocol === 'file:' ? 'Browsers block requests from pages opened as files. Open the site from its web address (or run python3 app.py) to try the endpoints.' : `Couldn't load the endpoint (${err.message}).`;
             }
@@ -637,7 +637,7 @@ const Health = (() => {
             ARC.KB.push({ id: `gh-c-${c}`, topic: 'project', title: `${label(c)} search interest`,
                 q: [`where do people search most for ${label(c).toLowerCase()}`, `tell me about ${label(c).toLowerCase()}`, `${label(c).toLowerCase()} searches by state`, `which states search ${label(c).toLowerCase()} the most`],
                 k: [...aliases[c], 'state', 'states', 'highest', 'lowest', 'where'],
-                a: `**${label(c)} — where interest is highest** (${D.years[0]}–${D.years[D.years.length - 1]} average, 0–100 scale)\n\n- **Top states:** ${r.slice(0, 3).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ci, null).toFixed(0)})`).join(', ')}\n- **Lowest states:** ${r.slice(-2).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ci, null).toFixed(0)})`).join(', ')}\n- **Top metro area:** ${metros[0].m.name} (${metros[0].v.toFixed(0)})\n- **Searched together with:** ${rel.join(', ')}\n\nScores compare places *within* ${label(c).toLowerCase()}.`,
+                a: `**${label(c)}, where interest is highest** (${D.years[0]}–${D.years[D.years.length - 1]} average, 0–100 scale)\n\n- **Top states:** ${r.slice(0, 3).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ci, null).toFixed(0)})`).join(', ')}\n- **Lowest states:** ${r.slice(-2).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ci, null).toFixed(0)})`).join(', ')}\n- **Top metro area:** ${metros[0].m.name} (${metros[0].v.toFixed(0)})\n- **Searched together with:** ${rel.join(', ')}\n\nScores compare places *within* ${label(c).toLowerCase()}.`,
                 actions: [{ label: 'Open the map', action: 'link:index.html#explore' }] });
         });
         {
@@ -646,7 +646,7 @@ const Health = (() => {
             ARC.KB.push({ id: 'gh-c-all', topic: 'project', title: 'Overall health-search interest (all conditions)',
                 q: ['which state searches most about health', 'where do people search most about health overall', 'all conditions combined', 'overall health search interest by state'],
                 k: ['overall', 'all conditions', 'combined', 'total', 'health', 'most', 'state', 'states'],
-                a: `**All nine conditions combined** — the average of each metro area's relative interest across conditions (${D.years[0]}–${D.years[D.years.length - 1]}):\n\n- **Top states:** ${r.slice(0, 5).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ALL, null).toFixed(0)})`).join(', ')}\n- **Lowest states:** ${r.slice(-3).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ALL, null).toFixed(0)})`).join(', ')}\n- **Top metro areas:** ${metros.slice(0, 3).map((x) => `${x.m.name} (${x.v.toFixed(0)})`).join(', ')}\n\nThis is overall health-search intensity: it is highest in smaller Southern and Midwestern markets and tracks states' overall disease burden.`,
+                a: `**All nine conditions combined**: the average of each metro area's relative interest across conditions (${D.years[0]}–${D.years[D.years.length - 1]}):\n\n- **Top states:** ${r.slice(0, 5).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ALL, null).toFixed(0)})`).join(', ')}\n- **Lowest states:** ${r.slice(-3).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ALL, null).toFixed(0)})`).join(', ')}\n- **Top metro areas:** ${metros.slice(0, 3).map((x) => `${x.m.name} (${x.v.toFixed(0)})`).join(', ')}\n\nThis is overall health-search intensity: it is highest in smaller Southern and Midwestern markets and tracks states' overall disease burden.`,
                 actions: [{ label: 'Open the map', action: 'link:index.html#explore' }] });
         }
         M.states.forEach((st) => {
@@ -656,7 +656,7 @@ const Health = (() => {
             ARC.KB.push({ id: `gh-s-${st}`, topic: 'project', title: `${STATE_NAMES[st]} health searches`,
                 q: [`what does ${STATE_NAMES[st].toLowerCase()} search for`, `${STATE_NAMES[st].toLowerCase()} health trends`, `tell me about ${STATE_NAMES[st].toLowerCase()}`],
                 k: [STATE_NAMES[st].toLowerCase(), 'state', 'profile'],
-                a: `**${STATE_NAMES[st]}** — ${n} Google metro area${n > 1 ? 's' : ''} in the data.\n\n- **Strongest relative interest:** ${vals.slice(0, 2).map((x) => `${label(x.c)} (${x.d >= 0 ? '+' : ''}${x.d.toFixed(1)})`).join(', ')}\n- **Weakest relative interest:** ${vals.slice(-2).reverse().map((x) => `${label(x.c)} (${x.d >= 0 ? '+' : ''}${x.d.toFixed(1)})`).join(', ')}\n\nPoints above (+) or below (−) the average of all metro areas on Google's 0–100 scale.`,
+                a: `**${STATE_NAMES[st]}**: ${n} Google metro area${n > 1 ? 's' : ''} in the data.\n\n- **Strongest relative interest:** ${vals.slice(0, 2).map((x) => `${label(x.c)} (${x.d >= 0 ? '+' : ''}${x.d.toFixed(1)})`).join(', ')}\n- **Weakest relative interest:** ${vals.slice(-2).reverse().map((x) => `${label(x.c)} (${x.d >= 0 ? '+' : ''}${x.d.toFixed(1)})`).join(', ')}\n\nPoints above (+) or below (−) the average of all metro areas on Google's 0–100 scale.`,
                 actions: [{ label: 'See the state profile', action: 'link:index.html#states' }] });
         });
         D.metros.forEach((m, i) => {
@@ -667,14 +667,14 @@ const Health = (() => {
             ARC.KB.push({ id: `gh-m-${m.id}`, topic: 'project', title: `${m.name} health searches`,
                 q: [`what does ${city} search for`, `${city} health searches`],
                 k: [city, 'city', 'metro'],
-                a: `**${m.name}** (${m.state}) — average interest 2004–2017:\n\n${top.map((x) => `- ${label(x.c)}: ${x.v.toFixed(0)}`).join('\n')}`,
+                a: `**${m.name}** (${m.state}), average interest 2004–2017:\n\n${top.map((x) => `- ${label(x.c)}: ${x.v.toFixed(0)}`).join('\n')}`,
                 actions: [{ label: 'Compare cities', action: 'link:comparison.html' }] });
         });
         const pr = M.pairs;
         ARC.KB.push({ id: 'gh-corr', topic: 'project', title: 'Which conditions are searched together?',
             q: ['which conditions are correlated', 'is diabetes correlated with depression', 'which searches go together', 'correlation between conditions'],
             k: ['correlation', 'correlated', 'related', 'together', 'relationship', 'pearson', 'heatmap', 'comorbidity'],
-            a: `Correlation of search interest across the ${D.metros.length - M.sparse.length} metro areas with enough data:\n\n**Strongest pairs**\n${pr.slice(0, 4).map((p) => `- ${label(C[p.a])} & ${label(C[p.b])}: r = ${p.r.toFixed(2)}`).join('\n')}\n\n**Weakest pairs**\n${pr.slice(-3).reverse().map((p) => `- ${label(C[p.a])} & ${label(C[p.b])}: r = ${p.r.toFixed(2)}`).join('\n')}\n\nPlaces with high interest in one tend to have high interest in the other — co-occurrence, not causation.`,
+            a: `Correlation of search interest across the ${D.metros.length - M.sparse.length} metro areas with enough data:\n\n**Strongest pairs**\n${pr.slice(0, 4).map((p) => `- ${label(C[p.a])} & ${label(C[p.b])}: r = ${p.r.toFixed(2)}`).join('\n')}\n\n**Weakest pairs**\n${pr.slice(-3).reverse().map((p) => `- ${label(C[p.a])} & ${label(C[p.b])}: r = ${p.r.toFixed(2)}`).join('\n')}\n\nPlaces with high interest in one tend to have high interest in the other: co-occurrence, not causation.`,
             actions: [{ label: 'Open the heatmap', action: 'link:analytics.html#correlations' }] });
         const s = [...M.cdc].sort((a, b) => b.change - a.change);
         ARC.KB.push({ id: 'gh-cdc', topic: 'project', title: 'CDC leading causes of death',
@@ -687,12 +687,12 @@ const Health = (() => {
             ARC.KB.push({ id: 'gh-valid', topic: 'project', title: 'Does search interest match real disease rates?',
                 q: ['do searches match disease rates', 'does search interest reflect disease burden', 'is search data valid', 'do searches match cdc data', 'do searches predict prevalence'],
                 k: ['validation', 'valid', 'prevalence', 'brfss', 'burden', 'match', 'reflect', 'actual', 'real', 'occurrence'],
-                a: `Tested against CDC BRFSS state prevalence (2011–2017):\n\n${AN.validation.map((v) => `- **${label(v.condition)}** vs ${v.label.toLowerCase()}: r = ${v.r.toFixed(2)} [${v.lo.toFixed(2)}, ${v.hi.toFixed(2)}], p ${fmtP(v.p)}; controlling for overall search intensity r = ${v.partial.toFixed(2)}`).join('\n')}\n\nOverall, states' health-search intensity tracks their overall disease burden (r = ${AN.overall.r.toFixed(2)}). The specific match is modest for diabetes and depression, and obesity is the exception — heavier states search relatively less about it.`,
+                a: `Tested against CDC BRFSS state prevalence (2011–2017):\n\n${AN.validation.map((v) => `- **${label(v.condition)}** vs ${v.label.toLowerCase()}: r = ${v.r.toFixed(2)} [${v.lo.toFixed(2)}, ${v.hi.toFixed(2)}], p ${fmtP(v.p)}; controlling for overall search intensity r = ${v.partial.toFixed(2)}`).join('\n')}\n\nOverall, states' health-search intensity tracks their overall disease burden (r = ${AN.overall.r.toFixed(2)}). The specific match is modest for diabetes and depression, and obesity is the exception: heavier states search relatively less about it.`,
                 actions: [{ label: 'See the validation', action: 'link:analytics.html#validation' }] });
             ARC.KB.push({ id: 'gh-pca', topic: 'project', title: 'The two dimensions of health search',
                 q: ['what is the north south divide', 'principal component analysis', 'are there clusters of cities', 'what are the main patterns'],
                 k: ['pca', 'principal', 'component', 'dimension', 'north', 'south', 'divide', 'cluster', 'clusters', 'pattern'],
-                a: `Principal component analysis of ${AN.pca.n} metro areas' search profiles:\n\n- **PC1 (${(AN.pca.explained[0] * 100).toFixed(0)}%)** — overall health-search intensity: highest in smaller Southern and Midwestern metros, lowest in big coastal ones.\n- **PC2 (${(AN.pca.explained[1] * 100).toFixed(0)}%)** — a north–south axis (latitude r = ${AN.pca.latR[1].toFixed(2)}): rehab, heart and diarrhea in the South; depression, vaccine and obesity in the North.\n\nThere are no distinct clusters (silhouette ≤ ${Math.max(...Object.values(AN.pca.silhouette)).toFixed(2)}); metros vary along these continuous dimensions.`,
+                a: `Principal component analysis of ${AN.pca.n} metro areas' search profiles:\n\n- **PC1 (${(AN.pca.explained[0] * 100).toFixed(0)}%)**: overall health-search intensity: highest in smaller Southern and Midwestern metros, lowest in big coastal ones.\n- **PC2 (${(AN.pca.explained[1] * 100).toFixed(0)}%)**: a north–south axis (latitude r = ${AN.pca.latR[1].toFixed(2)}): rehab, heart and diarrhea in the South; depression, vaccine and obesity in the North.\n\nThere are no distinct clusters (silhouette ≤ ${Math.max(...Object.values(AN.pca.silhouette)).toFixed(2)}); metros vary along these continuous dimensions.`,
                 actions: [{ label: 'See the map', action: 'link:analytics.html#structure' }] });
         }
     }
