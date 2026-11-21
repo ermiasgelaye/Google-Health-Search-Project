@@ -76,6 +76,8 @@ const Health = (() => {
             const xs = nn(C.map((_, k) => one(i, k, yi)));
             return xs.length >= 5 ? mean(xs) : null;
         };
+        const metroSum = (i, ci, yi) => sum((yi == null ? V[i] : [V[i][yi]]).map((ys) => (ci === ALL ? sum(ys) : ys[ci])));
+        const stateSum = (st, ci, yi) => sum(metrosByState[st].map((i) => metroSum(i, ci, yi)));
         const stateScore = (st, ci, yi) => { const xs = nn(metrosByState[st].map((i) => metroScore(i, ci, yi))); return xs.length ? mean(xs) : null; };
         const national = C.map((_, ci) => mean(nn(D.metros.map((_, i) => metroMean[i][ci]))));
         const sparse = D.metros.filter((_, i) => metroMean[i].filter((v) => v == null).length > C.length / 2).map((m) => m.name);
@@ -94,7 +96,7 @@ const Health = (() => {
         const cdcYears = D.cdc.years;
         const cdc = Object.entries(D.cdc.causes).map(([k, v]) => ({ key: k, label: CAUSE_LABELS[k] || k, values: v, first: v[0], last: v[v.length - 1], total: sum(v), change: ((v[v.length - 1] - v[0]) / v[0]) * 100 }));
 
-        cache = { D, C, Y, V, metroMean, metrosByState, states, metroScore, stateScore, national, corr, pairs, sparse, complete, MIN_YEARS,
+        cache = { D, C, Y, V, metroMean, metrosByState, states, metroScore, stateScore, metroSum, stateSum, national, corr, pairs, sparse, complete, MIN_YEARS,
             stateTotal, zeros, medians, cdc, cdcYears };
         return cache;
     }
@@ -165,7 +167,7 @@ const Health = (() => {
             const name = STATE_NAMES[s.postal];
             const has = M.metrosByState[s.postal];
             const tip = v == null ? `${name}: ${has ? 'not enough data' : 'no metro area of its own'}` : `${name}${opts.fmt ? (opts.fmt(v) ? `: ${opts.fmt(v)}` : '') : `: ${v.toFixed(1)}`}`;
-            const fill = v == null ? `url(#hatch-${id})` : opts.diverging ? divColor(v, Math.max(Math.abs(lo), Math.abs(hi))) : shade(t(v));
+            const fill = v == null ? `url(#hatch-${id})` : opts.diverging ? divColor(v, Math.max(Math.abs(lo), Math.abs(hi))) : opts.green ? `color-mix(in srgb, #16a34a ${Math.round(10 + t(v) * 90)}%, var(--surface))` : shade(t(v));
             return `<path d="${s.d}" data-st="${s.postal}" class="st${v == null ? ' nodata' : ''}${opts.selected === s.postal ? ' on' : ''}" style="fill:${fill}"${v == null ? '' : ' tabindex="0" role="button"'} aria-label="${esc(tip)}"><title>${esc(tip)}</title></path>`;
         }).join('');
         // Bubble radius in map units (map is 975 wide): area grows with the value (square-root scale).
@@ -206,7 +208,7 @@ const Health = (() => {
         svg.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(e.target.closest('[data-st]')); } });
         const sc = document.getElementById(`${id}-scale`);
         if (sc) sc.innerHTML = opts.diverging ? '<span>Northern profile</span><span class="scale-bar div"></span><span>Southern profile</span>'
-            : `<span>${opts.fmt ? opts.fmt(lo) : lo.toFixed(0)}</span><span class="scale-bar"></span><span>${opts.fmt ? opts.fmt(hi) : hi.toFixed(0)}</span>`;
+            : `<span>${opts.fmt ? opts.fmt(lo) : lo.toFixed(0)}</span><span class="scale-bar${opts.green ? ' green' : ''}"></span><span>${opts.fmt ? opts.fmt(hi) : hi.toFixed(0)}</span>`;
     }
 
     /* ======================= Overview ======================= */
@@ -219,7 +221,13 @@ const Health = (() => {
         renderFindings(M);
         setText('zeroNote', `The typical (median) score rose from ${M.medians[0]} in ${Y[0]} to ${M.medians[M.medians.length - 1]} in ${Y[Y.length - 1]}, and zero scores fell from ${M.zeros[0]} to ${M.zeros[M.zeros.length - 1]} — more metro areas crossed Google's minimum-volume threshold, which compresses the scale. That is why summed scores rise over time even if search behaviour didn't change.`);
 
-        const ui = { ci: ALL, yi: null, state: null, rank: 'top', metros: true };
+        const ui = { ci: ALL, yi: null, state: null, rank: 'top', metros: true, mode: 'avg' };
+        document.getElementById('modeToggle')?.addEventListener('click', (e) => {
+            const b = e.target.closest('[data-mode]'); if (!b) return;
+            ui.mode = b.dataset.mode;
+            e.currentTarget.querySelectorAll('[data-mode]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+            render();
+        });
         chips(document.getElementById('condChips'), [['all', 'All conditions', ICONS.all], ...C.map((c) => [c, label(c), ICONS[c]])], 'all', (k) => { ui.ci = k === 'all' ? ALL : C.indexOf(k); render(); });
         const yearSel = document.getElementById('yearSel');
         yearSel.innerHTML = `<option value="">All years (average)</option>${Y.map((y, i) => `<option value="${i}">${y}</option>`).join('')}`;
@@ -238,20 +246,32 @@ const Health = (() => {
 
         function render() {
             const ci = ui.ci, yi = ui.yi, c = ci === ALL ? 'all' : C[ci];
-            const vals = Object.fromEntries(M.states.map((st) => [st, M.stateScore(st, ci, yi)]));
+            const total = ui.mode === 'sum';
+            const fmtN = (v) => Math.round(v).toLocaleString('en-US');
+            const sv = (st) => (total ? M.stateSum(st, ci, yi) : M.stateScore(st, ci, yi));
+            const mvf = (i) => (total ? M.metroSum(i, ci, yi) : M.metroScore(i, ci, yi));
+            const vals = Object.fromEntries(M.states.map((st) => [st, sv(st)]));
             renderMap(document.getElementById('usMap'), {
-                values: vals, selected: ui.state, label: `${label(c)} search interest by state`,
-                metros: ui.metros ? D.metros.map((_, i) => ({ i, v: M.metroScore(i, ci, yi) })) : null,
+                values: vals, selected: ui.state, label: `${label(c)} search interest by state`, green: total, fmt: total ? fmtN : null, metroFmt: total ? fmtN : null,
+                metros: ui.metros ? D.metros.map((_, i) => ({ i, v: mvf(i) })) : null,
                 onState: (st) => { ui.state = ui.state === st ? null : st; if (ui.state) { sel.value = st; renderProfile(M, st); } render(); },
                 onMetro: (i) => { ui.state = D.metros[i].postal; sel.value = ui.state; renderProfile(M, ui.state); render(); }
             });
             const when = yi == null ? `${Y[0]}–${Y[Y.length - 1]} average` : Y[yi];
-            setText('mapTitle', `${ci === ALL ? 'Overall health-search interest' : `${esc(label(c))} search interest`} <small>${ci === ALL ? 'all conditions · ' : ''}${esc(when)}</small>`);
-            const pool = (ui.state ? M.metrosByState[ui.state] : D.metros.map((_, i) => i)).map((i) => ({ i, v: M.metroScore(i, ci, yi) })).filter((x) => x.v != null);
+            setText('mapTitle', `${total ? 'Total search score' : ci === ALL ? 'Overall health-search interest' : `${esc(label(c))} search interest`} <small>${ci === ALL ? 'all conditions' : esc(label(c))} · ${esc(yi == null ? (total ? `${Y[0]}–${Y[Y.length - 1]} total` : when) : when)}</small>`);
+            const pool = (ui.state ? M.metrosByState[ui.state] : D.metros.map((_, i) => i)).map((i) => ({ i, v: mvf(i) })).filter((x) => x.v != null);
+            const vmax = Math.max(...pool.map((x) => x.v), 1);
             pool.sort((a, b) => (ui.rank === 'top' ? b.v - a.v : a.v - b.v));
             setText('rankTitle', `${ui.rank === 'top' ? 'Highest' : 'Lowest'} metro areas <small>${ui.state ? esc(STATE_NAMES[ui.state]) : 'United States'}</small>`);
-            setText('rankList', pool.slice(0, 10).map(({ i, v }) => `<li><span class="bar-wrap" style="--w:${Math.max(2, v)}%"><span title="${esc(D.metros[i].name)}">${esc(D.metros[i].name)}</span></span><b>${v.toFixed(0)}</b></li>`).join('') || '<li class="chart-note" style="display:block">Not enough data for this selection.</li>');
+            setText('rankList', pool.slice(0, 10).map(({ i, v }) => `<li><span class="bar-wrap" style="--w:${Math.max(2, total ? (v / vmax) * 100 : v)}%"><span title="${esc(D.metros[i].name)}">${esc(D.metros[i].name)}</span></span><b>${total ? fmtN(v) : v.toFixed(0)}</b></li>`).join('') || '<li class="chart-note" style="display:block">Not enough data for this selection.</li>');
             const best = M.states.filter((s) => vals[s] != null).sort((a, b) => vals[b] - vals[a]);
+            if (total) {
+                const share = (s) => (vals[s] / sum(M.states.map((x) => vals[x]))) * 100;
+                const avgRank = (s) => M.states.filter((x) => M.stateScore(x, ci, yi) != null).sort((a, b) => M.stateScore(b, ci, yi) - M.stateScore(a, ci, yi)).indexOf(s) + 1;
+                setText('explorerNote', `<strong>Original method</strong> (as in the first dashboard): every metro area's scores are added up${yi == null ? ' over all years' : ''}${ci === ALL ? ' and all nine conditions' : ''}. Highest: ${best.slice(0, 3).map((s) => `<strong>${esc(STATE_NAMES[s])}</strong> (${share(s).toFixed(1)}%, ${M.metrosByState[s].length} metro areas)`).join(', ')}. ` +
+                    `Totals mostly reflect <em>how many</em> metro areas a state has, not how much people search — e.g. ${esc(STATE_NAMES[best[0]])} ranks #${avgRank(best[0])} on the average per metro area. Switch to "Average per metro area" for a like-for-like comparison.`);
+                return;
+            }
             setText('explorerNote', `Highest state average: <strong>${esc(STATE_NAMES[best[0]])}</strong> (${vals[best[0]].toFixed(1)}); lowest: <strong>${esc(STATE_NAMES[best[best.length - 1]])}</strong> (${vals[best[best.length - 1]].toFixed(1)}). ` +
                 (ci === ALL ? 'All conditions = the average of each metro area\'s relative interest across the nine conditions — overall health-search intensity. ' : '') +
                 `States are shaded by the average score of their metro areas; dots are the ${D.metros.length} Google metro areas at their real locations (bigger = higher). Click a state or dot to filter the list and open its profile. Hatched: no metro area of its own (NH, NJ, DE) or not enough data.`);

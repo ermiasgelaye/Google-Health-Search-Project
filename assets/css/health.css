@@ -133,3 +133,5 @@
 .bubble-legend { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1.1rem; margin-top: .6rem; font-size: .8rem; color: var(--ink-3); }
 .bubble-legend .bl-item { display: inline-flex; align-items: center; gap: .35rem; font-variant-numeric: tabular-nums; }
 .bubble-legend circle { fill: rgba(124, 58, 237, .62); stroke: #fff; stroke-width: 1; }
+
+.map-scale .scale-bar.green { background: linear-gradient(90deg, color-mix(in srgb, #16a34a 10%, var(--surface)), #16a34a); }
