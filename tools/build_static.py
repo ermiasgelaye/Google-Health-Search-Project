@@ -6,7 +6,10 @@ the same CSVs the database was built from into an in-memory SQLite database, run
 original SQL, and writes the result to static/data/<endpoint>.json in the same format the Flask
 routes returned (pandas `to_json(orient="table")`).
 
-Run it after editing any CSV in Data/database/load_in_to_db/:
+It also writes assets/data/health.json: a compact, pre-shaped copy of the same data that the
+website itself loads (about 10x smaller than the API files).
+
+Run it after editing any CSV in Data/database/load_in_to_db/ (or after tools/clean_data.py):
     python3 tools/build_static.py
 """
 import json
@@ -68,6 +71,34 @@ def load_db():
     return con
 
 
+CONDITIONS = ["Cancer", "cardiovascular", "stroke", "depression", "rehab", "vaccine", "diarrhea", "obesity", "diabetes"]
+CDC_CAUSES = ["Diseases_of_heart", "Malignant_neoplasms", "Accidents", "Respiratory", "Cerebrovascular",
+              "Alzheimer", "Diabetes", "Influenza_and_pneumonia", "Nephrosis", "Suicide"]
+
+
+def write_site_data(con):
+    """Columnar data for the web pages: values[metro][year] = [9 Google Trends scores]."""
+    loc = pd.read_sql("SELECT * FROM location ORDER BY city", con)
+    sc = pd.read_sql("SELECT * FROM search_condition", con)
+    cdc = pd.read_sql("SELECT * FROM leading_causes_of_death ORDER BY year", con)
+    years = sorted(sc["year"].unique().tolist())
+    by = sc.set_index(["location_id", "year"])[CONDITIONS]
+    metros, values = [], []
+    for r in loc.itertuples(index=False):
+        metros.append({"id": int(r.location_id), "name": r.city, "state": r.state, "postal": r.postal,
+                       "lat": round(float(r.latitude), 3), "lng": round(float(r.longitude), 3)})
+        values.append([[int(v) for v in by.loc[(r.location_id, y)].tolist()] for y in years])
+    payload = {
+        "source": "Google Trends regional interest by DMA (each year x condition scaled 0-100) and CDC age-adjusted death rates",
+        "conditions": CONDITIONS, "years": years, "metros": metros, "values": values,
+        "cdc": {"years": cdc["year"].tolist(), "causes": {c: cdc[c].tolist() for c in CDC_CAUSES}},
+    }
+    path = ROOT / "assets" / "data" / "health.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, separators=(",", ":")))
+    print(f"{path.relative_to(ROOT)}  {len(metros)} metros  {path.stat().st_size // 1024} KB")
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     con = load_db()
@@ -79,6 +110,7 @@ def main():
         path = OUT / f"{name}.json"
         path.write_text(json.dumps(payload, separators=(",", ":")))
         print(f"{path.relative_to(ROOT)}  {len(df):>5} rows  {path.stat().st_size // 1024} KB")
+    write_site_data(con)
 
 
 if __name__ == "__main__":
