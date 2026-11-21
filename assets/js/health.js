@@ -606,6 +606,15 @@ const Health = (() => {
                 a: `**${label(c)} — where interest is highest** (${D.years[0]}–${D.years[D.years.length - 1]} average, 0–100 scale)\n\n- **Top states:** ${r.slice(0, 3).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ci, null).toFixed(0)})`).join(', ')}\n- **Lowest states:** ${r.slice(-2).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ci, null).toFixed(0)})`).join(', ')}\n- **Top metro area:** ${metros[0].m.name} (${metros[0].v.toFixed(0)})\n- **Searched together with:** ${rel.join(', ')}\n\nScores compare places *within* ${label(c).toLowerCase()}.`,
                 actions: [{ label: 'Open the map', action: 'link:index.html#explore' }] });
         });
+        {
+            const r = ranked(ALL);
+            const metros = D.metros.map((m, i) => ({ m, v: M.metroScore(i, ALL, null) })).filter((x) => x.v != null).sort((a, b) => b.v - a.v);
+            ARC.KB.push({ id: 'gh-c-all', topic: 'project', title: 'Overall health-search interest (all conditions)',
+                q: ['which state searches most about health', 'where do people search most about health overall', 'all conditions combined', 'overall health search interest by state'],
+                k: ['overall', 'all conditions', 'combined', 'total', 'health', 'most', 'state', 'states'],
+                a: `**All nine conditions combined** — the average of each metro area's relative interest across conditions (${D.years[0]}–${D.years[D.years.length - 1]}):\n\n- **Top states:** ${r.slice(0, 5).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ALL, null).toFixed(0)})`).join(', ')}\n- **Lowest states:** ${r.slice(-3).map((s) => `${STATE_NAMES[s]} (${M.stateScore(s, ALL, null).toFixed(0)})`).join(', ')}\n- **Top metro areas:** ${metros.slice(0, 3).map((x) => `${x.m.name} (${x.v.toFixed(0)})`).join(', ')}\n\nThis is overall health-search intensity: it is highest in smaller Southern and Midwestern markets and tracks states' overall disease burden.`,
+                actions: [{ label: 'Open the map', action: 'link:index.html#explore' }] });
+        }
         M.states.forEach((st) => {
             const vals = C.map((_, ci) => ({ c: C[ci], s: M.stateScore(st, ci, null) })).filter((x) => x.s != null).map((x) => ({ c: x.c, d: x.s - M.national[C.indexOf(x.c)] })).sort((a, b) => b.d - a.d);
             if (vals.length < 4) return;
