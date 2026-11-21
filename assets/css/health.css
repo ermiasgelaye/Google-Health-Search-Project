@@ -112,7 +112,7 @@
 @media (max-width: 899.98px) { .two-col-charts { grid-template-columns: 1fr; } }
 .control-row .seg label { margin: 0; }
 .map-scale .scale-bar.div { background: linear-gradient(90deg, var(--brand), var(--surface) 50%, #ea580c); }
-.usmap .metro.sim { fill: #16a34a; stroke: #fff; stroke-width: 1.5; }
+.usmap .metro.sim { fill: #1e3a8a; stroke: #fff; stroke-width: 1.5; }
 .linklike { all: unset; color: var(--brand); cursor: pointer; font-weight: 600; }
 .linklike:hover, .linklike:focus-visible { text-decoration: underline; }
 .sim-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .45rem; }

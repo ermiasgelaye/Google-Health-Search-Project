@@ -14,12 +14,12 @@ const Health = (() => {
         vaccine: 'Vaccine', diarrhea: 'Diarrhea', obesity: 'Obesity', diabetes: 'Diabetes' };
     const ICONS = { all: 'layer-group', Cancer: 'ribbon', cardiovascular: 'heart-pulse', stroke: 'brain', depression: 'cloud-rain', rehab: 'person-walking',
         vaccine: 'syringe', diarrhea: 'bacteria', obesity: 'weight-scale', diabetes: 'droplet' };
-    const COND_COLORS = { Cancer: '#0a6cff', cardiovascular: '#dc2626', stroke: '#1e3a8a', depression: '#0891b2', rehab: '#f59e0b',
-        vaccine: '#16a34a', diarrhea: '#a16207', obesity: '#0f766e', diabetes: '#475569' };
+    const COND_COLORS = { Cancer: '#0a6cff', cardiovascular: '#dc2626', stroke: '#1e3a8a', depression: '#60a5fa', rehab: '#f59e0b',
+        vaccine: '#ea580c', diarrhea: '#a16207', obesity: '#94a3b8', diabetes: '#475569' };
     const CAUSE_LABELS = { Diseases_of_heart: 'Heart disease', Malignant_neoplasms: 'Cancer', Accidents: 'Accidents (unintentional injuries)',
         Respiratory: 'Chronic lower respiratory disease', Cerebrovascular: 'Stroke', Alzheimer: "Alzheimer's disease", Diabetes: 'Diabetes',
         Influenza_and_pneumonia: 'Influenza & pneumonia', Nephrosis: 'Kidney disease', Suicide: 'Suicide' };
-    const CAUSE_COLORS = ['#dc2626', '#0a6cff', '#f59e0b', '#64748b', '#1e3a8a', '#0f766e', '#16a34a', '#0891b2', '#a16207', '#111827'];
+    const CAUSE_COLORS = ['#dc2626', '#0a6cff', '#f59e0b', '#64748b', '#1e3a8a', '#ea580c', '#60a5fa', '#94a3b8', '#a16207', '#7f1d1d'];
     const STATE_NAMES = { AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California', CO: 'Colorado', CT: 'Connecticut', DC: 'District of Columbia',
         DE: 'Delaware', FL: 'Florida', GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa', KS: 'Kansas', KY: 'Kentucky',
         LA: 'Louisiana', ME: 'Maine', MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MS: 'Mississippi', MO: 'Missouri', MT: 'Montana',
