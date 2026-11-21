@@ -12,7 +12,7 @@
 const Health = (() => {
     const LABELS = { Cancer: 'Cancer', cardiovascular: 'Cardiovascular', stroke: 'Stroke', depression: 'Depression', rehab: 'Rehab',
         vaccine: 'Vaccine', diarrhea: 'Diarrhea', obesity: 'Obesity', diabetes: 'Diabetes' };
-    const ICONS = { Cancer: 'ribbon', cardiovascular: 'heart-pulse', stroke: 'brain', depression: 'cloud-rain', rehab: 'person-walking',
+    const ICONS = { all: 'layer-group', Cancer: 'ribbon', cardiovascular: 'heart-pulse', stroke: 'brain', depression: 'cloud-rain', rehab: 'person-walking',
         vaccine: 'syringe', diarrhea: 'bacteria', obesity: 'weight-scale', diabetes: 'droplet' };
     const COND_COLORS = { Cancer: '#0a6cff', cardiovascular: '#dc2626', stroke: '#7c3aed', depression: '#0891b2', rehab: '#f59e0b',
         vaccine: '#16a34a', diarrhea: '#a16207', obesity: '#db2777', diabetes: '#475569' };
@@ -41,11 +41,12 @@ const Health = (() => {
         ['totaldeathcase', 'Total CDC death rates', 'Sum of each cause of death over 2004–2017.']
     ];
 
+    const ALL = -1; // "all conditions" selection
     const esc = (s) => ARC.util.escapeHtml(s);
     const mean = (a) => (a.length ? a.reduce((s, v) => s + v, 0) / a.length : NaN);
     const sum = (a) => a.reduce((s, v) => s + v, 0);
     const pct = (v) => `${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%`;
-    const label = (c) => LABELS[c] || c;
+    const label = (c) => (c === 'all' ? 'All conditions' : LABELS[c] || c);
     const nn = (a) => a.filter((v) => v != null);
     function pearson(xs, ys) {
         const n = xs.length, mx = mean(xs), my = mean(ys);
@@ -68,7 +69,13 @@ const Health = (() => {
         const metrosByState = {};
         D.metros.forEach((m, i) => { (metrosByState[m.postal] = metrosByState[m.postal] || []).push(i); });
         const states = Object.keys(metrosByState).sort((a, b) => STATE_NAMES[a].localeCompare(STATE_NAMES[b]));
-        const metroScore = (i, ci, yi) => (yi == null ? metroMean[i][ci] : (V[i][yi][ci] > 0 ? V[i][yi][ci] : null));
+        const one = (i, ci, yi) => (yi == null ? metroMean[i][ci] : (V[i][yi][ci] > 0 ? V[i][yi][ci] : null));
+        // ci === ALL: average of the metro's relative scores across conditions (each is 0–100 within its condition)
+        const metroScore = (i, ci, yi) => {
+            if (ci !== ALL) return one(i, ci, yi);
+            const xs = nn(C.map((_, k) => one(i, k, yi)));
+            return xs.length >= 5 ? mean(xs) : null;
+        };
         const stateScore = (st, ci, yi) => { const xs = nn(metrosByState[st].map((i) => metroScore(i, ci, yi))); return xs.length ? mean(xs) : null; };
         const national = C.map((_, ci) => mean(nn(D.metros.map((_, i) => metroMean[i][ci]))));
         const sparse = D.metros.filter((_, i) => metroMean[i].filter((v) => v == null).length > C.length / 2).map((m) => m.name);
@@ -212,8 +219,8 @@ const Health = (() => {
         renderFindings(M);
         setText('zeroNote', `The typical (median) score rose from ${M.medians[0]} in ${Y[0]} to ${M.medians[M.medians.length - 1]} in ${Y[Y.length - 1]}, and zero scores fell from ${M.zeros[0]} to ${M.zeros[M.zeros.length - 1]} — more metro areas crossed Google's minimum-volume threshold, which compresses the scale. That is why summed scores rise over time even if search behaviour didn't change.`);
 
-        const ui = { ci: C.indexOf('diabetes'), yi: null, state: null, rank: 'top', metros: true };
-        chips(document.getElementById('condChips'), C.map((c) => [c, label(c), ICONS[c]]), C[ui.ci], (k) => { ui.ci = C.indexOf(k); render(); });
+        const ui = { ci: ALL, yi: null, state: null, rank: 'top', metros: true };
+        chips(document.getElementById('condChips'), [['all', 'All conditions', ICONS.all], ...C.map((c) => [c, label(c), ICONS[c]])], 'all', (k) => { ui.ci = k === 'all' ? ALL : C.indexOf(k); render(); });
         const yearSel = document.getElementById('yearSel');
         yearSel.innerHTML = `<option value="">All years (average)</option>${Y.map((y, i) => `<option value="${i}">${y}</option>`).join('')}`;
         yearSel.addEventListener('change', () => { ui.yi = yearSel.value === '' ? null : +yearSel.value; render(); });
@@ -230,7 +237,7 @@ const Health = (() => {
         sel.addEventListener('change', () => { ui.state = sel.value; render(); renderProfile(M, sel.value); });
 
         function render() {
-            const ci = ui.ci, yi = ui.yi, c = C[ci];
+            const ci = ui.ci, yi = ui.yi, c = ci === ALL ? 'all' : C[ci];
             const vals = Object.fromEntries(M.states.map((st) => [st, M.stateScore(st, ci, yi)]));
             renderMap(document.getElementById('usMap'), {
                 values: vals, selected: ui.state, label: `${label(c)} search interest by state`,
@@ -246,6 +253,7 @@ const Health = (() => {
             setText('rankList', pool.slice(0, 10).map(({ i, v }) => `<li><span class="bar-wrap" style="--w:${Math.max(2, v)}%"><span title="${esc(D.metros[i].name)}">${esc(D.metros[i].name)}</span></span><b>${v.toFixed(0)}</b></li>`).join('') || '<li class="chart-note" style="display:block">Not enough data for this selection.</li>');
             const best = M.states.filter((s) => vals[s] != null).sort((a, b) => vals[b] - vals[a]);
             setText('explorerNote', `Highest state average: <strong>${esc(STATE_NAMES[best[0]])}</strong> (${vals[best[0]].toFixed(1)}); lowest: <strong>${esc(STATE_NAMES[best[best.length - 1]])}</strong> (${vals[best[best.length - 1]].toFixed(1)}). ` +
+                (ci === ALL ? 'All conditions = the average of each metro area\'s relative interest across the nine conditions — overall health-search intensity. ' : '') +
                 `States are shaded by the average score of their metro areas; dots are the ${D.metros.length} Google metro areas at their real locations (bigger = higher). Click a state or dot to filter the list and open its profile. Hatched: no metro area of its own (NH, NJ, DE) or not enough data.`);
         }
         render();
@@ -469,7 +477,7 @@ const Health = (() => {
         sel.innerHTML = order.map(({ m, i }) => `<option value="${i}">${esc(m.name)}</option>`).join('');
         const start = D.metros.findIndex((m) => m.name.startsWith('Austin'));
         sel.value = String(start >= 0 ? start : 0);
-        let city = +sel.value, cond = 'diabetes';
+        let city = +sel.value, cond = 'all';
         // z-scores of each metro's 9-condition profile, for "most similar" (Euclidean distance)
         const cols = C.map((_, ci) => nn(M.metroMean.map((r) => r[ci])));
         const mu = cols.map(mean), sd = cols.map((v, ci) => Math.sqrt(mean(v.map((x) => (x - mu[ci]) ** 2))));
@@ -481,7 +489,7 @@ const Health = (() => {
             return (all.filter((x) => x < v).length + 0.5 * (all.filter((x) => x === v).length - 1)) / (all.length - 1) * 100;
         };
         const meanPct = (i, ci) => { const xs = nn(Y.map((_, yi) => pctRank(i, ci, yi))); return xs.length ? mean(xs) : null; };
-        chips(document.getElementById('condChips'), C.map((c) => [c, label(c), ICONS[c]]), cond, (k) => { cond = k; if (window.Chart) drawCharts(); });
+        chips(document.getElementById('condChips'), [['all', 'All conditions', ICONS.all], ...C.map((c) => [c, label(c), ICONS[c]])], cond, (k) => { cond = k; if (window.Chart) drawCharts(); });
 
         let S = null;
         const update = () => {
@@ -514,7 +522,10 @@ const Health = (() => {
             draw('profileChart', { type: 'bar', data: { labels: C.map(label), datasets: [{ data: S.pcts.map((p) => (p == null ? null : +(p - 50).toFixed(1))), backgroundColor: S.pcts.map((p) => (p == null ? c.ink3 : p >= 50 ? '#0a6cff' : SOUTH)), borderRadius: 4, base: 0 }] },
                 options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (x) => `${Math.round(x.raw + 50)}th percentile of metro areas` } } },
                     scales: { x: { ...axis(c, 'Percentile minus 50 (right = more interest than most metros)'), min: -50, max: 50, ticks: { color: c.ink3, callback: (v) => `${v + 50}` } }, y: { ...axis(c), grid: { display: false } } } } });
-            draw('rankChart', { type: 'line', data: { labels: Y, datasets: [{ label: m.name, data: Y.map((_, yi) => pctRank(city, ci, yi)), borderColor: COND_COLORS[cond], backgroundColor: COND_COLORS[cond], tension: .3, pointRadius: 3, spanGaps: true }] },
+            // all conditions: average of the nine percentiles that year (needs at least 5)
+            const series = Y.map((_, yi) => { if (cond !== 'all') return pctRank(city, ci, yi); const xs = nn(C.map((_, k) => pctRank(city, k, yi))); return xs.length >= 5 ? mean(xs) : null; });
+            const col = cond === 'all' ? '#0a6cff' : COND_COLORS[cond];
+            draw('rankChart', { type: 'line', data: { labels: Y, datasets: [{ label: m.name, data: series, borderColor: col, backgroundColor: col, tension: .3, pointRadius: 3, spanGaps: true }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (x) => `${Math.round(x.raw)}th percentile` } } }, scales: { x: axis(c), y: { ...axis(c, `${label(cond)}: percentile among metro areas`), min: 0, max: 100 } } } });
             setText('rankTitle', `${esc(label(cond))} over time <small>${esc(m.name)}</small>`);
         };
