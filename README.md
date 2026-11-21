@@ -36,11 +36,16 @@ Data cleaned and transformed by using Python Jupyter Notebook. [`Health_Analysis
 
 <img src="/img/Api_links.png" height="300" width="300"/>
 
-## Deployment 
-The app is deployed in Heroku in order to access the page click the following link 
-[Eagle Dashboard](https://eagledashboard-health.herokuapp.com/)
+## Deployment
+**Live site:** [ermiasgelaye.github.io/Google-Health-Search-Project](https://ermiasgelaye.github.io/Google-Health-Search-Project/)
 
-- https://eagledashboard-health.herokuapp.com/
+The dashboard is a fully static site hosted free on **GitHub Pages**, so it never sleeps or fails because of a free-tier server or database:
+
+- **Data endpoints** are pre-computed JSON files in `static/data/` (same format the Flask API returned). After editing a CSV in `Data/database/load_in_to_db/`, rebuild them with `python3 tools/build_static.py`.
+- **The chat assistant** runs in the browser (`static/js/chat-engine.js`) and calculates every number it states from the dataset.
+- **Optional:** `python3 app.py` serves the site locally (and keeps the old URLs such as `/searchbyyear` working) with no database.
+
+To publish: GitHub → *Settings → Pages* → Deploy from branch `master`, folder `/ (root)`.
 
 
 ## Data Analysis and Visualization

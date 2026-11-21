@@ -534,7 +534,7 @@ class ComparisonDashboard {
         this.showLoadingState();
 
         try {
-            const response = await fetch('/allsearchrecord');
+            const response = await fetch('../data/allsearchrecord.json');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

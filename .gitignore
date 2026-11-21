@@ -132,3 +132,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+# Database credentials (no longer needed — the site is static)
+config.py

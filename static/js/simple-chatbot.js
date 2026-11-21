@@ -889,20 +889,8 @@ class UltraHealthAnalyticsChatbot {
         this.showEnhancedTyping();
 
         try {
-            // Send to backend with context
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    question: question,
-                    session_id: this.sessionId,
-                    context: this.conversationContext.slice(-5) // Last 5 messages
-                })
-            });
-
-            const data = await response.json();
+            // Answered in the browser by static/js/chat-engine.js (no server needed)
+            const data = await window.HealthChatEngine.ask(question);
 
             // Remove typing indicator
             this.removeTyping();

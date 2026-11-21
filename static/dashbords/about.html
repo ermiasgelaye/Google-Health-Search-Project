@@ -24,7 +24,7 @@
     <!-- Enhanced Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar" role="navigation"
         aria-label="Main navigation">
-        <a class="navbar-brand enhanced-navbar-brand" href="/Home" aria-label="Eagle Health Analytics Home">
+        <a class="navbar-brand enhanced-navbar-brand" href="../../index.html" aria-label="Eagle Health Analytics Home">
             <i class="fas fa-chart-line" aria-hidden="true"></i>Eagle Health Analytics
         </a>
 
@@ -42,28 +42,28 @@
                         <i class="fas fa-code mr-1" aria-hidden="true"></i>API Links
                     </a>
                     <div class="dropdown-menu navbar-li-a" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear" target="_blank">Total
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/searchbyyear.json" target="_blank">Total
                             Search by Year</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition"
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/searchyearandcondition.json"
                             target="_blank">Total Search by Year and Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate" target="_blank">Total
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/searchbystate.json" target="_blank">Total
                             Search by States</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity" target="_blank">Total
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/searchbycity.json" target="_blank">Total
                             Search by City</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear" target="_blank">Total
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/bystateandyear.json" target="_blank">Total
                             Search by Year and States</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath"
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/casesleadingdeath.json"
                             target="_blank">Leading Cases of Death</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord" target="_blank">All
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/allsearchrecord.json" target="_blank">All
                             Search Record List</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/location" target="_blank">Location</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/conditions" target="_blank">Search
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/location.json" target="_blank">Location</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/conditions.json" target="_blank">Search
                             Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached" target="_blank">Top Ten
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/mostsserached.json" target="_blank">Top Ten
                             Searched States by Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition" target="_blank">Sum of
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/totalcondition.json" target="_blank">Sum of
                             All Search Conditions</a>
-                        <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase" target="_blank">Sum Total
+                        <a class="dropdown-item enhanced-dropdown-item" href="../data/totaldeathcase.json" target="_blank">Sum Total
                             of the Leading Causes of Death</a>
                     </div>
                 </li>
@@ -75,7 +75,7 @@
                         <i class="fas fa-tachometer-alt mr-1" aria-hidden="true"></i>Dashboards
                     </a>
                     <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
-                        <a class="dropdown-item enhanced-dropdown-item" href="/Home">Home</a>
+                        <a class="dropdown-item enhanced-dropdown-item" href="../../index.html">Home</a>
                         <a class="dropdown-item enhanced-dropdown-item" href="main.html">Main Dashboard</a>
                         <a class="dropdown-item enhanced-dropdown-item" href="comparison.html">Comparison</a>
                     </div>
@@ -452,11 +452,11 @@
         crossorigin="anonymous"></script>
     <!-- Chatbot Scripts -->
     <!-- Chatbot Scripts -->
+    <script src="../js/chat-engine.js"></script>
     <script src="../js/simple-chatbot.js"></script>
     <!-- Add these dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="{{ url_for('static', filename='js/chatbot-interactive.js') }}"></script>
     <script src="../js/chatbot-interactive.js"></script>
 
 </body>

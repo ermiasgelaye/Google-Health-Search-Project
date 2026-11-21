@@ -162,7 +162,7 @@ class HealthDashboard {
     }
 
     async loadTotalSearchesByYear() {
-        Plotly.d3.json('/searchbyyear', (rows) => {
+        Plotly.d3.json('../data/searchbyyear.json', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
             const data = rows.data;
 
@@ -253,7 +253,7 @@ class HealthDashboard {
     }
 
     async loadSearchesByYearAndCondition() {
-        Plotly.d3.json('/searchyearandcondition', (rows) => {
+        Plotly.d3.json('../data/searchyearandcondition.json', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
             const data = rows.data;
 
@@ -493,7 +493,7 @@ class HealthDashboard {
     }
 
     async loadBoxPlot() {
-        Plotly.d3.json('/searchyearandcondition', (rows) => {
+        Plotly.d3.json('../data/searchyearandcondition.json', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
             const data = rows.data;
 
@@ -632,7 +632,7 @@ class HealthDashboard {
     }
 
     async loadChoroplethMap() {
-        Plotly.d3.json('/searchbystate', (rows) => {
+        Plotly.d3.json('../data/searchbystate.json', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
             const data = rows.data;
 
@@ -718,7 +718,7 @@ class HealthDashboard {
     }
 
     async loadHealthSearchesByState() {
-        Plotly.d3.json('/mostsserached', (rows) => {
+        Plotly.d3.json('../data/mostsserached.json', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
             const data = rows.data;
 
@@ -952,7 +952,7 @@ class HealthDashboard {
 
 
     async loadLeadingCausesOfDeath() {
-        Plotly.d3.json('/casesleadingdeath', (rows) => {
+        Plotly.d3.json('../data/casesleadingdeath.json', (rows) => {
             const unpack = (rows, key) => rows.map(row => row[key]);
             const data = rows.data;
 

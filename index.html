@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="static/css/style.css">
 
     <style>
         /* Additional inline styles */
@@ -196,7 +196,7 @@
     <!-- Enhanced Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light font-weight-bold enhanced-navbar fixed-top">
         <div class="container">
-            <a class="navbar-brand enhanced-navbar-brand" href="/Home">
+            <a class="navbar-brand enhanced-navbar-brand" href="index.html">
                 <i class="fas fa-chart-line"></i> Eagle Health Analytics
             </a>
 
@@ -213,27 +213,27 @@
                             <i class="fas fa-code mr-1"></i>API Links
                         </a>
                         <div class="dropdown-menu navbar-li-a" aria-labelledby="apiLinksDropdown">
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbyyear">Total Search by
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/searchbyyear.json">Total Search by
                                 Year</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchyearandcondition">Total Search
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/searchyearandcondition.json">Total Search
                                 by Year and Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbystate">Total Search by
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/searchbystate.json">Total Search by
                                 States</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/searchbycity">Total Search by
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/searchbycity.json">Total Search by
                                 City</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/bystateandyear">Total Search by Year
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/bystateandyear.json">Total Search by Year
                                 and States</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/casesleadingdeath">Leading Cases of
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/casesleadingdeath.json">Leading Cases of
                                 Death</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/allsearchrecord">All Search Record
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/allsearchrecord.json">All Search Record
                                 List</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/location">Location</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/conditions">Search Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/mostsserached">Top Ten Searched
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/location.json">Location</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/conditions.json">Search Conditions</a>
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/mostsserached.json">Top Ten Searched
                                 States by Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/totalcondition">Sum of All Search
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/totalcondition.json">Sum of All Search
                                 Conditions</a>
-                            <a class="dropdown-item enhanced-dropdown-item" href="/totaldeathcase">Sum Total of the
+                            <a class="dropdown-item enhanced-dropdown-item" href="static/data/totaldeathcase.json">Sum Total of the
                                 Leading Causes of Death</a>
                         </div>
                     </li>
@@ -245,18 +245,18 @@
                             <i class="fas fa-tachometer-alt mr-1"></i>Dashboards
                         </a>
                         <div class="dropdown-menu navbar-li-a" aria-labelledby="dashboardsDropdown">
-                            <a class="dropdown-item enhanced-dropdown-item active" href="/Home">Home</a>
+                            <a class="dropdown-item enhanced-dropdown-item active" href="index.html">Home</a>
                             <a class="dropdown-item enhanced-dropdown-item"
-                                href="{{ url_for('static', filename='dashbords/main.html') }}">Analytics</a>
+                                href="static/dashbords/main.html">Analytics</a>
                             <a class="dropdown-item enhanced-dropdown-item"
-                                href="{{ url_for('static', filename='dashbords/comparison.html') }}">Comparison</a>
+                                href="static/dashbords/comparison.html">Comparison</a>
                         </div>
                     </li>
 
                     <!-- About -->
                     <li class="nav-item">
                         <a class="nav-link enhanced-nav-link"
-                            href="{{ url_for('static', filename='dashbords/about.html') }}">
+                            href="static/dashbords/about.html">
                             <i class="fas fa-users mr-1"></i>About Us
                         </a>
                     </li>
@@ -303,7 +303,7 @@
                 </div>
                 <div class="col-lg-6 text-center">
                     <div class="floating">
-                        <img src="{{ url_for('static', filename='img/main.gif') }}" alt="Health Analytics"
+                        <img src="static/img/main.gif" alt="Health Analytics"
                             class="hero-image" style="max-height: 400px;">
                     </div>
                 </div>
@@ -423,11 +423,11 @@
                     <p class="lead mb-5">Join researchers and healthcare professionals using data to understand public
                         health trends</p>
                     <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                        <a href="{{ url_for('static', filename='dashbords/main.html') }}"
+                        <a href="static/dashbords/main.html"
                             class="btn btn-primary-custom btn-lg">
                             <i class="fas fa-chart-bar mr-2"></i>Explore Dashboard
                         </a>
-                        <a href="{{ url_for('static', filename='dashbords/about.html') }}"
+                        <a href="static/dashbords/about.html"
                             class="btn btn-outline-light btn-lg">
                             <i class="fas fa-users mr-2"></i>Meet Our Team
                         </a>
@@ -484,12 +484,12 @@
             });
         });
     </script>
-    <script src="../static/js/simple-chatbot.js"></script>
+    <script src="static/js/chat-engine.js"></script>
+    <script src="static/js/simple-chatbot.js"></script>
     <!-- Add these dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="{{ url_for('static', filename='js/chatbot-interactive.js') }}"></script>
-    <script src="../static/js/chatbot-interactive.js"></script>
+    <script src="static/js/chatbot-interactive.js"></script>
 
 </body>
 
