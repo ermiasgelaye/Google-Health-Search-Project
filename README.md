@@ -69,6 +69,9 @@ Google Trends scales **each condition and each year separately** (the metro area
 - **18 multi-state metro areas** (e.g. "Tallahassee FL-Thomasville GA") were assigned to the *last* state in their name; DC, Rhode Island and Vermont were missing. Now assigned to the primary state.
 - **23 metros had coordinates outside their state** after geocoding by bare city name (Victoria TX → Australia, Lima OH → Peru, Albany GA → New York). All corrected.
 - **CDC 2017 cancer death rate** was 52.5 instead of 152.5 per 100,000.
+- **`cleaned_data/health_data.csv`** (the cleaning notebook's output) had coordinates that changed between years for the same metro (Philadelphia placed in Pittsburgh, San Francisco in Philadelphia, Quincy IL in Nebraska and Alaska), 7 metros never geocoded and 420 blank rows. Rebuilt with one corrected location per metro; search values unchanged.
+
+**Known source anomalies (kept):** in a few metro-years Google reports every condition dropping together and recovering the next year — Portland OR 2013–15, Roanoke-Lynchburg VA 2014–15, San Francisco and Washington DC 2009–10. These are Google's own values (verified against the raw export), most likely a sampling artefact; they shift 14-year metro averages only slightly.
 
 ## Key findings
 
@@ -84,7 +87,7 @@ Google Trends scales **each condition and each year separately** (the metro area
 
 ### Methods
 - **Google Trends scaling:** each condition × year is scaled so the top metro scores 100, so scores compare *places* within a condition and year. Zeros mean "not enough data" and are treated as missing; a metro needs data in ≥ 7 of 14 years for an average.
-- **Validation:** state means of metro interest (2011–2017) vs. CDC BRFSS crude adult prevalence (`Data/external/`, fetched by `tools/fetch_external.py`); Pearson r with Fisher-z 95% CIs, Spearman ρ, and partial correlation controlling for PC1.
+- **Validation:** state means of metro interest (2011–2017) vs. CDC BRFSS crude adult prevalence, 2011–2025 (`Data/external/brfss_state_prevalence.csv`, fetched by `tools/fetch_external.py`; years matched to the search data); Pearson r with Fisher-z 95% CIs, Spearman ρ, and partial correlation controlling for PC1.
 - **Structure:** PCA on z-scored 2004–2017 metro averages; k-means silhouette for k = 2–6.
 - **Limitations:** ecological (state-level) correlations; crude, self-reported BRFSS prevalence; heart-disease data only 2015–2017.
 
@@ -95,6 +98,17 @@ python3 tools/build_static.py    # API JSON + site data
 python3 tools/build_map.py       # US map shapes + metro points
 python3 tools/analyze.py         # validation, PCA, stability -> assets/data/analysis.data.js
 ```
+
+### Refreshing the search data to the current year
+The original Google News Lab release stops in 2017 and was never updated. `tools/fetch_trends.py` re-pulls the same nine terms for every metro area and year from 2004 to today (the current year is year-to-date) with the same per-term, per-year scaling. It uses the unofficial `pytrends` client, waits about a minute between requests, and caches every response in `Data/trends_cache/`, so it can be stopped and resumed — allow several hours.
+
+```
+pip install pytrends pandas
+python3 tools/fetch_trends.py            # download (resumable)
+python3 tools/fetch_trends.py --apply    # write search_condition.csv (original kept as *_2004_2017_original.csv)
+python3 tools/build_static.py && python3 tools/build_map.py && python3 tools/analyze.py
+```
+The analysis adapts automatically: CDC validation uses every year both datasets cover (BRFSS prevalence is downloaded through 2025) and the stability check compares the first and last three complete years.
 
 ### Original findings, revisited
 The first version summed Google scores and reported that health searching grew ~120%, that cancer is the most searched condition, and that California, Texas and New York search most. Because Google scales each condition and year separately, those comparisons aren't valid; the [Analytics page](https://ermiasgelaye.github.io/Google-Health-Search-Project/analytics.html#revisited) explains each correction. The original dashboard GIFs remain in `img/`.

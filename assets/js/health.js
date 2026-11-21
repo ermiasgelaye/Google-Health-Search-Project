@@ -366,7 +366,7 @@ const Health = (() => {
 
         // ---- 4. Stability ----
         const st = C.map((c, i) => ({ c, r: AN.stability[i] })).sort((a, b) => b.r - a.r);
-        setText('stabNote', `Where a condition is searched is persistent: a metro's rank in 2008–10 predicts its rank in 2015–17 with Spearman ρ = ${st[st.length - 2].r.toFixed(2)}–${st[0].r.toFixed(2)} for most conditions (highest: ${esc(label(st[0].c))}). ` +
+        setText('stabNote', `Where a condition is searched is persistent: a metro's rank in ${AN.windows ? AN.windows.early : '2008–2010'} predicts its rank in ${AN.windows ? AN.windows.late : '2015–2017'} with Spearman ρ = ${st[st.length - 2].r.toFixed(2)}–${st[0].r.toFixed(2)} for most conditions (highest: ${esc(label(st[0].c))}). ` +
             `${esc(label(st[st.length - 1].c))} is the exception (ρ = ${st[st.length - 1].r.toFixed(2)}): its geography shifts year to year, consistent with outbreak-driven, seasonal searching.`);
 
         // ---- 5. CDC ----
@@ -397,7 +397,7 @@ const Health = (() => {
                 { data: pts.map((p) => ({ x: p[1], y: p[2], st: p[0] })), backgroundColor: 'rgba(10,108,255,.55)', borderColor: 'rgba(10,108,255,.9)', pointRadius: 4.5, pointHoverRadius: 7 },
                 { type: 'line', data: [{ x: x0, y: b0 + slope * x0 }, { x: x1, y: b0 + slope * x1 }], borderColor: '#7c3aed', borderWidth: 2.5, pointRadius: 0, borderDash: v.p < 0.05 ? [] : [6, 6] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (x) => (x.raw.st ? `${STATE_NAMES[x.raw.st]}: search ${x.raw.x}, prevalence ${x.raw.y}%` : 'Fit') } } },
-                    scales: { x: axis(c, `${label(ui.c)} search interest (state average, 2011–2017)`), y: axis(c, `${v.label} (% of adults)`) } } });
+                    scales: { x: axis(c, `${label(ui.c)} search interest (state average, ${AN.windows ? AN.windows.validation : '2011–2017'})`), y: axis(c, `${v.label} (% of adults)`) } } });
         }
         withCharts(() => {
             const c = ARC.themeColors();
@@ -413,7 +413,7 @@ const Health = (() => {
                 options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: legend(c) }, scales: { x: { ...axis(c, 'Loading'), min: -0.8, max: 0.8 }, y: { ...axis(c), grid: { display: false } } } } });
             renderScatter(M, pairState.a, pairState.b);
             draw('stabChart', { type: 'bar', data: { labels: st.map((x) => label(x.c)), datasets: [{ data: st.map((x) => x.r), backgroundColor: st.map((x) => (x.r >= 0.6 ? '#0a6cff' : x.r >= 0.5 ? 'rgba(10,108,255,.55)' : c.ink3)), borderRadius: 4 }] },
-                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (x) => `Spearman ρ = ${x.raw.toFixed(2)}` } } }, scales: { x: { ...axis(c, 'Rank correlation, 2008–10 vs 2015–17'), min: 0, max: 1 }, y: { ...axis(c), grid: { display: false } } } } });
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (x) => `Spearman ρ = ${x.raw.toFixed(2)}` } } }, scales: { x: { ...axis(c, `Rank correlation, ${AN.windows ? `${AN.windows.early} vs ${AN.windows.late}` : '2008–10 vs 2015–17'}`), min: 0, max: 1 }, y: { ...axis(c), grid: { display: false } } } } });
             draw('cdcChart', { type: 'line', data: { labels: M.cdcYears, datasets: M.cdc.map((x, i) => ({ label: x.label, data: x.values, borderColor: CAUSE_COLORS[i], backgroundColor: CAUSE_COLORS[i], borderWidth: 2.2, pointRadius: 2, tension: .3 })) },
                 options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: legend(c, 'bottom') },
                     scales: { x: axis(c), y: { ...axis(c, 'Deaths per 100,000 (log scale)'), type: 'logarithmic', ticks: { color: c.ink3, callback: (v) => ([10, 20, 50, 100, 200].includes(v) ? v : '') } } } } });

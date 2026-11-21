@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download the external validation data: CDC BRFSS state-level disease prevalence, 2011–2017.
+"""Download the external validation data: CDC BRFSS state-level disease prevalence, 2011–2025.
 
 Used to test the project's research question — does search interest reflect where conditions actually
 occur? — by comparing each state's Google search interest with the share of adults who report the condition.
@@ -7,7 +7,8 @@ occur? — by comparing each state's Google search interest with the share of ad
 Source: CDC, Behavioral Risk Factor Surveillance System (BRFSS) Prevalence Data (2011 to present),
         https://data.cdc.gov/Behavioral-Risk-Factors/BRFSS-Prevalence-Data-2011-to-present-/dttw-5yxu
         Crude prevalence (%) of adults, overall population, by state and year.
-Output: Data/external/brfss_state_prevalence_2011_2017.csv  (state, measure, year, prevalence)
+Output: Data/external/brfss_state_prevalence.csv  (state, measure, year, prevalence)
+CDC renamed two questions over time (DIABETE3 -> DIABETE4, ADDEPEV2 -> ADDEPEV3); both names are accepted.
 
 Run:   python3 tools/fetch_external.py              (only needed to refresh the file; it is committed)
        python3 tools/fetch_external.py saved.json   (use a response already downloaded, e.g. with curl)
@@ -20,11 +21,13 @@ import urllib.parse
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-OUT = ROOT / "Data" / "external" / "brfss_state_prevalence_2011_2017.csv"
+OUT = ROOT / "Data" / "external" / "brfss_state_prevalence.csv"
 # BRFSS question -> (measure name, response that counts as having the condition)
 MEASURES = {
     "DIABETE3": ("diabetes", lambda r: r == "Yes"),
+    "DIABETE4": ("diabetes", lambda r: r == "Yes"),
     "ADDEPEV2": ("depression", lambda r: r == "Yes"),
+    "ADDEPEV3": ("depression", lambda r: r == "Yes"),
     "_BMI5CAT": ("obesity", lambda r: r.lower().startswith("obese")),
     "_MICHD": ("coronary_heart_disease", lambda r: r == "Reported having MI or CHD"),
     "CVDSTRK3": ("stroke", lambda r: r == "Yes"),
@@ -34,7 +37,7 @@ MEASURES = {
 
 
 def main():
-    where = ("year between 2011 and 2017 and break_out='Overall' and questionid in("
+    where = ("year between 2011 and 2025 and break_out='Overall' and questionid in("
              + ",".join(f"'{q}'" for q in MEASURES) + ")")
     url = "https://data.cdc.gov/resource/dttw-5yxu.json?" + urllib.parse.urlencode({"$where": where, "$limit": 50000})
     if len(sys.argv) > 1:

@@ -14,6 +14,17 @@ and is safe to re-run.
 3. A typo in the CDC table: the 2017 age-adjusted cancer death rate is 152.5 per 100k (CDC,
    Health, United States), not 52.5 — which made cancer deaths appear to drop by two thirds in a year.
 
+4. The cleaning notebook's output, Data/Data_Cleaning/cleaned_data/health_data.csv, carried the same bad
+   geocoding plus its own: coordinates that change between years for one metro (Philadelphia placed in
+   Pittsburgh, San Francisco in Philadelphia, Quincy IL in Nebraska and Alaska), 7 metros never geocoded and
+   420 blank trailing rows. It is rebuilt with one corrected coordinate pair per metro; search values are
+   unchanged (they match the database table exactly).
+
+Known source anomalies (kept, not corrected — they are Google's own values): in a few metro-years every
+condition drops together and recovers the next year — Portland OR 2013–15, Roanoke-Lynchburg VA 2014–15,
+San Francisco and Washington DC 2009–10. This looks like a Google sampling artefact; metro averages over 14
+years are only slightly affected.
+
 Run:  python3 tools/clean_data.py && python3 tools/build_static.py
 """
 import pathlib
@@ -108,6 +119,24 @@ def fix_cdc():
             print(f"{path.name}: 2017 cancer death rate 52.5 -> 152.5")
 
 
+def rebuild_health_data():
+    """Rewrite the cleaning output with one corrected coordinate pair per metro and no blank rows."""
+    path = CLEANED / "health_data.csv"
+    if not path.exists():
+        return
+    d = pd.read_csv(path, encoding="utf-8-sig").dropna(subset=["City"])
+    loc = pd.read_csv(DB / "location.csv").set_index("location_id")
+    d["location_id"] = d["location_id"].astype(int)
+    d["year"] = d["year"].astype(int)
+    d["Latitude"] = d["location_id"].map(loc["latitude"])
+    d["Longitude"] = d["location_id"].map(loc["longitude"])
+    cols = ["Cancer", "cardiovascular", "stroke", "depression", "rehab", "vaccine", "diarrhea", "obesity", "diabetes"]
+    d[cols] = d[cols].astype(int)
+    d.to_csv(path, index=False)
+    print(f"health_data.csv: {len(d)} rows, {d.City.nunique()} metros, {d.Latitude.isna().sum()} missing coordinates")
+
+
 if __name__ == "__main__":
     fix_locations()
     fix_cdc()
+    rebuild_health_data()
