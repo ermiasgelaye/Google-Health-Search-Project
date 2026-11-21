@@ -246,7 +246,7 @@ const Health = (() => {
                 onMetro: (i) => { ui.state = D.metros[i].postal; sel.value = ui.state; renderProfile(M, ui.state); render(); }
             });
             const when = yi == null ? `${Y[0]}–${Y[Y.length - 1]} average` : Y[yi];
-            setText('mapTitle', `${esc(label(c))} search interest <small>${esc(when)}</small>`);
+            setText('mapTitle', `${ci === ALL ? 'Overall health-search interest' : `${esc(label(c))} search interest`} <small>${ci === ALL ? 'all conditions · ' : ''}${esc(when)}</small>`);
             const pool = (ui.state ? M.metrosByState[ui.state] : D.metros.map((_, i) => i)).map((i) => ({ i, v: M.metroScore(i, ci, yi) })).filter((x) => x.v != null);
             pool.sort((a, b) => (ui.rank === 'top' ? b.v - a.v : a.v - b.v));
             setText('rankTitle', `${ui.rank === 'top' ? 'Highest' : 'Lowest'} metro areas <small>${ui.state ? esc(STATE_NAMES[ui.state]) : 'United States'}</small>`);
