@@ -1,5 +1,16 @@
-## Google Health Search Trends by US Metropolitan Area, 2004 – 2017
-<img src="/img/google-medic-update-1533729137.gif" height="500" width="900" />
+# Google Health Search Trends by US Metro Area (2004–2017)
+
+![Python](https://img.shields.io/badge/Python-3-3776AB?logo=python&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&logoColor=white)
+![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?logo=chartdotjs&logoColor=white)
+![GitHub Pages](https://img.shields.io/badge/demo-live-success?logo=github)
+![Last commit](https://img.shields.io/github/last-commit/ermiasgelaye/Google-Health-Search-Project)
+
+Where Americans search Google for nine health conditions across 210 metro areas, how those searches line up with real disease burden (CDC BRFSS), and how US death rates changed over the same period.
+
+🔗 **[Live site](https://ermiasgelaye.github.io/Google-Health-Search-Project/)**
+
+<img src="img/google-medic-update-1533729137.gif" alt="Google health search" width="100%" />
 
 ## Project Goal
 Google Trends data allows us to see what people are searching for at a very local level. The goal of this project is to track, and visualize the top searches for common health issues in the United States, from Cancer to Diabetes, and compare them with the actual location of occurrences for those same health conditions to understand how search data reflects life for millions of Americans.
@@ -15,7 +26,7 @@ How have the most searched diseases changed over the years in the US?
    - https://www.cdc.gov/nchs/fastats/deaths.htm
    
 ## Data Architectural Diagram 
-<img src="/img/architectural__new.png" height="500" width="1200" />
+<img src="img/architectural__new.png" height="500" width="1200" />
 
 
 ## ETL
@@ -32,9 +43,9 @@ Data cleaned and transformed by using Python Jupyter Notebook. [`Health_Analysis
 
 - This project used Python Jupyter Notebook to load transformed data in to PostgreSQL database. [`loadData.ipynb`](https://github.com/ermiasgelaye/Google-Health-Search-Project/blob/master/Data/database/load_in_to_db/loadData.ipynb)
 
-- Python Flask–powered RESTful API were used to deploy the data into the web, and API end point links created.
+- The original version served the data through a Flask REST API backed by PostgreSQL. The same 12 endpoints are now pre-built static JSON files in `static/data/` (see [Deployment](#deployment)), so the site needs no server or database.
 
-<img src="/img/Api_links.png" height="300" width="300"/>
+<img src="img/Api_links.png" height="300" width="300"/>
 
 ## Deployment
 **Live site:** [ermiasgelaye.github.io/Google-Health-Search-Project](https://ermiasgelaye.github.io/Google-Health-Search-Project/) — free on GitHub Pages, no server or database, so it never sleeps or goes down.
