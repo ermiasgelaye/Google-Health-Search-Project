@@ -6,6 +6,7 @@
 .control-row .input { width: auto; padding: .55rem 2rem .55rem .9rem; font-size: .92rem; }
 .control-row label { margin: 0; font-weight: 600; font-size: .85rem; color: var(--ink-3); display: inline-flex; align-items: center; gap: .5rem; }
 .explore-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 1.5rem; align-items: start; }
+.explore-grid > *, .explorer { min-width: 0; } /* let wide content (heatmap, long names) scroll instead of widening the page */
 @media (max-width: 999.98px) { .explore-grid { grid-template-columns: 1fr; } }
 .panel-title { font-size: 1rem; margin-bottom: .75rem; display: flex; justify-content: space-between; gap: .5rem; align-items: baseline; flex-wrap: wrap; }
 .panel-title small { font-family: var(--font-body); font-weight: 500; color: var(--ink-3); font-size: .82rem; }

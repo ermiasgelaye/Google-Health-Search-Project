@@ -51,18 +51,32 @@ const Health = (() => {
         const D = window.HEALTH_DATA;
         if (!D) throw new Error('Data not loaded');
         const C = D.conditions, Y = D.years;
-        // values[m][y][c]; metroMean[m][c] = average over all years
-        const metroMean = D.values.map((ys) => C.map((_, ci) => mean(ys.map((v) => v[ci]))));
+        // In Google Trends a 0 means "not enough data" (the area is below Google's volume threshold), not zero
+        // interest — so zeros are treated as missing. A metro's average for a condition needs data in at least
+        // half the years; otherwise it's null and the metro is left out of that condition's statistics.
+        const MIN_YEARS = Math.ceil(Y.length / 2);
+        const nn = (a) => a.filter((v) => v != null);
+        const metroMean = D.values.map((ys) => C.map((_, ci) => {
+            const xs = ys.map((v) => v[ci]).filter((v) => v > 0);
+            return xs.length >= MIN_YEARS ? mean(xs) : null;
+        }));
         const metrosByState = {};
         D.metros.forEach((m, i) => { (metrosByState[m.postal] = metrosByState[m.postal] || []).push(i); });
         const states = Object.keys(metrosByState).sort((a, b) => STATE_NAMES[a].localeCompare(STATE_NAMES[b]));
 
-        // Score of each metro for condition ci in year index yi (null = average of all years)
-        const metroScore = (i, ci, yi) => (yi == null ? metroMean[i][ci] : D.values[i][yi][ci]);
-        const stateScore = (st, ci, yi) => mean(metrosByState[st].map((i) => metroScore(i, ci, yi)));
-        const national = C.map((_, ci) => mean(D.metros.map((_, i) => metroMean[i][ci])));
+        // Score of each metro for condition ci in year index yi (null = average of all years); null = no data
+        const metroScore = (i, ci, yi) => (yi == null ? metroMean[i][ci] : (D.values[i][yi][ci] > 0 ? D.values[i][yi][ci] : null));
+        const stateScore = (st, ci, yi) => { const xs = nn(metrosByState[st].map((i) => metroScore(i, ci, yi))); return xs.length ? mean(xs) : null; };
+        const national = C.map((_, ci) => mean(nn(D.metros.map((_, i) => metroMean[i][ci]))));
+        const sparse = D.metros.filter((_, i) => metroMean[i].filter((v) => v == null).length > C.length / 2).map((m) => m.name);
+        const complete = D.metros.map((_, i) => i).filter((i) => metroMean[i].every((v) => v != null));
 
-        const corr = C.map((_, a) => C.map((_, b) => pearson(metroMean.map((r) => r[a]), metroMean.map((r) => r[b]))));
+        const pairCorr = (a, b) => {
+            const xs = [], ys = [];
+            metroMean.forEach((r) => { if (r[a] != null && r[b] != null) { xs.push(r[a]); ys.push(r[b]); } });
+            return pearson(xs, ys);
+        };
+        const corr = C.map((_, a) => C.map((_, b) => pairCorr(a, b)));
         const pairs = [];
         C.forEach((_, a) => C.forEach((_, b) => { if (a < b) pairs.push({ a, b, r: corr[a][b] }); }));
         pairs.sort((x, y) => y.r - x.r);
@@ -77,7 +91,7 @@ const Health = (() => {
         const cdcYears = D.cdc.years;
         const cdc = Object.entries(D.cdc.causes).map(([k, v]) => ({ key: k, label: CAUSE_LABELS[k] || k, values: v, first: v[0], last: v[v.length - 1], change: ((v[v.length - 1] - v[0]) / v[0]) * 100 }));
 
-        cache = { D, C, Y, metroMean, metrosByState, states, metroScore, stateScore, national, corr, pairs, zeros, medians, cdc, cdcYears };
+        cache = { D, C, Y, metroMean, metrosByState, states, metroScore, stateScore, national, corr, pairs, zeros, medians, cdc, cdcYears, sparse, complete, MIN_YEARS };
         return cache;
     }
 
@@ -147,11 +161,11 @@ const Health = (() => {
         function renderExplorer() {
             const ci = ui.ci, yi = ui.yi, c = C[ci];
             const vals = Object.fromEntries(M.states.map((st) => [st, M.stateScore(st, ci, yi)]));
-            const vs = Object.values(vals), lo = Math.min(...vs), hi = Math.max(...vs);
+            const vs = Object.values(vals).filter((v) => v != null), lo = Math.min(...vs), hi = Math.max(...vs);
             map.innerHTML = Object.entries(TILES).map(([st, [r, col]]) => {
                 const v = vals[st];
                 const pos = `grid-row:${r + 1};grid-column:${col + 1}`;
-                if (v == null) return `<span class="tile nodata" style="${pos}" title="${esc(STATE_NAMES[st])}: no metro area in the data">${st}</span>`;
+                if (v == null) return `<span class="tile nodata" style="${pos}" title="${esc(STATE_NAMES[st])}: ${M.metrosByState[st] ? 'not enough data' : 'no metro area of its own in the data'}">${st}</span>`;
                 const t = hi > lo ? (v - lo) / (hi - lo) : 0.5;
                 return `<button type="button" class="tile${t > 0.55 ? ' dark' : ''}" data-st="${st}" style="${pos};background:${shade(t)}" aria-pressed="${ui.state === st}"
                     aria-label="${esc(STATE_NAMES[st])}: ${v.toFixed(0)}" title="${esc(STATE_NAMES[st])}: ${v.toFixed(1)} (${M.metrosByState[st].length} metro area${M.metrosByState[st].length > 1 ? 's' : ''})">${st}<small>${v.toFixed(0)}</small></button>`;
@@ -162,15 +176,17 @@ const Health = (() => {
             document.getElementById('mapTitle').innerHTML = `${esc(label(c))} search interest by state <small>${esc(when)}</small>`;
 
             // Ranked metro areas (optionally within the selected state)
-            const pool = (ui.state ? M.metrosByState[ui.state] : D.metros.map((_, i) => i)).map((i) => ({ i, v: M.metroScore(i, ci, yi) }));
+            const pool = (ui.state ? M.metrosByState[ui.state] : D.metros.map((_, i) => i)).map((i) => ({ i, v: M.metroScore(i, ci, yi) })).filter((x) => x.v != null);
             pool.sort((a, b) => (ui.rank === 'top' ? b.v - a.v : a.v - b.v));
             const top = pool.slice(0, 10);
             document.getElementById('rankTitle').innerHTML = `${ui.rank === 'top' ? 'Highest' : 'Lowest'} metro areas <small>${ui.state ? esc(STATE_NAMES[ui.state]) : 'United States'}</small>`;
-            document.getElementById('rankList').innerHTML = top.map(({ i, v }) => `<li><span class="bar-wrap" style="--w:${Math.max(2, v)}%"><span title="${esc(D.metros[i].name)}">${esc(D.metros[i].name)}</span></span><b>${v.toFixed(0)}</b></li>`).join('');
-            const best = [...M.states].sort((a, b) => vals[b] - vals[a]);
+            document.getElementById('rankList').innerHTML = top.length ? top.map(({ i, v }) => `<li><span class="bar-wrap" style="--w:${Math.max(2, v)}%"><span title="${esc(D.metros[i].name)}">${esc(D.metros[i].name)}</span></span><b>${v.toFixed(0)}</b></li>`).join('')
+                : '<li class="chart-note" style="display:block">Not enough data for this selection.</li>';
+            const best = M.states.filter((s) => vals[s] != null).sort((a, b) => vals[b] - vals[a]);
             document.getElementById('explorerNote').innerHTML =
                 `Highest state average: <strong>${esc(STATE_NAMES[best[0]])}</strong> (${vals[best[0]].toFixed(1)}), lowest: <strong>${esc(STATE_NAMES[best[best.length - 1]])}</strong> (${vals[best[best.length - 1]].toFixed(1)}). ` +
-                `Scores are relative within ${esc(label(c).toLowerCase())}${yi == null ? '' : ` in ${Y[yi]}`} (100 = the metro area with the highest share of searches). Click a state to filter the list and open its profile. Hatched states have no Google metro area of their own in the data.`;
+                `Scores are relative within ${esc(label(c).toLowerCase())}${yi == null ? '' : ` in ${Y[yi]}`} (100 = the metro area with the highest share of searches). Click a state to filter the list and open its profile. ` +
+                `Hatched states have no metro area of their own (NH, NJ, DE) or not enough data. Zeros — Google's "not enough data" — are excluded${yi == null ? `, and a metro needs data in at least ${M.MIN_YEARS} of ${Y.length} years` : ''}.`;
         }
 
         // State profile select
@@ -201,22 +217,22 @@ const Health = (() => {
     function renderFindings(M) {
         const box = document.getElementById('findings'); if (!box) return;
         const { C, D } = M;
-        const topState = (ci) => [...M.states].sort((a, b) => M.stateScore(b, ci, null) - M.stateScore(a, ci, null));
+        const topState = (ci) => M.states.filter((s) => M.stateScore(s, ci, null) != null).sort((a, b) => M.stateScore(b, ci, null) - M.stateScore(a, ci, null));
         const dia = C.indexOf('diabetes'), cv = C.indexOf('cardiovascular'), dep = C.indexOf('depression');
         const p0 = M.pairs[0], p1 = M.pairs[1], weak = M.pairs[M.pairs.length - 1];
         const names = (list) => list.map((s) => STATE_NAMES[s]).join(', ');
         const d = topState(dia), cvs = topState(cv), de = topState(dep);
         // External check (CDC diagnosed-diabetes prevalence): Mississippi and West Virginia are consistently among the highest.
         const cdcHigh = ['MS', 'WV', 'AL', 'LA', 'KY'].filter((s) => d.slice(0, 5).includes(s)).map((s) => STATE_NAMES[s]);
-        const overall = D.metros.map((m, i) => ({ m, v: mean(M.metroMean[i]) })).sort((a, b) => b.v - a.v);
+        const overall = M.complete.map((i) => ({ m: D.metros[i], v: mean(M.metroMean[i]) })).sort((a, b) => b.v - a.v);
         const items = [
             ['droplet', `Diabetes interest is highest in ${names(d.slice(0, 3))}`,
                 cdcHigh.length ? `${cdcHigh.join(' and ')} ${cdcHigh.length > 1 ? 'are' : 'is'} also among the states with the highest diagnosed-diabetes rates in CDC surveillance — search interest follows the disease burden. Lowest: ${names(d.slice(-2))}.` : `Lowest: ${names(d.slice(-2))}.`],
             ['heart-pulse', `Heart-health searches concentrate in ${names(cvs.slice(0, 3))}`, `The least interest is in ${names(cvs.slice(-2))}.`],
             ['cloud-rain', `Depression searches peak in ${names(de.slice(0, 3))}`, `Lowest in ${names(de.slice(-2))}.`],
-            ['link', `${label(C[p0.a])} & ${label(C[p0.b])} searches rise and fall together (r = ${p0.r.toFixed(2)})`, `Next is ${label(C[p1.a])} & ${label(C[p1.b])} (r = ${p1.r.toFixed(2)}). Weakest: ${label(C[weak.a])} & ${label(C[weak.b])} (r = ${weak.r.toFixed(2)}). Measured across ${D.metros.length} metro areas.`],
+            ['link', `${label(C[p0.a])} & ${label(C[p0.b])} searches rise and fall together (r = ${p0.r.toFixed(2)})`, `Next is ${label(C[p1.a])} & ${label(C[p1.b])} (r = ${p1.r.toFixed(2)}). Weakest: ${label(C[weak.a])} & ${label(C[weak.b])} (r = ${weak.r.toFixed(2)}). Measured across the ${D.metros.length - M.sparse.length} metro areas with enough data.`],
             ['location-dot', `${overall[0].m.name} has the highest interest across all nine conditions`,
-                `Average score ${overall[0].v.toFixed(1)}. Lowest: ${overall.slice(-3).reverse().map((o) => `${o.m.name} (${o.v.toFixed(1)})`).join(', ')} — in very large metros health topics are a smaller share of all searches, and very small ones often fall below Google's reporting threshold (scored 0).`]
+                `Average score ${overall[0].v.toFixed(1)}. Lowest: ${overall.slice(-3).reverse().map((o) => `${o.m.name} (${o.v.toFixed(1)})`).join(', ')} — in very large metros, health topics are a smaller share of everything people search for.${M.sparse.length ? ` ${M.sparse.join(', ')} ${M.sparse.length > 1 ? 'are' : 'is'} excluded: below Google's reporting threshold in most years.` : ''}`]
         ];
         box.innerHTML = items.map(([i, h, p]) => `<li class="card"><i class="fas fa-${i}" aria-hidden="true"></i><div><strong>${esc(h)}</strong><p>${esc(p)}</p></div></li>`).join('');
     }
@@ -243,12 +259,12 @@ const Health = (() => {
 
     function renderScatter(M, a, b) {
         const c = ARC.themeColors(), { C, D } = M;
-        const pts = D.metros.map((m, i) => ({ x: M.metroMean[i][a], y: M.metroMean[i][b], m }));
+        const pts = D.metros.map((m, i) => ({ x: M.metroMean[i][a], y: M.metroMean[i][b], m })).filter((p) => p.x != null && p.y != null);
         // least-squares line
         const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y), mx = mean(xs), my = mean(ys);
         let sxy = 0, sxx = 0; xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sxx += (x - mx) ** 2; });
         const slope = sxy / sxx, icpt = my - slope * mx, x0 = Math.min(...xs), x1 = Math.max(...xs);
-        document.getElementById('scatterTitle').innerHTML = `${esc(label(C[a]))} vs ${esc(label(C[b]))} <small>r = ${M.corr[a][b].toFixed(2)} · each point is a metro area (${D.years[0]}–${D.years[D.years.length - 1]} average)</small>`;
+        document.getElementById('scatterTitle').innerHTML = `${esc(label(C[a]))} vs ${esc(label(C[b]))} <small>r = ${M.corr[a][b].toFixed(2)} · ${pts.length} metro areas (${D.years[0]}–${D.years[D.years.length - 1]} average)</small>`;
         draw('scatterChart', {
             type: 'scatter',
             data: { datasets: [
@@ -266,7 +282,7 @@ const Health = (() => {
     function renderProfile(M, st) {
         const { C, D } = M;
         const vals = C.map((_, ci) => M.stateScore(st, ci, null));
-        const diff = vals.map((v, ci) => ({ c: C[ci], d: v - M.national[ci], v }));
+        const diff = vals.map((v, ci) => ({ c: C[ci], d: v == null ? 0 : v - M.national[ci], v }));
         const above = diff.filter((x) => x.d > 3).sort((a, b) => b.d - a.d), below = diff.filter((x) => x.d < -3).sort((a, b) => a.d - b.d);
         const metros = M.metrosByState[st].map((i) => D.metros[i].name);
         document.getElementById('profileNote').innerHTML =
@@ -313,13 +329,13 @@ const Health = (() => {
     function addKnowledge(M) {
         if (!window.ARC || !ARC.KB) return;
         const { C, D } = M;
-        const ranked = (ci) => [...M.states].sort((a, b) => M.stateScore(b, ci, null) - M.stateScore(a, ci, null));
+        const ranked = (ci) => M.states.filter((s) => M.stateScore(s, ci, null) != null).sort((a, b) => M.stateScore(b, ci, null) - M.stateScore(a, ci, null));
         const aliases = { Cancer: ['cancer', 'tumor', 'oncology'], cardiovascular: ['cardiovascular', 'heart', 'cardiac', 'heart disease'], stroke: ['stroke'],
             depression: ['depression', 'mental health', 'depressed'], rehab: ['rehab', 'rehabilitation', 'addiction'], vaccine: ['vaccine', 'vaccination', 'vaccines'],
             diarrhea: ['diarrhea', 'diarrhoea'], obesity: ['obesity', 'obese', 'overweight', 'weight'], diabetes: ['diabetes', 'diabetic', 'blood sugar'] };
         C.forEach((c, ci) => {
             const r = ranked(ci);
-            const metros = D.metros.map((m, i) => ({ m, v: M.metroMean[i][ci] })).sort((a, b) => b.v - a.v);
+            const metros = D.metros.map((m, i) => ({ m, v: M.metroMean[i][ci] })).filter((x) => x.v != null).sort((a, b) => b.v - a.v);
             const rel = M.pairs.filter((p) => p.a === ci || p.b === ci).slice(0, 2).map((p) => `${label(C[p.a === ci ? p.b : p.a])} (r = ${p.r.toFixed(2)})`);
             ARC.KB.push({ id: `gh-c-${c}`, topic: 'project', title: `${label(c)} search interest`,
                 q: [`where do people search most for ${label(c).toLowerCase()}`, `tell me about ${label(c).toLowerCase()}`, `${label(c).toLowerCase()} searches by state`, `which states search ${label(c).toLowerCase()} the most`],
@@ -333,22 +349,24 @@ const Health = (() => {
                 actions: [{ label: 'Open the map', action: 'scroll:#explore' }] });
         });
         M.states.forEach((st) => {
-            const vals = C.map((_, ci) => ({ c: C[ci], d: M.stateScore(st, ci, null) - M.national[ci] })).sort((a, b) => b.d - a.d);
+            const vals = C.map((_, ci) => ({ c: C[ci], s: M.stateScore(st, ci, null) })).filter((x) => x.s != null).map((x) => ({ c: x.c, d: x.s - M.national[C.indexOf(x.c)] })).sort((a, b) => b.d - a.d);
+            if (vals.length < 4) return;
             const n = M.metrosByState[st].length;
             ARC.KB.push({ id: `gh-s-${st}`, topic: 'project', title: `${STATE_NAMES[st]} health searches`,
                 q: [`what does ${STATE_NAMES[st].toLowerCase()} search for`, `${STATE_NAMES[st].toLowerCase()} health trends`, `tell me about ${STATE_NAMES[st].toLowerCase()}`],
                 k: [STATE_NAMES[st].toLowerCase(), 'state', 'profile'],
                 a: `**${STATE_NAMES[st]}** — ${n} Google metro area${n > 1 ? 's' : ''} in the data.\n\n` +
-                   `- **Most above the national average:** ${vals.slice(0, 2).map((x) => `${label(x.c)} (${x.d >= 0 ? '+' : ''}${x.d.toFixed(1)})`).join(', ')}\n` +
-                   `- **Most below:** ${vals.slice(-2).reverse().map((x) => `${label(x.c)} (${x.d.toFixed(1)})`).join(', ')}\n\n` +
-                   `Differences are in points on Google's 0–100 relative-interest scale, averaged over ${D.years[0]}–${D.years[D.years.length - 1]}.`,
+                   `- **Strongest relative interest:** ${vals.slice(0, 2).map((x) => `${label(x.c)} (${x.d >= 0 ? '+' : ''}${x.d.toFixed(1)})`).join(', ')}\n` +
+                   `- **Weakest relative interest:** ${vals.slice(-2).reverse().map((x) => `${label(x.c)} (${x.d >= 0 ? '+' : ''}${x.d.toFixed(1)})`).join(', ')}\n\n` +
+                   `Numbers are points above (+) or below (−) the average of all metro areas` + (vals[0].d < 0 ? ` — ${STATE_NAMES[st]} is below average for every condition, as large metros tend to be.` : '.') + ` ` +
+                   `Google's 0–100 relative-interest scale, averaged over ${D.years[0]}–${D.years[D.years.length - 1]}.`,
                 actions: [{ label: 'See the state profile', action: 'scroll:#states' }] });
         });
         const pr = M.pairs;
         ARC.KB.push({ id: 'gh-corr', topic: 'project', title: 'Which conditions are searched together?',
             q: ['which conditions are correlated', 'is diabetes correlated with depression', 'which searches go together', 'correlation between conditions'],
             k: ['correlation', 'correlated', 'related', 'together', 'relationship', 'pearson', 'heatmap'],
-            a: `Correlation of search interest across ${D.metros.length} metro areas (14-year averages):\n\n**Strongest pairs**\n${pr.slice(0, 4).map((p) => `- ${label(C[p.a])} & ${label(C[p.b])}: r = ${p.r.toFixed(2)}`).join('\n')}\n\n**Weakest pairs**\n${pr.slice(-3).reverse().map((p) => `- ${label(C[p.a])} & ${label(C[p.b])}: r = ${p.r.toFixed(2)}`).join('\n')}\n\nPlaces with high interest in one tend to have high interest in the other — this is geographic co-occurrence, not evidence that one condition causes another.`,
+            a: `Correlation of search interest across the ${D.metros.length - M.sparse.length} metro areas with enough data (${D.years.length}-year averages):\n\n**Strongest pairs**\n${pr.slice(0, 4).map((p) => `- ${label(C[p.a])} & ${label(C[p.b])}: r = ${p.r.toFixed(2)}`).join('\n')}\n\n**Weakest pairs**\n${pr.slice(-3).reverse().map((p) => `- ${label(C[p.a])} & ${label(C[p.b])}: r = ${p.r.toFixed(2)}`).join('\n')}\n\nPlaces with high interest in one tend to have high interest in the other — this is geographic co-occurrence, not evidence that one condition causes another.`,
             actions: [{ label: 'Open the heatmap', action: 'scroll:#correlations' }] });
         const s = [...M.cdc].sort((a, b) => b.change - a.change);
         ARC.KB.push({ id: 'gh-cdc', topic: 'project', title: 'CDC leading causes of death',
@@ -392,5 +410,5 @@ const Health = (() => {
         });
     }
 
-    return { load, initOverview, initData, LABELS };
+    return { load, initOverview, initData, LABELS, addKnowledge: () => addKnowledge(load()) };
 })();
