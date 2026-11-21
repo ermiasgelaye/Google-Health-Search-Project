@@ -134,3 +134,9 @@ dmypy.json
 .pyre/
 # Database credentials (no longer needed — the site is static)
 config.py
+
+# Editor files
+.history/
+.sixth/
+.vscode/
+.DS_Store

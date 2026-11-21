@@ -14,7 +14,7 @@ from flask import Flask, abort, redirect, send_from_directory
 ROOT = pathlib.Path(__file__).resolve().parent
 DATA = ROOT / "static" / "data"
 WEB_TYPES = {".html", ".js", ".css", ".json", ".csv", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico"}
-DASHBOARDS = {"main": "/#explore", "comparison": "/#correlations", "about": "/#team"}
+DASHBOARDS = {"main": "/analytics.html", "comparison": "/comparison.html", "about": "/#team"}
 
 app = Flask(__name__, static_folder=None)
 

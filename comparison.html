@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>City Comparison: Google Health Search Trends | Ermias Gelaye Gaga</title>
+    <meta name="description" content="Profile any of 210 US metro areas: how its health-search interest ranks against all others, how that changed from 2004 to 2017, and which metros search most like it.">
+    <meta name="author" content="Ermias Gelaye Gaga">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script>
+        window.ARC = window.ARC || {};
+        ARC.config = {
+            CONTACT_EMAIL: 'ermiasgelaye@gmail.com', CHAT_API_URL: '',
+            ASSISTANT: {
+                historyKey: 'healthSearchChat_v1',
+                keepWords: ['chart', 'charts', 'map', 'city', 'cities'],
+                subjectPattern: /\b(this|the) (project|study|analysis|data|dataset|chart|map|dashboard|api)\b|\b(project|study|dataset|searches|search interest)\b/,
+                subjectTopics: ['project'],
+                welcome: "Hi! \ud83d\udc4b I'm the **Health Search assistant**.\n\nAsk me where people search most for a condition, what a state or city searches for, which conditions go together, how CDC death rates changed, how to use the API, or how to read Google Trends scores.",
+                greeting: "Hello! \ud83d\udc4b Ask me about this health search project \u2014 conditions, states, cities, findings, API or methods.",
+                starters: ['Where is diabetes searched most?', 'What does Texas search for?', 'What does Austin search for?', 'Which conditions are searched together?', 'How did death rates change?', 'How do I use the API?'],
+                helpText: (n) => "I'm the assistant for this project ({n}+ topics). Ask about:\n\n- **A condition** \u2014 e.g. \"where is obesity searched most?\"\n- **A state or city** \u2014 e.g. \"what does Ohio search for?\"\n- **Correlations** between conditions\n- **CDC** death-rate trends\n- **The API** endpoints\n- **How to read** the data, and the corrections made".replace('{n}', n),
+                unknownTail: "\n\nI can explain this project's data, methods and findings, or general data-science concepts. For anything else, Ermias's contact details are on the main portfolio page."
+            }
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/project.css">
+    <link rel="stylesheet" href="assets/css/health.css">
+    <link rel="stylesheet" href="assets/shared/chat/chat.css">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-nav">
+        <nav class="container nav-inner" aria-label="Main">
+            <a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i class="fas fa-magnifying-glass-chart"></i></span><span>Health Search Trends</span></a>
+            <ul class="nav-links" id="navLinks"><li><a href="index.html">Overview</a></li><li><a href="analytics.html">Analytics</a></li><li><a href="comparison.html" class="active" aria-current="page">City comparison</a></li><li><a href="data.html">Data</a></li><li><a href="api.html">API</a></li><li><a href="https://ermiasgelaye.github.io/#projects"><i class="fas fa-arrow-left" aria-hidden="true"></i> Portfolio</a></li></ul>
+            <div class="nav-actions">
+                <button type="button" class="icon-btn" id="themeToggle" aria-label="Toggle dark mode"><i class="fas fa-circle-half-stroke" aria-hidden="true"></i></button>
+                <button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Menu" aria-controls="navLinks" aria-expanded="false"><i class="fas fa-bars" aria-hidden="true"></i></button>
+            </div>
+        </nav>
+    </header>
+    <main id="main">
+        <section class="p-hero">
+            <div class="container">
+                <nav class="crumbs" aria-label="Breadcrumb"><a href="https://ermiasgelaye.github.io/">Portfolio</a> <span aria-hidden="true">/</span> <a href="index.html">Google Health Search Trends</a> <span aria-hidden="true">/</span> <span aria-current="page">City comparison</span></nav>
+                <h1>How does a city <span class="gradient-text">search for health?</span></h1>
+                <p class="lede">Pick any of the 210 Google metro areas to see where it ranks for each condition, how that changed over 14 years, and which metros have the most similar health-search profile.</p>
+                <div class="card explorer" style="margin-top:1.25rem">
+                    <div class="control-row" style="margin:0"><label for="citySel">Metro area <select id="citySel" class="input" style="max-width:min(420px,70vw)"></select></label><p class="chart-note" id="cityNote" style="margin:0;max-width:60ch"></p></div>
+                </div>
+                <div class="kpis">
+                    <div class="card kpi"><strong id="cState">–</strong><span>State</span></div>
+                    <div class="card kpi"><strong id="cOverall">–</strong><span>Overall interest (avg percentile)</span></div>
+                    <div class="card kpi"><strong id="cProfile">–</strong><span>North–south profile (PC2)</span></div>
+                    <div class="card kpi"><strong id="cDistinct">–</strong><span>Most distinctive (percentile)</span></div>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="profile" aria-labelledby="profileT">
+            <div class="container">
+                <div class="section-head reveal"><p class="kicker">Profile</p><h2 id="profileT">Where it ranks for each condition</h2><p>Average percentile among all metro areas, 2004–2017. Bars to the right: more interest than most metros; to the left: less.</p></div>
+                <div class="card explorer reveal">
+                    <div class="chart-box " data-needs-data><canvas id="profileChart" role="img" aria-label="Bar chart of the selected metro area percentile rank for each condition"></canvas></div>
+                    
+                </div>
+            </div>
+        </section>
+        <section class="section section--alt" id="trend" aria-labelledby="trendT">
+            <div class="container">
+                <div class="section-head reveal"><p class="kicker">Over time</p><h2 id="trendT">Rank over time</h2><p>Percentile among metro areas in each year — comparable across years, unlike raw scores.</p></div>
+                <div class="card explorer reveal">
+                    <div class="seg" id="condChips" role="group" aria-label="Condition" style="margin-bottom:.75rem"></div>
+                    <h3 class="panel-title" id="rankTitle">Rank over time</h3>
+                    <div class="chart-box" style="height:320px" data-needs-data><canvas id="rankChart" role="img" aria-label="Line chart of the selected metro area percentile rank by year for the chosen condition"></canvas></div>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="similar" aria-labelledby="similarT">
+            <div class="container">
+                <div class="section-head reveal"><p class="kicker">Neighbours in search space</p><h2 id="similarT">Where it is, and who searches alike</h2><p>Most similar metro areas by Euclidean distance between standardised nine-condition profiles.</p></div>
+                <div class="explore-grid reveal">
+                    <div class="card explorer"><div class="map-box" id="cityMap" data-needs-data></div><div class="legend-dots"><span><i style="background:#dc2626"></i>Selected</span><span><i style="background:#16a34a"></i>Most similar</span><span><i style="background:rgba(124,58,237,.55)"></i>Other metro areas (click to switch)</span></div></div>
+                    <div class="card explorer"><h3 class="panel-title">Most similar metro areas</h3><ol class="sim-list" id="simList"></ol><p class="chart-note">Similar profiles often sit far apart on the map — health-search habits follow demographics and market size as much as geography.</p></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; 2020–<span id="year"></span> Ermias Gelaye Gaga &amp; Team Eagle · <a href="https://github.com/ermiasgelaye/Google-Health-Search-Project" target="_blank" rel="noopener">Source code</a> · <a href="api.html">API</a></p><a href="https://ermiasgelaye.github.io/#projects" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a></div></footer>
+    <div class="dock"><button type="button" class="dock-btn dock-chat" id="chatToggle" aria-label="Open Health Search Assistant" aria-controls="chatPanel" aria-expanded="false"><i class="fas fa-robot" aria-hidden="true"></i></button></div>
+    <section class="chat-panel" id="chatPanel" aria-label="Health Search Assistant" hidden>
+        <header class="chat-head">
+            <div class="chat-avatar" aria-hidden="true"><i class="fas fa-robot"></i></div>
+            <div class="chat-title"><h2>Health Search Assistant</h2><p><span class="dot" aria-hidden="true"></span><span id="chatStatus">Online</span></p></div>
+            <button type="button" data-chat="clear" aria-label="Clear conversation" title="Clear conversation"><i class="fas fa-trash-can" aria-hidden="true"></i></button>
+            <button type="button" data-chat="close" aria-label="Close assistant" title="Close"><i class="fas fa-times" aria-hidden="true"></i></button>
+        </header>
+        <div class="chat-log" id="chatLog" role="log" aria-live="polite" aria-relevant="additions"></div>
+        <div class="chat-suggest" id="chatSuggest" aria-label="Suggested questions"></div>
+        <form class="chat-form" id="chatForm" autocomplete="off">
+            <label for="chatInput" class="visually-hidden">Your question</label>
+            <textarea id="chatInput" rows="1" maxlength="600" placeholder="Ask about health searches…" enterkeyhint="send"></textarea>
+            <button type="submit" id="chatSend" aria-label="Send"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+        </form>
+        <p class="chat-foot-note">Answers come from this project's data and a data-science knowledge base.</p>
+    </section>
+    <script src="assets/js/project.js" defer></script>
+    <script src="assets/data/health.data.js" defer></script>
+    <script src="assets/data/usmap.data.js" defer></script>
+    <script src="assets/data/analysis.data.js" defer></script>
+    <script src="assets/js/health.js" defer></script>
+    <script src="assets/js/knowledge/project-health.js" defer></script>
+    <script src="assets/js/knowledge/data-science.js" defer></script>
+    <script src="assets/shared/chat/engine.js" defer></script>
+    <script src="assets/shared/chat/ui.js" defer></script>
+    <script>document.addEventListener('DOMContentLoaded', () => Health.initComparison());</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Google Health Search Trends: Where America Searches for Health | Ermias Gelaye Gaga</title>
-    <meta name="description" content="Where Americans search Google for nine health conditions across 210 metro areas (2004–2017), what searches go together, and how US death rates changed — an interactive data project by Ermias Gelaye Gaga and team.">
+    <meta name="description" content="Google search interest in nine health conditions across 210 US metro areas (2004–2017) compared with CDC leading causes of death: interactive map, analytics, city comparison, data, API and assistant — a data project by Ermias Gelaye Gaga and Team Eagle.">
     <meta name="author" content="Ermias Gelaye Gaga">
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/png" href="assets/img/favicon-64.png">
@@ -15,13 +15,13 @@
             CONTACT_EMAIL: 'ermiasgelaye@gmail.com', CHAT_API_URL: '',
             ASSISTANT: {
                 historyKey: 'healthSearchChat_v1',
-                keepWords: ['chart', 'charts', 'map'],
-                subjectPattern: /\b(this|the) (project|study|analysis|data|dataset|chart|map|dashboard)\b|\b(project|study|dataset|searches|search interest)\b/,
+                keepWords: ['chart', 'charts', 'map', 'city', 'cities'],
+                subjectPattern: /\b(this|the) (project|study|analysis|data|dataset|chart|map|dashboard|api)\b|\b(project|study|dataset|searches|search interest)\b/,
                 subjectTopics: ['project'],
-                welcome: "Hi! 👋 I'm the **Health Search assistant**.\n\nAsk me where people search most for a condition, what a state searches for, which conditions go together, how CDC death rates changed, or how to read Google Trends scores.",
-                greeting: "Hello! 👋 Ask me about this health search project — conditions, states, findings or methods.",
-                starters: ['Where is diabetes searched most?', 'What does Texas search for?', 'Which conditions are searched together?', 'Is cancer the most searched condition?', 'How did death rates change?', 'What errors were corrected?'],
-                helpText: (n) => "I'm the assistant for this project ({n}+ topics). Ask about:\n\n- **A condition** — e.g. \"where is obesity searched most?\"\n- **A state** — e.g. \"what does Ohio search for?\"\n- **Correlations** between conditions\n- **CDC** death-rate trends\n- **How to read** the data, and the corrections made\n- **General data science** questions".replace('{n}', n),
+                welcome: "Hi! \ud83d\udc4b I'm the **Health Search assistant**.\n\nAsk me where people search most for a condition, what a state or city searches for, which conditions go together, how CDC death rates changed, how to use the API, or how to read Google Trends scores.",
+                greeting: "Hello! \ud83d\udc4b Ask me about this health search project \u2014 conditions, states, cities, findings, API or methods.",
+                starters: ['Where is diabetes searched most?', 'What does Texas search for?', 'What does Austin search for?', 'Which conditions are searched together?', 'How did death rates change?', 'How do I use the API?'],
+                helpText: (n) => "I'm the assistant for this project ({n}+ topics). Ask about:\n\n- **A condition** \u2014 e.g. \"where is obesity searched most?\"\n- **A state or city** \u2014 e.g. \"what does Ohio search for?\"\n- **Correlations** between conditions\n- **CDC** death-rate trends\n- **The API** endpoints\n- **How to read** the data, and the corrections made".replace('{n}', n),
                 unknownTail: "\n\nI can explain this project's data, methods and findings, or general data-science concepts. For anything else, Ermias's contact details are on the main portfolio page."
             }
         };
@@ -40,14 +40,7 @@
     <header class="site-nav">
         <nav class="container nav-inner" aria-label="Main">
             <a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i class="fas fa-magnifying-glass-chart"></i></span><span>Health Search Trends</span></a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html" class="active" aria-current="page">Overview</a></li>
-                <li><a href="#explore">Map</a></li>
-                <li><a href="#correlations">Correlations</a></li>
-                <li><a href="#cdc">Death rates</a></li>
-                <li><a href="data.html">Data</a></li>
-                <li><a href="https://ermiasgelaye.github.io/#projects"><i class="fas fa-arrow-left" aria-hidden="true"></i> Portfolio</a></li>
-            </ul>
+            <ul class="nav-links" id="navLinks"><li><a href="index.html" class="active" aria-current="page">Overview</a></li><li><a href="analytics.html">Analytics</a></li><li><a href="comparison.html">City comparison</a></li><li><a href="data.html">Data</a></li><li><a href="api.html">API</a></li><li><a href="https://ermiasgelaye.github.io/#projects"><i class="fas fa-arrow-left" aria-hidden="true"></i> Portfolio</a></li></ul>
             <div class="nav-actions">
                 <button type="button" class="icon-btn" id="themeToggle" aria-label="Toggle dark mode"><i class="fas fa-circle-half-stroke" aria-hidden="true"></i></button>
                 <button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Menu" aria-controls="navLinks" aria-expanded="false"><i class="fas fa-bars" aria-hidden="true"></i></button>
@@ -59,76 +52,56 @@
             <div class="container">
                 <nav class="crumbs" aria-label="Breadcrumb"><a href="https://ermiasgelaye.github.io/">Portfolio</a> <span aria-hidden="true">/</span> <span aria-current="page">Google Health Search Trends</span></nav>
                 <h1>Where does America <span class="gradient-text">search for health?</span></h1>
-                <p class="lede">Fourteen years of Google search interest in nine health conditions across every US metro area — where concern is concentrated, which worries travel together, and how the nation's leading causes of death changed over the same period.</p>
-                <div class="tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">PostgreSQL</span><span class="tag">Google Trends</span><span class="tag">CDC data</span><span class="tag">Chart.js</span></div>
+                <p class="lede">Google Trends lets us see what people search for at a very local level. This project tracks searches for nine common health issues — from cancer to diabetes — in every US metro area from 2004 to 2017, and compares them with the CDC's leading causes of death to understand how search data reflects life for millions of Americans.</p>
+                <div class="tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">PostgreSQL</span><span class="tag">Flask API</span><span class="tag">Google Trends</span><span class="tag">CDC</span><span class="tag">Chart.js</span></div>
                 <div class="hero-actions" style="margin:0">
                     <a href="#explore" class="btn btn-primary"><i class="fas fa-map-location-dot" aria-hidden="true"></i> Explore the map</a>
-                    <a href="data.html" class="btn btn-outline"><i class="fas fa-table" aria-hidden="true"></i> Browse the data</a>
+                    <a href="analytics.html" class="btn btn-outline"><i class="fas fa-chart-line" aria-hidden="true"></i> Analytics</a>
+                    <a href="comparison.html" class="btn btn-outline"><i class="fas fa-city" aria-hidden="true"></i> Compare cities</a>
                     <a href="https://github.com/ermiasgelaye/Google-Health-Search-Project" class="btn btn-outline" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
                 </div>
                 <div class="kpis">
                     <div class="card kpi"><strong data-kpi="metros">210</strong><span>Metro areas</span></div>
                     <div class="card kpi"><strong data-kpi="states">48</strong><span>States + DC</span></div>
-                    <div class="card kpi"><strong data-kpi="years">2004–2017</strong><span>Years</span></div>
-                    <div class="card kpi"><strong data-kpi="conditions">9</strong><span>Health conditions</span></div>
+                    <div class="card kpi"><strong>2004–2017</strong><span>14 years</span></div>
+                    <div class="card kpi"><strong>9 + 10</strong><span>Conditions · CDC causes</span></div>
                 </div>
             </div>
         </section>
-
-        <section class="section" id="explore" aria-labelledby="exploreTitle">
+        <section class="section" id="explore" aria-labelledby="exploreT">
             <div class="container">
-                <div class="section-head reveal">
-                    <p class="kicker">Interactive</p>
-                    <h2 id="exploreTitle">Where is interest highest?</h2>
-                    <p>Pick a condition and year. Each state shows the average Google Trends score of its metro areas; darker means a larger share of local searches are about that condition.</p>
-                </div>
+                <div class="section-head reveal"><p class="kicker">Interactive map</p><h2 id="exploreT">Where is interest highest?</h2><p>Pick a condition and year. States are shaded by the average Google Trends score of their metro areas; each dot is a metro area at its real location.</p></div>
                 <div class="card explorer reveal">
                     <div class="control-row">
                         <div class="seg" id="condChips" role="group" aria-label="Health condition"></div>
-                        <label for="yearSel">Year <select id="yearSel" class="input"></select></label>
+                        <div class="seg"><label for="yearSel">Year <select id="yearSel" class="input"></select></label><label class="check"><input type="checkbox" id="showMetros" checked> Metro areas</label></div>
                     </div>
                     <div class="explore-grid" data-needs-data>
                         <div>
                             <h3 class="panel-title" id="mapTitle">Search interest by state</h3>
-                            <div class="tilemap" id="tileMap" role="group" aria-label="US states coloured by search interest"></div>
-                            <div class="scale" aria-hidden="true"><span id="scaleLo"></span><span class="scale-bar"></span><span id="scaleHi"></span></div>
+                            <div class="map-box" id="usMap"></div>
+                            <div class="map-scale" id="usMap-scale" aria-hidden="true"></div>
                         </div>
                         <div>
                             <h3 class="panel-title"><span id="rankTitle">Highest metro areas</span></h3>
-                            <div class="seg" id="rankToggle" role="group" aria-label="Ranking order" style="margin-bottom:.75rem">
-                                <button type="button" class="chip" data-rank="top" aria-pressed="true">Highest</button>
-                                <button type="button" class="chip" data-rank="bottom" aria-pressed="false">Lowest</button>
-                            </div>
+                            <div class="seg" id="rankToggle" role="group" aria-label="Ranking order" style="margin-bottom:.75rem"><button type="button" class="chip" data-rank="top" aria-pressed="true">Highest</button><button type="button" class="chip" data-rank="bottom" aria-pressed="false">Lowest</button></div>
                             <ol class="rank-list" id="rankList"></ol>
                         </div>
                     </div>
                     <p class="chart-note" id="explorerNote" aria-live="polite"></p>
-                    <noscript><p class="chart-note">The interactive map needs JavaScript — the full data is on the <a href="data.html">Data page</a>.</p></noscript>
                 </div>
             </div>
         </section>
-
-        <section class="section section--alt" aria-labelledby="findingsTitle">
+        <section class="section section--alt" id="key-findings" aria-labelledby="key-findingsT">
             <div class="container">
-                <div class="section-head reveal">
-                    <p class="kicker">Results</p>
-                    <h2 id="findingsTitle">What the data shows</h2>
-                    <p>Calculated live from the dataset in your browser.</p>
-                </div>
+                <div class="section-head reveal"><p class="kicker">Results</p><h2 id="key-findingsT">What the data shows</h2><p>Calculated live in your browser from the search data and CDC surveys.</p></div>
                 <ul class="findings reveal" id="findings" data-needs-data></ul>
-                <div class="card callout reveal" style="margin-top:1.5rem" id="reading">
-                    <strong>How to read these numbers.</strong> Google Trends scores are not search counts. For each condition <em>and each year separately</em>, the metro area with the highest share of searches on that topic scores 100 and every other metro is scaled relative to it. Scores therefore compare <strong>places</strong> — they can't say whether cancer is searched more than diabetes, or whether searches grew over time. <span id="zeroNote"></span>
-                </div>
+                <div class="card callout reveal" style="margin-top:1.5rem" id="reading"><strong>How to read these numbers.</strong> Google Trends scores are not search counts. For each condition <em>and each year separately</em>, the metro area with the highest share of searches on that topic scores 100 and the others are scaled relative to it; a 0 means "not enough data". Scores therefore compare <strong>places</strong>. <span id="zeroNote"></span></div>
             </div>
         </section>
-
-        <section class="section" id="states" aria-labelledby="statesTitle">
+        <section class="section" id="states" aria-labelledby="statesT">
             <div class="container">
-                <div class="section-head reveal">
-                    <p class="kicker">State profile</p>
-                    <h2 id="statesTitle">How does a state compare?</h2>
-                    <p>Average interest in each condition for one state's metro areas, against the average of all 210 metro areas.</p>
-                </div>
+                <div class="section-head reveal"><p class="kicker">State profile</p><h2 id="statesT">How does a state compare?</h2><p>Average interest in each condition for one state's metro areas, against the average of all metro areas. Tip: click a state on the map.</p></div>
                 <div class="card explorer reveal">
                     <div class="control-row"><label for="stateSel">State <select id="stateSel" class="input"></select></label></div>
                     <div class="chart-box" data-needs-data><canvas id="profileChart" role="img" aria-label="Bar chart comparing the selected state's search interest in each condition with the national average"></canvas></div>
@@ -136,80 +109,53 @@
                 </div>
             </div>
         </section>
-
-        <section class="section section--alt" id="correlations" aria-labelledby="corrTitle">
+        <section class="section section--alt" id="more" aria-labelledby="moreT">
             <div class="container">
-                <div class="section-head reveal">
-                    <p class="kicker">Relationships</p>
-                    <h2 id="corrTitle">Which health worries travel together?</h2>
-                    <p>Pearson correlation between conditions across 210 metro areas (14-year averages). Blue = places that search more for one also search more for the other. Select a cell to see the scatter plot.</p>
-                </div>
-                <div class="explore-grid reveal">
-                    <div class="card explorer heat-wrap" id="heatmap" data-needs-data></div>
-                    <div class="card explorer" id="scatterBox">
-                        <h3 class="panel-title" id="scatterTitle">Scatter</h3>
-                        <div class="chart-box sm" style="height:340px"><canvas id="scatterChart" role="img" aria-label="Scatter plot of metro areas for the selected pair of conditions"></canvas></div>
-                    </div>
-                </div>
-                <p class="chart-note reveal">Correlation shows geographic co-occurrence of search interest — it isn't evidence that one condition causes another.</p>
+                <div class="section-head reveal"><p class="kicker">Go deeper</p><h2 id="moreT">Explore the full analysis</h2></div>
+                <ul class="findings reveal">
+                    <li class="card"><i class="fas fa-chart-line" aria-hidden="true"></i><div><strong><a href="analytics.html">Analytics</a></strong><p>Search interest validated against CDC disease prevalence, the north–south structure of health searching, co-occurring conditions, stability over time and mortality trends.</p></div></li>
+                    <li class="card"><i class="fas fa-city" aria-hidden="true"></i><div><strong><a href="comparison.html">City comparison</a></strong><p>Profile any of the 210 metro areas: percentile ranks, change over time and the metros that search most alike.</p></div></li>
+                    <li class="card"><i class="fas fa-table" aria-hidden="true"></i><div><strong><a href="data.html">Data explorer</a></strong><p>Filter, sort and export all 2,940 metro × year records and the CDC table.</p></div></li>
+                    <li class="card"><i class="fas fa-code" aria-hidden="true"></i><div><strong><a href="api.html">API</a></strong><p>Twelve JSON endpoints — the original Flask API, now always available as static files.</p></div></li>
+                </ul>
             </div>
         </section>
-
-        <section class="section" id="cdc" aria-labelledby="cdcTitle">
+        <section class="section" id="quality" aria-labelledby="qualityT">
             <div class="container">
-                <div class="section-head reveal">
-                    <p class="kicker">CDC</p>
-                    <h2 id="cdcTitle">How US death rates changed, 2004–2017</h2>
-                    <p>Age-adjusted deaths per 100,000 people for the ten leading causes (log scale, so changes in smaller causes stay visible).</p>
-                </div>
-                <div class="stat-grid reveal" id="cdcCards" data-needs-data></div>
-                <div class="card explorer reveal" style="margin-top:1.5rem">
-                    <div class="chart-box"><canvas id="cdcChart" role="img" aria-label="Line chart of US age-adjusted death rates for ten leading causes, 2004 to 2017"></canvas></div>
-                </div>
-                <div class="card callout reveal" style="margin-top:1.5rem">
-                    <strong>The big picture:</strong> heart disease and cancer — still the two leading killers — fell steadily, while unintentional injuries (largely drug overdoses), Alzheimer's disease and suicide rose. The CDC table is national, so it can't be matched to metro-level search interest directly; see the assistant's answer to <em>"Do searches match death rates?"</em>
-                </div>
-            </div>
-        </section>
-
-        <section class="section section--alt" aria-labelledby="qualityTitle">
-            <div class="container">
-                <div class="section-head reveal"><p class="kicker">Data quality</p><h2 id="qualityTitle">Corrections made in this version</h2><p>An audit of the original database found errors that affected the map and the charts. All fixes are scripted in <code>tools/clean_data.py</code>.</p></div>
+                <div class="section-head reveal"><p class="kicker">Data quality</p><h2 id="qualityT">Corrections made in this version</h2><p>An audit of the original database found errors that affected the map and charts. All fixes are scripted in <code>tools/clean_data.py</code>.</p></div>
                 <div class="stat-grid reveal">
-                    <article class="card stat-card"><h3><span><i class="fas fa-map-pin" aria-hidden="true"></i> Wrong states</span><span class="strength strong">Fixed</span></h3><p>18 metro areas that span two or more states were filed under the <em>last</em> state in their name — e.g. "Tallahassee FL-Thomasville GA" under Georgia — so Washington DC, Rhode Island and Vermont were missing. Each is now assigned to the state it's named after.</p></article>
-                    <article class="card stat-card"><h3><span><i class="fas fa-earth-americas" aria-hidden="true"></i> Wrong coordinates</span><span class="strength strong">Fixed</span></h3><p>23 metros fell outside their own state after geocoding by bare city name: Victoria TX was placed in Australia, Lima OH in Peru, Albany GA in New York. All 210 now sit inside their state.</p></article>
-                    <article class="card stat-card"><h3><span><i class="fas fa-file-medical" aria-hidden="true"></i> CDC typo</span><span class="strength strong">Fixed</span></h3><p>The 2017 cancer death rate read 52.5 instead of the CDC's 152.5 per 100,000, which showed cancer deaths falling by two-thirds in a single year.</p></article>
-                    <article class="card stat-card"><h3><span><i class="fas fa-scale-unbalanced" aria-hidden="true"></i> Invalid comparisons</span><span class="strength moderate">Removed</span></h3><p>The original dashboard summed scores to claim "cancer is the most searched condition" and "+300% growth". Because each condition and year is scaled separately, those comparisons aren't meaningful and have been replaced.</p></article>
+                    <article class="card stat-card"><h3><span><i class="fas fa-map-pin" aria-hidden="true"></i> Wrong states</span><span class="strength strong">Fixed</span></h3><p>18 metro areas spanning two or more states were filed under the <em>last</em> state in their name — e.g. "Tallahassee FL-Thomasville GA" under Georgia — so Washington DC, Rhode Island and Vermont were missing.</p></article>
+                    <article class="card stat-card"><h3><span><i class="fas fa-earth-americas" aria-hidden="true"></i> Wrong coordinates</span><span class="strength strong">Fixed</span></h3><p>23 metros sat outside their own state after geocoding by bare city name: Victoria TX was placed in Australia, Lima OH in Peru, Albany GA in New York. All 210 now sit inside their state on the map.</p></article>
+                    <article class="card stat-card"><h3><span><i class="fas fa-file-medical" aria-hidden="true"></i> CDC typo</span><span class="strength strong">Fixed</span></h3><p>The 2017 cancer death rate read 52.5 instead of the CDC's 152.5 per 100,000 — which showed cancer deaths falling by two-thirds in one year.</p></article>
+                    <article class="card stat-card"><h3><span><i class="fas fa-scale-unbalanced" aria-hidden="true"></i> Invalid comparisons</span><span class="strength moderate">Revised</span></h3><p>Summing scores across conditions and years made the first version conclude "cancer is most searched" and "+120% growth". Google scales each separately, so these are revised on the <a href="analytics.html#revisited">Analytics page</a>.</p></article>
                 </div>
             </div>
         </section>
-
-        <section class="section" aria-labelledby="methodTitle">
+        <section class="section section--alt" id="method" aria-labelledby="methodT">
             <div class="container">
-                <div class="section-head reveal"><p class="kicker">How it was done</p><h2 id="methodTitle">Methodology</h2></div>
+                <div class="section-head reveal"><p class="kicker">How it was done</p><h2 id="methodT">Methodology &amp; architecture</h2><p>Research question: <em>How have the most searched diseases changed over the years in the US — and how does that compare with the real-life leading causes of death?</em></p></div>
                 <ol class="method-steps reveal">
-                    <li class="card"><h3>Collect</h3><p>Downloaded Google Trends regional interest for nine health topics in 210 Nielsen DMA metro areas, one value per year, plus CDC leading-causes-of-death tables.</p></li>
-                    <li class="card"><h3>Clean</h3><p>Reshaped the wide Trends export with Pandas, mapped each DMA to its state and coordinates, and audited the result.</p></li>
-                    <li class="card"><h3>Store</h3><p>Loaded the tables into PostgreSQL. This version pre-builds them as static JSON, so the site needs no server and never goes down.</p></li>
-                    <li class="card"><h3>Analyse</h3><p>Compared places within each condition, correlated conditions across metros (Pearson r) and charted CDC trends — computed live in the browser.</p></li>
+                    <li class="card"><h3>Extract</h3><p>Google Trends health searches by US metro area, 2004–2017 (<a href="https://www.kaggle.com/GoogleNewsLab/health-searches-us-county" target="_blank" rel="noopener">Kaggle / Google News Lab</a>) and CDC leading causes of death (<a href="https://www.cdc.gov/nchs/fastats/deaths.htm" target="_blank" rel="noopener">CDC FastStats</a>).</p></li>
+                    <li class="card"><h3>Transform</h3><p>Reshaped and cleaned in Python/Jupyter (<a href="https://github.com/ermiasgelaye/Google-Health-Search-Project/blob/master/Data/Data_Cleaning/Health_Analysis.ipynb" target="_blank" rel="noopener">Health_Analysis.ipynb</a>); geocoded each metro area.</p></li>
+                    <li class="card"><h3>Load</h3><p>Loaded into PostgreSQL (<a href="https://github.com/ermiasgelaye/Google-Health-Search-Project/blob/master/Data/database/load_in_to_db/loadData.ipynb" target="_blank" rel="noopener">loadData.ipynb</a>) and served through a Flask REST API — now pre-built as static JSON so it's always available.</p></li>
+                    <li class="card"><h3>Visualise</h3><p>Interactive maps and charts; every statistic on this site is recomputed in your browser from the data.</p></li>
                 </ol>
             </div>
         </section>
-
-        <section class="section section--alt" id="team" aria-labelledby="teamTitle">
+        <section class="section" id="team" aria-labelledby="teamT">
             <div class="container">
-                <div class="section-head reveal"><p class="kicker">People</p><h2 id="teamTitle">The team</h2><p>Built as a group project in the University of Toronto Data Analytics &amp; Visualization program.</p></div>
+                <div class="section-head reveal"><p class="kicker">Team Eagle</p><h2 id="teamT">The team</h2><p>Built as a group project in the University of Toronto Data Analytics &amp; Visualization program.</p></div>
                 <div class="team-grid reveal">
                     <article class="card member"><img src="static/img/ermias.jpg" alt="Ermias Gaga" width="96" height="96" loading="lazy" decoding="async"><h3>Ermias Gaga</h3><p>Data scientist &amp; researcher · project lead</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/ermiasgaga/" target="_blank" rel="noopener" aria-label="Ermias Gaga on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/ermiasgelaye" target="_blank" rel="noopener" aria-label="Ermias Gaga on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
-                    <article class="card member"><img src="static/img/amanda.jpg" alt="Amanda Qianyue Ma" width="96" height="96" loading="lazy" decoding="async"><h3>Amanda Qianyue Ma</h3><p>Economics &amp; analytics</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/amandaqianyuema/" target="_blank" rel="noopener" aria-label="Amanda Qianyue Ma on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/AmandaMa77" target="_blank" rel="noopener" aria-label="Amanda Qianyue Ma on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
-                    <article class="card member"><img src="static/img/amos.jpg" alt="Amos Johnson" width="96" height="96" loading="lazy" decoding="async"><h3>Amos Johnson</h3><p>Data journalism &amp; storytelling</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/amosjohnson/" target="_blank" rel="noopener" aria-label="Amos Johnson on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/AmosJohnson" target="_blank" rel="noopener" aria-label="Amos Johnson on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
-                    <article class="card member"><img src="static/img/damola.jpg" alt="Adedamola Atekoja" width="96" height="96" loading="lazy" decoding="async"><h3>Adedamola Atekoja</h3><p>Chartered accountant &amp; data analyst</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/damola-atekoja/" target="_blank" rel="noopener" aria-label="Adedamola Atekoja on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/DamolaAtekoja" target="_blank" rel="noopener" aria-label="Adedamola Atekoja on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
-                    <article class="card member"><img src="static/img/maria.jpg" alt="Maria Lorena" width="96" height="96" loading="lazy" decoding="async"><h3>Maria Lorena</h3><p>Project manager &amp; data analyst</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/marialorena-nunez/" target="_blank" rel="noopener" aria-label="Maria Lorena on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/MariaLoren" target="_blank" rel="noopener" aria-label="Maria Lorena on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
+<article class="card member"><img src="static/img/amanda.jpg" alt="Amanda Qianyue Ma" width="96" height="96" loading="lazy" decoding="async"><h3>Amanda Qianyue Ma</h3><p>Economics &amp; analytics</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/amandaqianyuema/" target="_blank" rel="noopener" aria-label="Amanda Qianyue Ma on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/AmandaMa77" target="_blank" rel="noopener" aria-label="Amanda Qianyue Ma on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
+<article class="card member"><img src="static/img/amos.jpg" alt="Amos Johnson" width="96" height="96" loading="lazy" decoding="async"><h3>Amos Johnson</h3><p>Data journalism &amp; storytelling</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/amosjohnson/" target="_blank" rel="noopener" aria-label="Amos Johnson on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/AmosJohnson" target="_blank" rel="noopener" aria-label="Amos Johnson on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
+<article class="card member"><img src="static/img/damola.jpg" alt="Adedamola ('Damola) Atekoja" width="96" height="96" loading="lazy" decoding="async"><h3>Adedamola ('Damola) Atekoja</h3><p>Chartered accountant &amp; data analyst</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/damola-atekoja/" target="_blank" rel="noopener" aria-label="Adedamola ('Damola) Atekoja on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/DamolaAtekoja" target="_blank" rel="noopener" aria-label="Adedamola ('Damola) Atekoja on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
+<article class="card member"><img src="static/img/maria.jpg" alt="Maria Lorena" width="96" height="96" loading="lazy" decoding="async"><h3>Maria Lorena</h3><p>Project manager &amp; data analyst</p><div class="social"><a class="icon-btn" href="https://www.linkedin.com/in/marialorena-nunez/" target="_blank" rel="noopener" aria-label="Maria Lorena on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a class="icon-btn" href="https://github.com/MariaLoren" target="_blank" rel="noopener" aria-label="Maria Lorena on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a></div></article>
                 </div>
             </div>
         </section>
     </main>
-    <footer class="site-footer"><div class="container footer-inner"><p>&copy; 2020–<span id="year"></span> Ermias Gelaye Gaga &amp; team · <a href="https://github.com/ermiasgelaye/Google-Health-Search-Project" target="_blank" rel="noopener">Source code</a></p><a href="https://ermiasgelaye.github.io/#projects" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a></div></footer>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; 2020–<span id="year"></span> Ermias Gelaye Gaga &amp; Team Eagle · <a href="https://github.com/ermiasgelaye/Google-Health-Search-Project" target="_blank" rel="noopener">Source code</a> · <a href="api.html">API</a></p><a href="https://ermiasgelaye.github.io/#projects" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a></div></footer>
     <div class="dock"><button type="button" class="dock-btn dock-chat" id="chatToggle" aria-label="Open Health Search Assistant" aria-controls="chatPanel" aria-expanded="false"><i class="fas fa-robot" aria-hidden="true"></i></button></div>
     <section class="chat-panel" id="chatPanel" aria-label="Health Search Assistant" hidden>
         <header class="chat-head">
@@ -229,6 +175,8 @@
     </section>
     <script src="assets/js/project.js" defer></script>
     <script src="assets/data/health.data.js" defer></script>
+    <script src="assets/data/usmap.data.js" defer></script>
+    <script src="assets/data/analysis.data.js" defer></script>
     <script src="assets/js/health.js" defer></script>
     <script src="assets/js/knowledge/project-health.js" defer></script>
     <script src="assets/js/knowledge/data-science.js" defer></script>
