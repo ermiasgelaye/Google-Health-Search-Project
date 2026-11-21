@@ -226,6 +226,7 @@ const Health = (() => {
             const b = e.target.closest('[data-mode]'); if (!b) return;
             ui.mode = b.dataset.mode;
             e.currentTarget.querySelectorAll('[data-mode]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+            const all = document.querySelector('#yearSel option[value=""]'); if (all) all.textContent = ui.mode === 'sum' ? 'All years (total)' : 'All years (average)';
             render();
         });
         chips(document.getElementById('condChips'), [['all', 'All conditions', ICONS.all], ...C.map((c) => [c, label(c), ICONS[c]])], 'all', (k) => { ui.ci = k === 'all' ? ALL : C.indexOf(k); render(); });
