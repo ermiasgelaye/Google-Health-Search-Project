@@ -66,7 +66,7 @@
         </section>
         <section class="section" id="profile" aria-labelledby="profileT">
             <div class="container">
-                <div class="section-head reveal"><p class="kicker">Profile</p><h2 id="profileT">Where it ranks for each condition</h2><p>Average percentile among all metro areas, 2004–2017. Bars to the right: more interest than most metros; to the left: less.</p></div>
+                <div class="section-head reveal"><p class="kicker">Profile</p><h2 id="profileT">Where it ranks for each condition</h2><p>Percentile = the share of metro areas this one beats (50 is typical, 90 means more interest than 90% of them), averaged over 2004–2017. Bars to the right: more interest than most; to the left: less.</p></div>
                 <div class="card explorer reveal">
                     <div class="chart-box " data-needs-data><canvas id="profileChart" role="img" aria-label="Bar chart of the selected metro area percentile rank for each condition"></canvas></div>
                     
@@ -75,7 +75,7 @@
         </section>
         <section class="section section--alt" id="trend" aria-labelledby="trendT">
             <div class="container">
-                <div class="section-head reveal"><p class="kicker">Over time</p><h2 id="trendT">Rank over time</h2><p>Percentile among metro areas in each year — comparable across years, unlike raw scores.</p></div>
+                <div class="section-head reveal"><p class="kicker">Over time</p><h2 id="trendT">Rank over time</h2><p>Percentile among metro areas in each year. Unlike raw scores, percentiles can be compared from year to year.</p></div>
                 <div class="card explorer reveal">
                     <div class="seg" id="condChips" role="group" aria-label="Condition" style="margin-bottom:.75rem"></div>
                     <h3 class="panel-title" id="rankTitle">Rank over time</h3>
@@ -85,7 +85,7 @@
         </section>
         <section class="section" id="similar" aria-labelledby="similarT">
             <div class="container">
-                <div class="section-head reveal"><p class="kicker">Neighbours in search space</p><h2 id="similarT">Where it is, and who searches alike</h2><p>Most similar metro areas by Euclidean distance between standardised nine-condition profiles.</p></div>
+                <div class="section-head reveal"><p class="kicker">Neighbours in search space</p><h2 id="similarT">Where it is, and who searches alike</h2><p>The metro areas whose pattern across all nine topics is closest to this one (distance between their standardised search profiles).</p></div>
                 <div class="explore-grid reveal">
                     <div class="card explorer"><div class="map-box" id="cityMap" data-needs-data></div><div class="legend-dots"><span><i style="background:#dc2626"></i>Selected</span><span><i style="background:#16a34a"></i>Most similar</span><span><i style="background:rgba(124,58,237,.55)"></i>Other metro areas (click to switch)</span></div></div>
                     <div class="card explorer"><h3 class="panel-title">Most similar metro areas</h3><ol class="sim-list" id="simList"></ol><p class="chart-note">Similar profiles often sit far apart on the map — health-search habits follow demographics and market size as much as geography.</p></div>

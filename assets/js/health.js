@@ -226,7 +226,7 @@ const Health = (() => {
         document.querySelectorAll('[data-kpi="metros"]').forEach((e) => { e.textContent = D.metros.length; });
         document.querySelectorAll('[data-kpi="states"]').forEach((e) => { e.textContent = M.states.length; });
         renderFindings(M);
-        setText('zeroNote', `The typical (median) score rose from ${M.medians[0]} in ${Y[0]} to ${M.medians[M.medians.length - 1]} in ${Y[Y.length - 1]}, and zero scores fell from ${M.zeros[0]} to ${M.zeros[M.zeros.length - 1]} — more metro areas crossed Google's minimum-volume threshold, which compresses the scale. That is why summed scores rise over time even if search behaviour didn't change.`);
+        setText('zeroNote', `One example: the typical (median) score rose from ${M.medians[0]} in ${Y[0]} to ${M.medians[M.medians.length - 1]} in ${Y[Y.length - 1]} and the number of zeros fell from ${M.zeros[0]} to ${M.zeros[M.zeros.length - 1]}, simply because more small metro areas had enough searches to be reported. Adding scores up therefore makes searching look like it grew even if it didn't.`);
 
         const ui = { ci: ALL, yi: null, state: null, rank: 'top', metros: true, mode: 'avg' };
         document.getElementById('modeToggle')?.addEventListener('click', (e) => {
@@ -298,24 +298,28 @@ const Health = (() => {
         const names = (list) => list.map((s) => STATE_NAMES[s]).join(', ');
         const d = topState(C.indexOf('diabetes')), de = topState(C.indexOf('depression'));
         const s = [...M.cdc].sort((a, b) => b.change - a.change);
-        const items = [];
+        const items = []; // [icon, plain headline, plain explanation, statistics]
         if (AN) {
             const v = Object.fromEntries(AN.validation.map((x) => [x.condition, x]));
-            items.push(['stethoscope', `Search interest tracks real disease burden (r = ${AN.overall.r.toFixed(2)} across ${AN.overall.n} states)`,
-                `States that search more about health also have more diabetes, depression, cancer and heart disease in CDC surveys (condition matches r = ${v.cardiovascular.r.toFixed(2)}–${v.Cancer.r.toFixed(2)}). Much of the match is general rather than condition-specific.`]);
-            items.push(['weight-scale', 'Obesity is the exception: the heaviest states search relatively less about it',
-                `Obesity searches don't track obesity prevalence (r = ${v.obesity.r.toFixed(2)}; r = ${v.obesity.partial.toFixed(2)} after controlling for overall search intensity). People search the consequences — diabetes and diarrhea searches track obesity better.`]);
-            items.push(['compass', `A north–south divide explains ${(AN.pca.explained[1] * 100).toFixed(0)}% of the variation`,
-                `Southern metros lean toward rehab, heart and diarrhea searches; northern ones toward depression, vaccine and obesity (correlation with latitude r = ${AN.pca.latR[1].toFixed(2)}).`]);
+            items.push(['stethoscope', 'States that search more about health tend to have more illness',
+                'Where people search more for health topics, CDC surveys find more diabetes, depression, cancer and heart disease. The link is mostly about health in general rather than each specific disease.',
+                `Correlation r = ${AN.overall.r.toFixed(2)} across ${AN.overall.n} states (0 = no link, 1 = perfect); individual conditions r = ${v.cardiovascular.r.toFixed(2)}–${v.Cancer.r.toFixed(2)}.`]);
+            items.push(['weight-scale', 'Obesity is the exception',
+                'The states with the most obesity don\'t search more about obesity — allowing for how much they search about health overall, they search less. People seem to search for the consequences instead: diabetes and diarrhea searches follow obesity rates more closely.',
+                `Obesity searches vs obesity prevalence r = ${v.obesity.r.toFixed(2)}; r = ${v.obesity.partial.toFixed(2)} after controlling for overall search intensity.`]);
+            items.push(['compass', 'The South and the North search for different things',
+                'Southern metro areas lean toward rehab, heart disease and diarrhea; northern ones toward depression, vaccines and obesity.',
+                `Second principal component, ${(AN.pca.explained[1] * 100).toFixed(0)}% of the variation between metro areas; correlation with latitude r = ${AN.pca.latR[1].toFixed(2)}.`]);
         }
         let diaNote = '';
         if (AN) { // where do the top diabetes-search states rank for diagnosed diabetes in CDC surveys?
             const ranked = Object.entries(AN.brfss).filter(([s, v]) => STATE_NAMES[s] && v.diabetes != null).sort((a, b) => b[1].diabetes - a[1].diabetes).map(([s]) => s);
-            diaNote = `In CDC surveys they rank ${d.slice(0, 3).map((s) => `#${ranked.indexOf(s) + 1}`).join(', ')} of ${ranked.length} for diagnosed diabetes. `;
+            diaNote = `In CDC surveys those diabetes states rank ${d.slice(0, 3).map((s) => `#${ranked.indexOf(s) + 1}`).join(', ')} of ${ranked.length} for diagnosed diabetes. `;
         }
-        items.push(['droplet', `Diabetes interest peaks in ${names(d.slice(0, 3))}; depression in ${names(de.slice(0, 3))}`, `${diaNote}The depression leaders are all northern states with long winters.`]);
-        items.push(['file-medical', `Heart-disease deaths fell ${Math.abs(M.cdc[0].change).toFixed(0)}% and cancer deaths ${Math.abs(M.cdc[1].change).toFixed(0)}% from 2004 to 2017`, `Rising: ${s.slice(0, 3).map((x) => `${x.label} ${pct(x.change)}`).join(', ')}.`]);
-        box.innerHTML = items.map(([i, h, p]) => `<li class="card"><i class="fas fa-${i}" aria-hidden="true"></i><div><strong>${esc(h)}</strong><p>${esc(p)}</p></div></li>`).join('');
+        items.push(['droplet', `Diabetes searches are highest in ${names(d.slice(0, 3))}; depression searches in ${names(de.slice(0, 3))}`, `${diaNote}The depression leaders are all northern states with long winters.`, '']);
+        items.push(['file-medical', `Deaths from heart disease fell ${Math.abs(M.cdc[0].change).toFixed(0)}% and from cancer ${Math.abs(M.cdc[1].change).toFixed(0)}% between 2004 and 2017`,
+            `Rising fastest: ${s.slice(0, 3).map((x) => `${x.label.replace(' (unintentional injuries)', ' (mostly drug overdoses)')} ${pct(x.change)}`).join(', ')}.`, 'CDC age-adjusted death rates per 100,000 people.']);
+        box.innerHTML = items.map(([i, h, p, st]) => `<li class="card"><i class="fas fa-${i}" aria-hidden="true"></i><div><strong>${esc(h)}</strong><p>${esc(p)}</p>${st ? `<p class="stat-line">${esc(st)}</p>` : ''}</div></li>`).join('');
     }
 
     function renderProfile(M, st) {
