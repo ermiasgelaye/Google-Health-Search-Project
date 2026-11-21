@@ -14,12 +14,12 @@ const Health = (() => {
         vaccine: 'Vaccine', diarrhea: 'Diarrhea', obesity: 'Obesity', diabetes: 'Diabetes' };
     const ICONS = { all: 'layer-group', Cancer: 'ribbon', cardiovascular: 'heart-pulse', stroke: 'brain', depression: 'cloud-rain', rehab: 'person-walking',
         vaccine: 'syringe', diarrhea: 'bacteria', obesity: 'weight-scale', diabetes: 'droplet' };
-    const COND_COLORS = { Cancer: '#0a6cff', cardiovascular: '#dc2626', stroke: '#7c3aed', depression: '#0891b2', rehab: '#f59e0b',
-        vaccine: '#16a34a', diarrhea: '#a16207', obesity: '#db2777', diabetes: '#475569' };
+    const COND_COLORS = { Cancer: '#0a6cff', cardiovascular: '#dc2626', stroke: '#1e3a8a', depression: '#0891b2', rehab: '#f59e0b',
+        vaccine: '#16a34a', diarrhea: '#a16207', obesity: '#0f766e', diabetes: '#475569' };
     const CAUSE_LABELS = { Diseases_of_heart: 'Heart disease', Malignant_neoplasms: 'Cancer', Accidents: 'Accidents (unintentional injuries)',
         Respiratory: 'Chronic lower respiratory disease', Cerebrovascular: 'Stroke', Alzheimer: "Alzheimer's disease", Diabetes: 'Diabetes',
         Influenza_and_pneumonia: 'Influenza & pneumonia', Nephrosis: 'Kidney disease', Suicide: 'Suicide' };
-    const CAUSE_COLORS = ['#dc2626', '#0a6cff', '#f59e0b', '#64748b', '#7c3aed', '#db2777', '#16a34a', '#0891b2', '#a16207', '#111827'];
+    const CAUSE_COLORS = ['#dc2626', '#0a6cff', '#f59e0b', '#64748b', '#1e3a8a', '#0f766e', '#16a34a', '#0891b2', '#a16207', '#111827'];
     const STATE_NAMES = { AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California', CO: 'Colorado', CT: 'Connecticut', DC: 'District of Columbia',
         DE: 'Delaware', FL: 'Florida', GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa', KS: 'Kansas', KY: 'Kentucky',
         LA: 'Louisiana', ME: 'Maine', MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MS: 'Mississippi', MO: 'Missouri', MT: 'Montana',
@@ -334,7 +334,7 @@ const Health = (() => {
             (below.length ? `Below average for <strong>${esc(below.map((x) => label(x.c)).join(', '))}</strong>.` : '') + (!above.length && !below.length ? 'Close to the national average for every condition.' : ''));
         const c = ARC.themeColors();
         draw('profileChart', { type: 'bar',
-            data: { labels: C.map(label), datasets: [{ label: STATE_NAMES[st], data: vals, backgroundColor: '#0a6cff', borderRadius: 6 }, { label: 'All metro areas', data: M.national, backgroundColor: 'rgba(124,58,237,.35)', borderRadius: 6 }] },
+            data: { labels: C.map(label), datasets: [{ label: STATE_NAMES[st], data: vals, backgroundColor: '#0a6cff', borderRadius: 6 }, { label: 'All metro areas', data: M.national, backgroundColor: 'rgba(100,116,139,.45)', borderRadius: 6 }] },
             options: { responsive: true, maintainAspectRatio: false, animation: { duration: 300 }, plugins: { legend: legend(c), tooltip: { callbacks: { label: (x) => `${x.dataset.label}: ${x.raw == null ? 'n/a' : x.raw.toFixed(1)}` } } },
                 scales: { x: { ...axis(c), grid: { display: false } }, y: { ...axis(c, 'Average interest (0–100)'), min: 0, max: 100 } } } });
     }
@@ -437,7 +437,7 @@ const Health = (() => {
             setText('validTitle', `${esc(label(ui.c))} searches vs ${esc(v.label.toLowerCase())} <small>r = ${v.r.toFixed(2)}, p ${fmtP(v.p)}, ${v.n} states</small>`);
             draw('validChart', { type: 'scatter', data: { datasets: [
                 { data: pts.map((p) => ({ x: p[1], y: p[2], st: p[0] })), backgroundColor: 'rgba(10,108,255,.55)', borderColor: 'rgba(10,108,255,.9)', pointRadius: 4.5, pointHoverRadius: 7 },
-                { type: 'line', data: [{ x: x0, y: b0 + slope * x0 }, { x: x1, y: b0 + slope * x1 }], borderColor: '#7c3aed', borderWidth: 2.5, pointRadius: 0, borderDash: v.p < 0.05 ? [] : [6, 6] }] },
+                { type: 'line', data: [{ x: x0, y: b0 + slope * x0 }, { x: x1, y: b0 + slope * x1 }], borderColor: '#ea580c', borderWidth: 2.5, pointRadius: 0, borderDash: v.p < 0.05 ? [] : [6, 6] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (x) => (x.raw.st ? `${STATE_NAMES[x.raw.st]}: search ${x.raw.x}, prevalence ${x.raw.y}%` : 'Fit') } } },
                     scales: { x: axis(c, `${label(ui.c)} search interest (state average, ${AN.windows ? AN.windows.validation : '2011–2017'})`), y: axis(c, `${v.label} (% of adults)`) } } });
         }
@@ -488,7 +488,7 @@ const Health = (() => {
         setText('scatterTitle', `${esc(label(C[a]))} vs ${esc(label(C[b]))} <small>r = ${M.corr[a][b].toFixed(2)} · ${pts.length} metro areas</small>`);
         draw('scatterChart', { type: 'scatter', data: { datasets: [
             { label: 'Metro areas', data: pts, backgroundColor: 'rgba(10,108,255,.5)', borderColor: 'rgba(10,108,255,.9)', pointRadius: 3.5, pointHoverRadius: 6 },
-            { type: 'line', label: 'Trend', data: [{ x: x0, y: icpt + slope * x0 }, { x: x1, y: icpt + slope * x1 }], borderColor: '#7c3aed', borderWidth: 2.5, pointRadius: 0 }] },
+            { type: 'line', label: 'Trend', data: [{ x: x0, y: icpt + slope * x0 }, { x: x1, y: icpt + slope * x1 }], borderColor: '#ea580c', borderWidth: 2.5, pointRadius: 0 }] },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (x) => (x.raw.m ? `${x.raw.m.name}: ${x.raw.x.toFixed(0)}, ${x.raw.y.toFixed(0)}` : 'Trend') } } },
                 scales: { x: axis(c, `${label(C[a])} interest`), y: axis(c, `${label(C[b])} interest`) } } });
     }

@@ -71,8 +71,8 @@
 .usmap .st.nodata { cursor: default; }
 .usmap .hatch-bg { fill: var(--surface); }
 .usmap .hatch-line { stroke: var(--border); stroke-width: 2; }
-.usmap .metro { fill: rgba(124, 58, 237, .62); stroke: #fff; stroke-width: 1; cursor: pointer; }
-.usmap .metro:hover { fill: #7c3aed; }
+.usmap .metro { fill: rgba(234, 88, 12, .68); stroke: #fff; stroke-width: 1; cursor: pointer; }
+.usmap .metro:hover { fill: #c2410c; }
 .usmap .metro.on { fill: #dc2626; stroke: #fff; stroke-width: 2.5; }
 :root[data-theme="dark"] .usmap .metro { stroke: #0b1020; }
 .map-tip { position: absolute; z-index: 5; pointer-events: none; background: var(--surface-2); color: var(--ink); border: 1px solid var(--border); box-shadow: var(--shadow); border-radius: 8px; padding: .35rem .6rem; font-size: .82rem; font-weight: 600; max-width: 220px; }
@@ -132,7 +132,7 @@
 
 .bubble-legend { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1.1rem; margin-top: .6rem; font-size: .8rem; color: var(--ink-3); }
 .bubble-legend .bl-item { display: inline-flex; align-items: center; gap: .35rem; font-variant-numeric: tabular-nums; }
-.bubble-legend circle { fill: rgba(124, 58, 237, .62); stroke: #fff; stroke-width: 1; }
+.bubble-legend circle { fill: rgba(234, 88, 12, .68); stroke: #fff; stroke-width: 1; }
 
 .map-scale .scale-bar.green { background: linear-gradient(90deg, color-mix(in srgb, #16a34a 10%, var(--surface)), #16a34a); }
 
