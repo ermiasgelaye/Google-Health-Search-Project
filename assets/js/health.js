@@ -174,7 +174,7 @@ const Health = (() => {
             const name = STATE_NAMES[s.postal];
             const has = M.metrosByState[s.postal];
             const tip = v == null ? `${name}: ${has ? 'not enough data' : 'no metro area of its own'}` : `${name}${opts.fmt ? (opts.fmt(v) ? `: ${opts.fmt(v)}` : '') : `: ${v.toFixed(1)}`}`;
-            const fill = v == null ? `url(#hatch-${id})` : opts.diverging ? divColor(v, Math.max(Math.abs(lo), Math.abs(hi))) : opts.green ? `color-mix(in srgb, #16a34a ${Math.round(10 + t(v) * 90)}%, var(--surface))` : shade(t(v));
+            const fill = v == null ? `url(#hatch-${id})` : opts.diverging ? divColor(v, Math.max(Math.abs(lo), Math.abs(hi))) : shade(t(v));
             return `<path d="${s.d}" data-st="${s.postal}" class="st${v == null ? ' nodata' : ''}${opts.selected === s.postal ? ' on' : ''}" style="fill:${fill}"${v == null ? '' : ' tabindex="0" role="button"'} aria-label="${esc(tip)}"><title>${esc(tip)}</title></path>`;
         }).join('');
         // Bubble radius in map units (map is 975 wide): area grows with the value (square-root scale).
@@ -215,7 +215,7 @@ const Health = (() => {
         svg.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(e.target.closest('[data-st]')); } });
         const sc = document.getElementById(`${id}-scale`);
         if (sc) sc.innerHTML = opts.diverging ? '<span>Northern profile</span><span class="scale-bar div"></span><span>Southern profile</span>'
-            : `<span>${opts.fmt ? opts.fmt(lo) : lo.toFixed(0)}</span><span class="scale-bar${opts.green ? ' green' : ''}"></span><span>${opts.fmt ? opts.fmt(hi) : hi.toFixed(0)}</span>`;
+            : `<span>${opts.fmt ? opts.fmt(lo) : lo.toFixed(0)}</span><span class="scale-bar"></span><span>${opts.fmt ? opts.fmt(hi) : hi.toFixed(0)}</span>`;
     }
 
     /* ======================= Overview ======================= */
@@ -261,7 +261,7 @@ const Health = (() => {
             const mvf = (i) => (total ? M.metroSum(i, ci, yi) : median ? M.metroMedian(i, ci, yi) : M.metroScore(i, ci, yi));
             const vals = Object.fromEntries(M.states.map((st) => [st, sv(st)]));
             renderMap(document.getElementById('usMap'), {
-                values: vals, selected: ui.state, label: `${label(c)} search interest by state`, green: total, fmt: total ? fmtN : null, metroFmt: total ? fmtN : null,
+                values: vals, selected: ui.state, label: `${label(c)} search interest by state`, fmt: total ? fmtN : null, metroFmt: total ? fmtN : null,
                 metros: ui.metros ? D.metros.map((_, i) => ({ i, v: mvf(i) })) : null,
                 onState: (st) => { ui.state = ui.state === st ? null : st; if (ui.state) { sel.value = st; renderProfile(M, st); } render(); },
                 onMetro: (i) => { ui.state = D.metros[i].postal; sel.value = ui.state; renderProfile(M, ui.state); render(); }
