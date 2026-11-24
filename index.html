@@ -122,18 +122,7 @@
                 </ul>
             </div>
         </section>
-        <section class="section" id="quality" aria-labelledby="qualityT">
-            <div class="container">
-                <div class="section-head reveal"><p class="kicker">Data quality</p><h2 id="qualityT">Corrections made in this version</h2><p>An audit of the original database found errors that affected the map and charts. All fixes are scripted in <code>tools/clean_data.py</code>.</p></div>
-                <div class="stat-grid reveal">
-                    <article class="card stat-card"><h3><span><i class="fas fa-map-pin" aria-hidden="true"></i> Wrong states</span><span class="strength strong">Fixed</span></h3><p>18 metro areas spanning two or more states were filed under the <em>last</em> state in their name, e.g. "Tallahassee FL-Thomasville GA" under Georgia, so Washington DC, Rhode Island and Vermont were missing.</p></article>
-                    <article class="card stat-card"><h3><span><i class="fas fa-earth-americas" aria-hidden="true"></i> Wrong coordinates</span><span class="strength strong">Fixed</span></h3><p>23 metros sat outside their own state after geocoding by bare city name: Victoria TX was placed in Australia, Lima OH in Peru, Albany GA in New York. All 210 now sit inside their state on the map.</p></article>
-                    <article class="card stat-card"><h3><span><i class="fas fa-file-medical" aria-hidden="true"></i> CDC typo</span><span class="strength strong">Fixed</span></h3><p>The 2017 cancer death rate read 52.5 instead of the CDC's 152.5 per 100,000, which showed cancer deaths falling by two-thirds in one year.</p></article>
-                    <article class="card stat-card"><h3><span><i class="fas fa-scale-unbalanced" aria-hidden="true"></i> Invalid comparisons</span><span class="strength moderate">Revised</span></h3><p>Summing scores across conditions and years made the first version conclude "cancer is most searched" and "+120% growth". Google scales each separately, so these are revised on the <a href="analytics.html#revisited">Analytics page</a>.</p></article>
-                </div>
-            </div>
-        </section>
-        <section class="section section--alt" id="method" aria-labelledby="methodT">
+        <section class="section" id="method" aria-labelledby="methodT">
             <div class="container">
                 <div class="section-head reveal"><p class="kicker">How it was done</p><h2 id="methodT">Methodology &amp; architecture</h2><p>Research question: <em>How have the most searched diseases changed over the years in the US, and how does that compare with the real-life leading causes of death?</em></p></div>
                 <ol class="method-steps reveal">
@@ -144,7 +133,7 @@
                 </ol>
             </div>
         </section>
-        <section class="section" id="team" aria-labelledby="teamT">
+        <section class="section section--alt" id="team" aria-labelledby="teamT">
             <div class="container">
                 <div class="section-head reveal"><p class="kicker">Team Eagle</p><h2 id="teamT">The team</h2><p>Built as a group project in the University of Toronto Data Analytics &amp; Visualization program.</p></div>
                 <div class="team-grid reveal">
