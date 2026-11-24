@@ -52,7 +52,7 @@
             <div class="container">
                 <nav class="crumbs" aria-label="Breadcrumb"><a href="https://ermiasgelaye.github.io/">Portfolio</a> <span aria-hidden="true">/</span> <span aria-current="page">Google Health Search Trends</span></nav>
                 <h1>Where does America <span class="gradient-text">search for health?</span></h1>
-                <p class="lede">Google Trends lets us see what people search for at a very local level. This project tracks searches for nine common health issues (from cancer to diabetes) in every US metro area from 2004 to 2017, and compares them with the CDC's leading causes of death to understand how search data reflects life for millions of Americans.</p>
+                <p class="lede">Google Trends lets us see what people search for at a very local level. This project tracks searches for nine common health issues (from cancer to diabetes) in every US metro area from 2004 to 2017, and tests whether search interest tracks real disease burden (CDC survey data) alongside the CDC's leading causes of death.</p>
                 <div class="tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">PostgreSQL</span><span class="tag">Flask API</span><span class="tag">Google Trends</span><span class="tag">CDC</span><span class="tag">Chart.js</span></div>
                 <div class="hero-actions" style="margin:0">
                     <a href="#explore" class="btn btn-primary"><i class="fas fa-map-location-dot" aria-hidden="true"></i> Explore the map</a>
@@ -115,16 +115,27 @@
             <div class="container">
                 <div class="section-head reveal"><p class="kicker">Go deeper</p><h2 id="moreT">Explore the full analysis</h2></div>
                 <ul class="findings reveal">
-                    <li class="card"><i class="fas fa-chart-line" aria-hidden="true"></i><div><strong><a href="analytics.html">Analytics</a></strong><p>Search interest validated against CDC disease prevalence, the north–south structure of health searching, co-occurring conditions, stability over time and mortality trends.</p></div></li>
+                    <li class="card"><i class="fas fa-chart-line" aria-hidden="true"></i><div><strong><a href="analytics.html">Analytics</a></strong><p>Search interest compared with CDC disease prevalence, the north–south structure of health searching, co-occurring conditions, stability over time and mortality trends.</p></div></li>
                     <li class="card"><i class="fas fa-city" aria-hidden="true"></i><div><strong><a href="comparison.html">City comparison</a></strong><p>Profile any of the 210 metro areas: percentile ranks, change over time and the metros that search most alike.</p></div></li>
                     <li class="card"><i class="fas fa-table" aria-hidden="true"></i><div><strong><a href="data.html">Data explorer</a></strong><p>Filter, sort and export all 2,940 metro × year records and the CDC table.</p></div></li>
                     <li class="card"><i class="fas fa-code" aria-hidden="true"></i><div><strong><a href="api.html">API</a></strong><p>Twelve JSON endpoints: the original Flask API, now always available as static files.</p></div></li>
                 </ul>
             </div>
         </section>
-        <section class="section" id="method" aria-labelledby="methodT">
+        <section class="section" id="limits" aria-labelledby="limitsT">
             <div class="container">
-                <div class="section-head reveal"><p class="kicker">How it was done</p><h2 id="methodT">Methodology &amp; architecture</h2><p>Research question: <em>How have the most searched diseases changed over the years in the US, and how does that compare with the real-life leading causes of death?</em></p></div>
+                <div class="section-head reveal"><p class="kicker">Reading the results</p><h2 id="limitsT">Limitations &amp; responsible use</h2><p>What this analysis can and can't support.</p></div>
+                <div class="stat-grid reveal">
+                    <article class="card stat-card"><h3><span><i class="fas fa-scale-balanced" aria-hidden="true"></i> Relative scores, not counts</span></h3><p>Google scales each topic and year separately, so scores compare <em>places</em> within one topic and year. They can't show search volume, which topic is more popular, or whether searching grew.</p></article>
+                    <article class="card stat-card"><h3><span><i class="fas fa-people-group" aria-hidden="true"></i> Associations between places</span></h3><p>Searches and CDC figures are compared across states and metro areas. A correlation such as r = 0.52 describes places, not individuals, and doesn't show cause.</p></article>
+                    <article class="card stat-card"><h3><span><i class="fas fa-clipboard-list" aria-hidden="true"></i> Data coverage</span></h3><p>Search data covers 2004–2017. Small metros below Google's reporting threshold score 0. CDC prevalence is self-reported survey data, and heart-disease prevalence covers only 2015–2017.</p></article>
+                    <article class="card stat-card"><h3><span><i class="fas fa-user-shield" aria-hidden="true"></i> Privacy</span></h3><p>Only aggregated, public data is used: no individual searches or health records. The site collects nothing; the assistant runs in your browser and keeps its history there.</p></article>
+                </div>
+            </div>
+        </section>
+        <section class="section section--alt" id="method" aria-labelledby="methodT">
+            <div class="container">
+                <div class="section-head reveal"><p class="kicker">How it was done</p><h2 id="methodT">Methodology &amp; architecture</h2><p>Research question: <em>Where in the US does interest in common health conditions concentrate, does that geography track real disease burden, and how did the leading causes of death change over the same period?</em></p></div>
                 <ol class="method-steps reveal">
                     <li class="card"><h3>Extract</h3><p>Google Trends health searches by US metro area, 2004–2017 (<a href="https://www.kaggle.com/GoogleNewsLab/health-searches-us-county" target="_blank" rel="noopener">Kaggle / Google News Lab</a>) and CDC leading causes of death (<a href="https://www.cdc.gov/nchs/fastats/deaths.htm" target="_blank" rel="noopener">CDC FastStats</a>).</p></li>
                     <li class="card"><h3>Transform</h3><p>Reshaped and cleaned in Python/Jupyter (<a href="https://github.com/ermiasgelaye/Google-Health-Search-Project/blob/master/Data/Data_Cleaning/Health_Analysis.ipynb" target="_blank" rel="noopener">Health_Analysis.ipynb</a>); geocoded each metro area.</p></li>
@@ -133,7 +144,7 @@
                 </ol>
             </div>
         </section>
-        <section class="section section--alt" id="team" aria-labelledby="teamT">
+        <section class="section" id="team" aria-labelledby="teamT">
             <div class="container">
                 <div class="section-head reveal"><p class="kicker">Team Eagle</p><h2 id="teamT">The team</h2><p>Built as a group project in the University of Toronto Data Analytics &amp; Visualization program.</p></div>
                 <div class="team-grid reveal">
