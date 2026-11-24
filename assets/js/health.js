@@ -113,6 +113,14 @@ const Health = (() => {
     const shade = (t) => `color-mix(in srgb, var(--brand) ${Math.round(10 + t * 90)}%, var(--surface))`;
     const divColor = (v, m) => `color-mix(in srgb, ${v >= 0 ? '#ea580c' : 'var(--brand)'} ${Math.round(8 + (Math.min(1, Math.abs(v) / (m || 1))) * 80)}%, var(--surface))`;
     const heatColor = (r) => `color-mix(in srgb, var(${r >= 0 ? '--brand' : '--danger'}) ${Math.round(Math.abs(r) * 85)}%, var(--surface))`;
+    // Text colour for a heat cell: whichever of near-black or white contrasts more with the mixed background (WCAG 1.4.3)
+    const heatInk = (r) => {
+        const cs = getComputedStyle(document.documentElement), rgb = (v) => { v = v.trim(); return [1, 3, 5].map((i) => parseInt(v.slice(i, i + 2), 16)); };
+        const lum = (c) => { const f = (x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+        const t = Math.round(Math.abs(r) * 85) / 100, a = rgb(cs.getPropertyValue(r >= 0 ? '--brand' : '--danger')), s = rgb(cs.getPropertyValue('--surface'));
+        const L = lum(a.map((x, i) => x * t + s[i] * (1 - t)));
+        return (1.05 / (L + 0.05)) > ((L + 0.05) / 0.0611) ? '#fff' : '#0f172a';
+    };
     function chips(box, items, current, onPick) {
         if (!box) return;
         box.innerHTML = items.map(([k, text, icon]) => `<button type="button" class="chip" data-k="${esc(k)}" aria-pressed="${k === current}">${icon ? `<i class="fas fa-${icon}" aria-hidden="true"></i> ` : ''}${esc(text)}</button>`).join('');
@@ -379,7 +387,7 @@ const Health = (() => {
             <thead><tr><td><small>CDC prevalence →</small></td>${mx.measures.map((m, j) => `<th scope="col" title="${esc(mx.labels[j])}">${esc(SHORT_MEASURE[m] || mx.labels[j])}</th>`).join('')}</tr></thead>
             <tbody>${mx.conditions.map((c, i) => `<tr><th scope="row">${esc(label(c))} searches</th>${mx.r[i].map((r, j) => {
                 const diag = AN.validation[j] && AN.validation[j].condition === c;
-                return `<td class="${diag ? 'on' : ''}" style="background:${heatColor(r)};color:${Math.abs(r) > 0.55 ? '#fff' : 'var(--ink)'}" title="${esc(label(c))} searches vs ${esc(mx.labels[j])}: r = ${r.toFixed(2)}">${r.toFixed(2)}</td>`;
+                return `<td class="${diag ? 'on' : ''}" style="background:${heatColor(r)};color:${heatInk(r)}" title="${esc(label(c))} searches vs ${esc(mx.labels[j])}: r = ${r.toFixed(2)}">${r.toFixed(2)}</td>`;
             }).join('')}</tr>`).join('')}</tbody></table>`;
         const r_ = (c, m) => mx.r[mx.conditions.indexOf(c)][mx.measures.indexOf(m)];
         setText('matrixNote', `Outlined cells pair each search with its own condition. Obesity prevalence is tracked better by searches for <strong>diarrhea</strong> (r = ${r_('diarrhea', 'obesity').toFixed(2)}) and <strong>diabetes</strong> (r = ${r_('diabetes', 'obesity').toFixed(2)}) than by obesity searches (r = ${r_('obesity', 'obesity').toFixed(2)}): people search for the consequences, not the condition. ` +
@@ -456,7 +464,7 @@ const Health = (() => {
             <tbody>${C.map((a, ai) => `<tr><th scope="row">${esc(label(a))}</th>${C.map((b, bi) => {
                 if (ai === bi) return '<td class="self">n/a</td>';
                 const r = M.corr[ai][bi], lo = Math.min(ai, bi), hi = Math.max(ai, bi);
-                return `<td class="${lo === first.a && hi === first.b ? 'on' : ''}" style="background:${heatColor(r)};color:${Math.abs(r) > 0.55 ? '#fff' : 'var(--ink)'}"><button type="button" data-a="${lo}" data-b="${hi}" aria-label="${esc(label(a))} and ${esc(label(b))}: r = ${r.toFixed(2)}">${r.toFixed(2)}</button></td>`;
+                return `<td class="${lo === first.a && hi === first.b ? 'on' : ''}" style="background:${heatColor(r)};color:${heatInk(r)}"><button type="button" data-a="${lo}" data-b="${hi}" aria-label="${esc(label(a))} and ${esc(label(b))}: r = ${r.toFixed(2)}">${r.toFixed(2)}</button></td>`;
             }).join('')}</tr>`).join('')}</tbody></table>`;
         const weak = M.pairs[M.pairs.length - 1];
         setText('heatNote', `Strongest: ${M.pairs.slice(0, 3).map((p) => `${esc(label(C[p.a]))} & ${esc(label(C[p.b]))} (${p.r.toFixed(2)})`).join(', ')}; weakest: ${esc(label(C[weak.a]))} & ${esc(label(C[weak.b]))} (${weak.r.toFixed(2)}). ` +
