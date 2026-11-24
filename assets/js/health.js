@@ -344,7 +344,7 @@ const Health = (() => {
     const fmtP = (p) => (p < 0.001 ? '< 0.001' : p.toFixed(3));
     const verdict = (r, p) => (p >= 0.05 ? ['none', 'Not significant'] : Math.abs(r) >= 0.5 ? ['strong', 'Strong'] : Math.abs(r) >= 0.3 ? ['moderate', 'Moderate'] : ['weak', 'Weak']);
     const SHORT_MEASURE = { diabetes: 'Diabetes', depression: 'Depression', cancer: 'Cancer', coronary_heart_disease: 'Heart disease', stroke: 'Stroke', flu_vaccination_65plus: 'Flu shot (65+)', obesity: 'Obesity' };
-    const SOUTH = '#ea580c'; // PC2 > 0 colour (southern profile); brand blue = northern profile
+    const SOUTH = '#ea580c'; // PC2 > 0 color (southern profile); brand blue = northern profile
 
     function initAnalytics() {
         let M;
@@ -413,21 +413,6 @@ const Health = (() => {
 
         // ---- 5. CDC ----
         renderCdcCards(M);
-
-        // ---- 6. Original findings revisited ----
-        const perMetro = (s) => M.stateTotal[s] / M.metrosByState[s].length;
-        const byTotal = [...M.states].sort((a, b) => M.stateTotal[b] - M.stateTotal[a]).slice(0, 3).map((s) => STATE_NAMES[s]);
-        const byAvg = [...M.states].sort((a, b) => perMetro(b) - perMetro(a)).slice(0, 3).map((s) => STATE_NAMES[s]);
-        const ri = (a, b) => M.corr[C.indexOf(a)][C.indexOf(b)];
-        const rows = [
-            ['Health searching grew by about 120% from 2004 to 2017.', `Not supported. Each year is rescaled so the top metro scores 100; the typical score rose from ${M.medians[0]} to ${M.medians[M.medians.length - 1]} because more small metros crossed Google's reporting threshold (zero scores fell from ${M.zeros[0]} to ${M.zeros[M.zeros.length - 1]}).`],
-            ['Cancer is the most searched condition; stroke out-searches cardiovascular disease.', 'Can\'t be tested with this data: every condition is scaled 0–100 on its own. A higher total only means interest is spread more evenly across metros.'],
-            [`${byTotal.join(', ')} have the highest search volume.`, `Their totals reflect how many metro areas they have (${M.metrosByState.TX.length}, ${M.metrosByState.CA.length}, ${M.metrosByState.NY.length}). Per metro, ${byAvg.join(', ')} rank highest.`],
-            ['Diabetes correlates strongly with depression and obesity (r up to 0.74).', `Partly confirmed across metro areas: diabetes–obesity r = ${ri('diabetes', 'obesity').toFixed(2)}, diabetes–depression r = ${ri('depression', 'diabetes').toFixed(2)}. The strongest pair is ${label(C[M.pairs[0].a])}–${label(C[M.pairs[0].b])} (r = ${M.pairs[0].r.toFixed(2)}).`],
-            ['Goal: compare searches with the actual location of occurrences.', `Now tested against CDC state prevalence: searches track disease burden (r = ${o.r.toFixed(2)} overall), mostly through general health-search intensity, see section 1.`]
-        ];
-        const rt = document.getElementById('revisitedRows');
-        if (rt) rt.innerHTML = rows.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join('');
 
         function drawValid() {
             const c = ARC.themeColors(), v = AN.validation.find((x) => x.condition === ui.c), pts = AN.points[ui.c];
@@ -680,7 +665,7 @@ const Health = (() => {
         ARC.KB.push({ id: 'gh-cdc', topic: 'project', title: 'CDC leading causes of death',
             q: ['how did death rates change', 'cdc leading causes of death', 'which causes of death increased', 'cdc mortality trends'],
             k: ['cdc', 'death', 'deaths', 'mortality', 'causes', 'died', 'leading causes'],
-            a: `US age-adjusted death rates per 100,000, ${M.cdcYears[0]} → ${M.cdcYears[M.cdcYears.length - 1]}:\n\n**Rising:** ${s.slice(0, 3).map((x) => `${x.label} ${pct(x.change)}`).join(', ')}\n**Falling most:** ${s.slice(-3).reverse().map((x) => `${x.label} ${pct(x.change)}`).join(', ')}\n\nHeart disease and cancer remain the two leading causes. (The 2017 cancer rate was corrected from a typo of 52.5 to 152.5.)`,
+            a: `US age-adjusted death rates per 100,000, ${M.cdcYears[0]} → ${M.cdcYears[M.cdcYears.length - 1]}:\n\n**Rising:** ${s.slice(0, 3).map((x) => `${x.label} ${pct(x.change)}`).join(', ')}\n**Falling most:** ${s.slice(-3).reverse().map((x) => `${x.label} ${pct(x.change)}`).join(', ')}\n\nHeart disease and cancer remain the two leading causes.`,
             actions: [{ label: 'See the chart', action: 'link:analytics.html#cdc' }] });
         const AN = A();
         if (AN) {
